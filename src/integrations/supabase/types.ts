@@ -14,7 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      conversation_messages: {
+        Row: {
+          created_at: string
+          error_code: string | null
+          id: string
+          original_text: string | null
+          session_id: string
+          source_lang: string
+          speaker: string
+          state: string
+          target_lang: string
+          translated_text: string | null
+        }
+        Insert: {
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          original_text?: string | null
+          session_id: string
+          source_lang: string
+          speaker: string
+          state?: string
+          target_lang: string
+          translated_text?: string | null
+        }
+        Update: {
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          original_text?: string | null
+          session_id?: string
+          source_lang?: string
+          speaker?: string
+          state?: string
+          target_lang?: string
+          translated_text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversation_sessions: {
+        Row: {
+          created_at: string
+          ended_at: string | null
+          expires_at: string
+          geolocation_allowed: boolean
+          guest_joined_at: string | null
+          guest_lang: string
+          host_lang: string
+          id: string
+          revoked: boolean
+          status: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          ended_at?: string | null
+          expires_at?: string
+          geolocation_allowed?: boolean
+          guest_joined_at?: string | null
+          guest_lang: string
+          host_lang: string
+          id?: string
+          revoked?: boolean
+          status?: string
+          token: string
+        }
+        Update: {
+          created_at?: string
+          ended_at?: string | null
+          expires_at?: string
+          geolocation_allowed?: boolean
+          guest_joined_at?: string | null
+          guest_lang?: string
+          host_lang?: string
+          id?: string
+          revoked?: boolean
+          status?: string
+          token?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

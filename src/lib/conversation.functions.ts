@@ -30,7 +30,7 @@ export type MessagePublic = {
   createdAt: string;
 };
 
-export type SessionErrorCode =
+export type FailureCode =
   | "not_found"
   | "expired"
   | "revoked"
@@ -41,11 +41,9 @@ export type SessionErrorCode =
   | "unavailable"
   | "audio_too_short";
 
-export class SessionError extends Error {
-  constructor(public code: SessionErrorCode) {
-    super(code);
-  }
-}
+export type Failure = { ok: false; code: FailureCode };
+
+const fail = (code: FailureCode): Failure => ({ ok: false, code });
 
 const tokenSchema = z.string().min(10).max(64);
 const langSchema = z.string().refine((v) => LANGUAGE_CODES.includes(v), "unsupported language");
@@ -87,7 +85,10 @@ async function admin() {
   return supabaseAdmin;
 }
 
-async function loadSession(token: string, opts: { allowEnded?: boolean } = {}) {
+async function loadSession(
+  token: string,
+  opts: { allowEnded?: boolean } = {},
+): Promise<{ ok: true; row: SessionRow } | Failure> {
   const db = await admin();
   const { data, error } = await db
     .from("conversation_sessions")
@@ -97,18 +98,18 @@ async function loadSession(token: string, opts: { allowEnded?: boolean } = {}) {
 
   if (error) {
     console.error("[session] load failed", error);
-    throw new SessionError("unavailable");
+    return fail("unavailable");
   }
-  if (!data) throw new SessionError("not_found");
+  if (!data) return fail("not_found");
 
   const row = data as SessionRow;
-  if (row.revoked) throw new SessionError("revoked");
-  if (new Date(row.expires_at).getTime() < Date.now()) throw new SessionError("expired");
-  if (row.status === "ended" && !opts.allowEnded) throw new SessionError("ended");
-  return row;
+  if (row.revoked) return fail("revoked");
+  if (new Date(row.expires_at).getTime() < Date.now()) return fail("expired");
+  if (row.status === "ended" && !opts.allowEnded) return fail("ended");
+  return { ok: true, row };
 }
 
-/** Create a session after the host's manual confirmation. */
+/** Create a session — only ever called after the host's manual confirmation. */
 export const createSession = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>
     z
@@ -119,63 +120,64 @@ export const createSession = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data }): Promise<{ ok: true; session: SessionPublic } | Failure> => {
     const db = await admin();
-    const token = makeToken();
-    const expiresAt = new Date(Date.now() + SESSION_MINUTES * 60_000).toISOString();
-
     const { data: row, error } = await db
       .from("conversation_sessions")
       .insert({
-        token,
+        token: makeToken(),
         host_lang: data.hostLang,
         guest_lang: data.guestLang,
         geolocation_allowed: data.geolocationAllowed,
-        expires_at: expiresAt,
+        expires_at: new Date(Date.now() + SESSION_MINUTES * 60_000).toISOString(),
       })
       .select("*")
       .single();
 
     if (error || !row) {
       console.error("[session] create failed", error);
-      throw new SessionError("unavailable");
+      return fail("unavailable");
     }
-    return toPublic(row as SessionRow);
+    return { ok: true, session: toPublic(row as SessionRow) };
   });
 
 export const getSession = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ token: tokenSchema }).parse(d))
-  .handler(async ({ data }) => {
-    const row = await loadSession(data.token, { allowEnded: true });
-    return toPublic(row);
+  .handler(async ({ data }): Promise<{ ok: true; session: SessionPublic } | Failure> => {
+    const res = await loadSession(data.token, { allowEnded: true });
+    if (!res.ok) return res;
+    return { ok: true, session: toPublic(res.row) };
   });
 
 export const joinSession = createServerFn({ method: "POST" })
-  .inputValidator((d: unknown) => z.object({ token: tokenSchema, guestLang: langSchema.optional() }).parse(d))
-  .handler(async ({ data }) => {
-    const row = await loadSession(data.token);
+  .inputValidator((d: unknown) =>
+    z.object({ token: tokenSchema, guestLang: langSchema.optional() }).parse(d),
+  )
+  .handler(async ({ data }): Promise<{ ok: true; session: SessionPublic } | Failure> => {
+    const res = await loadSession(data.token);
+    if (!res.ok) return res;
     const db = await admin();
     const { data: updated, error } = await db
       .from("conversation_sessions")
       .update({
-        guest_joined_at: row.guest_joined_at ?? new Date().toISOString(),
+        guest_joined_at: res.row.guest_joined_at ?? new Date().toISOString(),
         status: "active",
         ...(data.guestLang ? { guest_lang: data.guestLang } : {}),
       })
-      .eq("id", row.id)
+      .eq("id", res.row.id)
       .select("*")
       .single();
 
     if (error || !updated) {
       console.error("[session] join failed", error);
-      throw new SessionError("unavailable");
+      return fail("unavailable");
     }
-    return toPublic(updated as SessionRow);
+    return { ok: true, session: toPublic(updated as SessionRow) };
   });
 
 export const endSession = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ token: tokenSchema }).parse(d))
-  .handler(async ({ data }) => {
+  .handler(async ({ data }): Promise<{ ok: true } | Failure> => {
     const db = await admin();
     const { error } = await db
       .from("conversation_sessions")
@@ -183,7 +185,7 @@ export const endSession = createServerFn({ method: "POST" })
       .eq("token", data.token);
     if (error) {
       console.error("[session] end failed", error);
-      throw new SessionError("unavailable");
+      return fail("unavailable");
     }
     return { ok: true };
   });
@@ -191,19 +193,23 @@ export const endSession = createServerFn({ method: "POST" })
 /** Revoke the current link and issue a fresh one for the same language pair. */
 export const regenerateLink = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ token: tokenSchema }).parse(d))
-  .handler(async ({ data }) => {
-    const row = await loadSession(data.token, { allowEnded: true });
+  .handler(async ({ data }): Promise<{ ok: true; session: SessionPublic } | Failure> => {
+    const res = await loadSession(data.token, { allowEnded: true });
+    if (!res.ok) return res;
     const db = await admin();
 
-    await db.from("conversation_sessions").update({ revoked: true, status: "ended" }).eq("id", row.id);
+    await db
+      .from("conversation_sessions")
+      .update({ revoked: true, status: "ended" })
+      .eq("id", res.row.id);
 
     const { data: fresh, error } = await db
       .from("conversation_sessions")
       .insert({
         token: makeToken(),
-        host_lang: row.host_lang,
-        guest_lang: row.guest_lang,
-        geolocation_allowed: row.geolocation_allowed,
+        host_lang: res.row.host_lang,
+        guest_lang: res.row.guest_lang,
+        geolocation_allowed: res.row.geolocation_allowed,
         expires_at: new Date(Date.now() + SESSION_MINUTES * 60_000).toISOString(),
       })
       .select("*")
@@ -211,47 +217,54 @@ export const regenerateLink = createServerFn({ method: "POST" })
 
     if (error || !fresh) {
       console.error("[session] regenerate failed", error);
-      throw new SessionError("unavailable");
+      return fail("unavailable");
     }
-    return toPublic(fresh as SessionRow);
+    return { ok: true, session: toPublic(fresh as SessionRow) };
   });
 
 export const listMessages = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>
     z.object({ token: tokenSchema, since: z.string().optional() }).parse(d),
   )
-  .handler(async ({ data }) => {
-    const row = await loadSession(data.token, { allowEnded: true });
-    const db = await admin();
+  .handler(
+    async ({
+      data,
+    }): Promise<{ ok: true; session: SessionPublic; messages: MessagePublic[] } | Failure> => {
+      const res = await loadSession(data.token, { allowEnded: true });
+      if (!res.ok) return res;
+      const db = await admin();
 
-    let query = db
-      .from("conversation_messages")
-      .select("*")
-      .eq("session_id", row.id)
-      .order("created_at", { ascending: true })
-      .limit(200);
-    if (data.since) query = query.gt("created_at", data.since);
+      let query = db
+        .from("conversation_messages")
+        .select("*")
+        .eq("session_id", res.row.id)
+        .order("created_at", { ascending: true })
+        .limit(200);
+      if (data.since) query = query.gt("created_at", data.since);
 
-    const { data: rows, error } = await query;
-    if (error) {
-      console.error("[messages] list failed", error);
-      throw new SessionError("unavailable");
-    }
+      const { data: rows, error } = await query;
+      if (error) {
+        console.error("[messages] list failed", error);
+        return fail("unavailable");
+      }
 
-    const messages: MessagePublic[] = (rows ?? []).map((m) => ({
-      id: m.id as string,
-      speaker: m.speaker as Role,
-      sourceLang: m.source_lang as string,
-      targetLang: m.target_lang as string,
-      originalText: m.original_text as string | null,
-      translatedText: m.translated_text as string | null,
-      state: m.state as MessagePublic["state"],
-      errorCode: m.error_code as string | null,
-      createdAt: m.created_at as string,
-    }));
-
-    return { session: toPublic(row), messages };
-  });
+      return {
+        ok: true,
+        session: toPublic(res.row),
+        messages: (rows ?? []).map((m) => ({
+          id: m.id as string,
+          speaker: m.speaker as Role,
+          sourceLang: m.source_lang as string,
+          targetLang: m.target_lang as string,
+          originalText: m.original_text as string | null,
+          translatedText: m.translated_text as string | null,
+          state: m.state as MessagePublic["state"],
+          errorCode: m.error_code as string | null,
+          createdAt: m.created_at as string,
+        })),
+      };
+    },
+  );
 
 /** Transcribe + translate one push-to-talk utterance and store it. */
 export const sendUtterance = createServerFn({ method: "POST" })
@@ -265,22 +278,29 @@ export const sendUtterance = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data }) => {
-    const row = await loadSession(data.token);
+  .handler(async ({ data }): Promise<{ ok: true; message: MessagePublic } | Failure> => {
+    const res = await loadSession(data.token);
+    if (!res.ok) return res;
+    const row = res.row;
+
     const sourceLang = data.role === "host" ? row.host_lang : row.guest_lang;
     const targetLang = data.role === "host" ? row.guest_lang : row.host_lang;
 
     const { transcribeAudio, translateText, AiError } = await import("./ai.server");
     const db = await admin();
-
     const sourceMeta = findLanguage(sourceLang);
     const targetMeta = findLanguage(targetLang);
 
     let original: string;
     try {
-      original = await transcribeAudio(data.audioBase64, data.mimeType, transcriptionHint(sourceLang));
+      original = await transcribeAudio(
+        data.audioBase64,
+        data.mimeType,
+        transcriptionHint(sourceLang),
+      );
     } catch (err) {
-      const code = err instanceof AiError ? err.code : "transcription_failed";
+      const code = (err instanceof AiError ? err.code : "transcription_failed") as FailureCode;
+      console.error("[utterance] transcription failed", err);
       await db.from("conversation_messages").insert({
         session_id: row.id,
         speaker: data.role,
@@ -289,7 +309,7 @@ export const sendUtterance = createServerFn({ method: "POST" })
         state: "error",
         error_code: code,
       });
-      throw new SessionError(code as SessionErrorCode);
+      return fail(code);
     }
 
     let translated: string | null = null;
@@ -322,10 +342,11 @@ export const sendUtterance = createServerFn({ method: "POST" })
 
     if (error || !inserted) {
       console.error("[utterance] insert failed", error);
-      throw new SessionError("unavailable");
+      return fail("unavailable");
     }
 
     return {
+      ok: true,
       message: {
         id: inserted.id as string,
         speaker: data.role,
@@ -333,9 +354,9 @@ export const sendUtterance = createServerFn({ method: "POST" })
         targetLang,
         originalText: original,
         translatedText: translated,
-        state: (errorCode ? "error" : "processed") as MessagePublic["state"],
+        state: errorCode ? "error" : "processed",
         errorCode,
         createdAt: inserted.created_at as string,
-      } satisfies MessagePublic,
+      },
     };
   });

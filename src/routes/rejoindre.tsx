@@ -30,12 +30,14 @@ function JoinPage() {
 
   function go() {
     const match = value.trim().match(/([0-9a-f]{20,64})/i);
-    if (!match) {
+    const found = match?.[1];
+    if (!found) {
       setError(t.errors.linkGone);
       return;
     }
-    void navigate({ to: "/s/$token", params: { token: match[1] } });
+    void navigate({ to: "/s/$token", params: { token: found } });
   }
+
 
   return (
     <div className="mx-auto max-w-md px-4 py-12">

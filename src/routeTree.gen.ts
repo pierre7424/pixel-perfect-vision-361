@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccessibiliteRouteImport } from './routes/accessibilite'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
+import { Route as NouvelleRouteImport } from './routes/nouvelle'
+import { Route as RejoindreRouteImport } from './routes/rejoindre'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +30,60 @@ const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
   path: '/confidentialite',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NouvelleRoute = NouvelleRouteImport.update({
+  id: '/nouvelle',
+  path: '/nouvelle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RejoindreRoute = RejoindreRouteImport.update({
+  id: '/rejoindre',
+  path: '/rejoindre',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accessibilite': typeof AccessibiliteRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/nouvelle': typeof NouvelleRoute
+  '/rejoindre': typeof RejoindreRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accessibilite': typeof AccessibiliteRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/nouvelle': typeof NouvelleRoute
+  '/rejoindre': typeof RejoindreRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accessibilite': typeof AccessibiliteRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/nouvelle': typeof NouvelleRoute
+  '/rejoindre': typeof RejoindreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/accessibilite' | '/confidentialite'
+  fullPaths:
+    '/' | '/accessibilite' | '/confidentialite' | '/nouvelle' | '/rejoindre'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/accessibilite' | '/confidentialite'
-  id: '__root__' | '/' | '/accessibilite' | '/confidentialite'
+  to: '/' | '/accessibilite' | '/confidentialite' | '/nouvelle' | '/rejoindre'
+  id:
+    | '__root__'
+    | '/'
+    | '/accessibilite'
+    | '/confidentialite'
+    | '/nouvelle'
+    | '/rejoindre'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccessibiliteRoute: typeof AccessibiliteRoute
   ConfidentialiteRoute: typeof ConfidentialiteRoute
+  NouvelleRoute: typeof NouvelleRoute
+  RejoindreRoute: typeof RejoindreRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +109,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConfidentialiteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/nouvelle': {
+      id: '/nouvelle'
+      path: '/nouvelle'
+      fullPath: '/nouvelle'
+      preLoaderRoute: typeof NouvelleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rejoindre': {
+      id: '/rejoindre'
+      path: '/rejoindre'
+      fullPath: '/rejoindre'
+      preLoaderRoute: typeof RejoindreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +130,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccessibiliteRoute: AccessibiliteRoute,
   ConfidentialiteRoute: ConfidentialiteRoute,
+  NouvelleRoute: NouvelleRoute,
+  RejoindreRoute: RejoindreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

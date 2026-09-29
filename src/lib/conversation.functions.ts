@@ -268,17 +268,19 @@ export const listMessages = createServerFn({ method: "POST" })
 
 /** Transcribe + translate one push-to-talk utterance and store it. */
 export const sendUtterance = createServerFn({ method: "POST" })
-  .inputValidator((d: unknown) =>
-    z
+  .inputValidator((d: unknown) => d)
+  .handler(async ({ data: raw }): Promise<{ ok: true; message: MessagePublic } | Failure> => {
+    const parsed = z
       .object({
         token: tokenSchema,
-        role: z.enum(["host", "guest"]),
-        audioBase64: z.string().min(100).max(9_000_000),
-        mimeType: z.string().max(80),
+        role: z.enum(["host", "guest"]).catch("guest"),
+        audioBase64: z.string().max(9_000_000),
+        mimeType: z.string().max(80).catch("audio/webm"),
       })
-      .parse(d),
-  )
-  .handler(async ({ data }): Promise<{ ok: true; message: MessagePublic } | Failure> => {
+      .safeParse(raw);
+    if (!parsed.success) return { ok: false, code: "unavailable" };
+    const data = parsed.data;
+    if (data.audioBase64.length < 100) return { ok: false, code: "audio_too_short" };
     const res = await loadSession(data.token);
     if (!res.ok) return res;
     const row = res.row;

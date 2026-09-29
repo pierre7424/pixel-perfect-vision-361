@@ -273,7 +273,7 @@ export const sendUtterance = createServerFn({ method: "POST" })
     const parsed = z
       .object({
         token: tokenSchema,
-        role: z.enum(["host", "guest"]).catch("guest"),
+        role: z.enum(["host", "guest"]),
         audioBase64: z.string().max(9_000_000),
         mimeType: z.string().max(80).catch("audio/webm"),
       })

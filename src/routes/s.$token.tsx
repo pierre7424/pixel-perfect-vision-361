@@ -40,7 +40,7 @@ export const Route = createFileRoute("/s/$token")({
 
 function SessionPage() {
   const { token } = Route.useParams();
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const navigate = useNavigate();
 
   const getSession = useServerFn(getSessionFn);

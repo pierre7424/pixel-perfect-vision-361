@@ -124,6 +124,8 @@ export function ConversationView({
           role,
           audioBase64: clip.base64,
           mimeType: clip.mimeType,
+          clientId: clientId(),
+          displayName,
         },
       });
       if (!res.ok) {
@@ -138,7 +140,8 @@ export function ConversationView({
     } finally {
       setBusy(false);
     }
-  }, [recorder, role, sendUtterance, session.token]);
+  }, [recorder, role, sendUtterance, session.token, displayName]);
+
 
   const errorText = (() => {
     switch (error) {

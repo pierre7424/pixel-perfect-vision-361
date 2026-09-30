@@ -462,11 +462,13 @@ export const sendUtterance = createServerFn({ method: "POST" })
       await db.from("conversation_messages").insert({
         session_id: row.id,
         speaker: data.role,
+        display_name: speakerName,
         source_lang: sourceLang,
         target_lang: targetLang,
         state: "error",
         error_code: code,
       });
+
       return fail(code);
     }
 

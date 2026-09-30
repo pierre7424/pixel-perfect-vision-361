@@ -8,7 +8,14 @@ import { QrModal } from "@/components/qr-modal";
 import { clientId } from "@/lib/identity";
 import { languageLabel, useI18n } from "@/lib/i18n";
 import { findLanguage } from "@/lib/languages";
-import { notifyMessage, notifyStatus, requestNotifications, type NotifyStatus } from "@/lib/notify";
+import {
+  enableNotificationsByDefault,
+  isEmbedded,
+  notifyMessage,
+  requestNotifications,
+  type NotifyStatus,
+} from "@/lib/notify";
+
 import { useRecorder } from "@/lib/use-recorder";
 import {
   endSession as endSessionFn,
@@ -67,9 +74,11 @@ export function ConversationView({
   const labels = useRef({ newMessage: "New message", partner: "Partner" });
   labels.current = { newMessage: t.session.newMessage, partner: t.session.partner };
 
-  useEffect(() => {
-    setNotifState(notifyStatus());
-  }, []);
+  const [notifHint, setNotifHint] = useState(false);
+
+  // Notifications are on by default: ask as soon as the conversation opens.
+  useEffect(() => enableNotificationsByDefault(setNotifState), []);
+
 
   const listMessages = useServerFn(listMessagesFn);
   const sendUtterance = useServerFn(sendUtteranceFn);
@@ -242,9 +251,22 @@ export function ConversationView({
         {notifState !== "unsupported" ? (
           <button
             type="button"
-            disabled={notifState === "granted" || notifState === "denied"}
-            onClick={async () => setNotifState(await requestNotifications())}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium disabled:opacity-70"
+            onClick={async () => {
+              setNotifHint(false);
+              if (isEmbedded()) {
+                window.open(window.location.href, "_blank", "noopener");
+                return;
+              }
+              if (notifState === "denied") {
+                setNotifHint(true);
+                return;
+              }
+              if (notifState === "granted") return;
+              const next = await requestNotifications();
+              setNotifState(next);
+              if (next !== "granted") setNotifHint(true);
+            }}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium"
           >
             {notifState === "granted" ? (
               <Bell className="size-4" aria-hidden />
@@ -260,6 +282,7 @@ export function ConversationView({
                   : t.session.notify}
           </button>
         ) : null}
+
 
         <button
           type="button"
@@ -281,6 +304,13 @@ export function ConversationView({
           {role === "host" ? t.session.end : t.join.leave}
         </button>
       </div>
+
+      {notifHint ? (
+        <p role="status" className="surface-panel mt-2 px-4 py-3 text-sm text-muted-foreground">
+          {t.session.notifyHelp}
+        </p>
+      ) : null}
+
 
       {showPeople ? (
         <ul className="surface-panel mt-2 space-y-1 px-4 py-3 text-sm">

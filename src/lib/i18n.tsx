@@ -166,6 +166,9 @@ const fr = {
     notifyOn: "Notifications activées",
     notifyDenied: "Notifications bloquées par votre navigateur.",
     notifyTab: "Ouvrez le site dans un onglet à part pour activer les notifications.",
+    notifyHelp:
+      "Pour recevoir les alertes, autorisez les notifications pour ce site dans les réglages de votre navigateur (icône à gauche de l'adresse).",
+
     newMessage: "Nouveau message",
   },
 
@@ -394,6 +397,9 @@ const en: Dict = {
     notifyOn: "Notifications on",
     notifyDenied: "Notifications are blocked by your browser.",
     notifyTab: "Open the site in its own tab to enable notifications.",
+    notifyHelp:
+      "To get alerts, allow notifications for this site in your browser settings (icon left of the address bar).",
+
     newMessage: "New message",
   },
 
@@ -609,6 +615,8 @@ const zh: Dict = {
     notifyOn: "通知已開啟",
     notifyDenied: "瀏覽器已封鎖通知。",
     notifyTab: "請在獨立分頁開啟本網站以啟用通知。",
+    notifyHelp: "若要接收提醒，請在瀏覽器設定中允許本網站傳送通知（網址列左側的圖示）。",
+
     newMessage: "新訊息",
   },
 

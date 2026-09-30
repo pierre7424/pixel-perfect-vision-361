@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { AlertCircle, Clock, LogOut, QrCode, Wifi, WifiOff } from "lucide-react";
+import { AlertCircle, Clock, LogOut, QrCode, Users, Wifi, WifiOff } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PushToTalk } from "@/components/push-to-talk";
 import { QrModal } from "@/components/qr-modal";
+import { clientId } from "@/lib/identity";
 import { languageLabel, useI18n } from "@/lib/i18n";
 import { findLanguage } from "@/lib/languages";
 import { useRecorder } from "@/lib/use-recorder";
@@ -14,10 +15,12 @@ import {
   sendUtterance as sendUtteranceFn,
   type FailureCode,
   type MessagePublic,
+  type ParticipantPublic,
   type Role,
   type SessionPublic,
 } from "@/lib/conversation.functions";
 import { cn } from "@/lib/utils";
+
 
 function useCountdown(iso: string) {
   const [left, setLeft] = useState(() => new Date(iso).getTime() - Date.now());
@@ -33,17 +36,23 @@ export function ConversationView({
   role,
   initialSession,
   micReady,
+  displayName,
+  myLang: myLangProp,
 }: {
   role: Role;
   initialSession: SessionPublic;
   micReady: boolean;
+  displayName: string;
+  myLang?: string;
 }) {
   const { t, locale } = useI18n();
   const [session, setSession] = useState(initialSession);
   const [messages, setMessages] = useState<MessagePublic[]>([]);
+  const [participants, setParticipants] = useState<ParticipantPublic[]>([]);
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(true);
   const [showQr, setShowQr] = useState(false);
+  const [showPeople, setShowPeople] = useState(false);
   const [error, setError] = useState<FailureCode | "mic_denied" | "mic_unavailable" | "too_short" | null>(
     null,
   );
@@ -55,12 +64,20 @@ export function ConversationView({
   const recorder = useRecorder();
 
   const countdown = useCountdown(session.expiresAt);
-  const myLang = role === "host" ? session.hostLang : session.guestLang;
+  const myLang = myLangProp ?? (role === "host" ? session.hostLang : session.guestLang);
   const otherLang = role === "host" ? session.guestLang : session.hostLang;
 
   const refresh = useCallback(async () => {
     try {
-      const res = await listMessages({ data: { token: session.token } });
+      const res = await listMessages({
+        data: {
+          token: session.token,
+          clientId: clientId(),
+          displayName,
+          role,
+          lang: myLang,
+        },
+      });
       setOnline(true);
       if (!res.ok) {
         setError(res.code);
@@ -68,16 +85,18 @@ export function ConversationView({
       }
       setSession(res.session);
       setMessages(res.messages);
+      setParticipants(res.participants);
     } catch {
       setOnline(false);
     }
-  }, [listMessages, session.token]);
+  }, [listMessages, session.token, displayName, role, myLang]);
 
   useEffect(() => {
     void refresh();
     const id = setInterval(refresh, 2500);
     return () => clearInterval(id);
   }, [refresh]);
+
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });

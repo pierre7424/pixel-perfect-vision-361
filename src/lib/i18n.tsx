@@ -150,6 +150,8 @@ const fr = {
     assistedNote: "Traductions assistées — l'original reste affiché.",
     waitingPartner: "En attente de votre interlocuteur…",
     expiresIn: "Expire dans",
+    showQr: "Inviter d'autres personnes",
+    showQrNote: "Chaque nouvelle personne parlera la langue invitée de la session.",
   },
   errors: {
     linkGone: "Ce lien n'est plus disponible. Demandez à l'initiateur de créer une nouvelle session.",
@@ -360,6 +362,8 @@ const en: Dict = {
     assistedNote: "Assisted translations — the original stays visible.",
     waitingPartner: "Waiting for the other person…",
     expiresIn: "Expires in",
+    showQr: "Invite more people",
+    showQrNote: "Each new person will speak the session's guest language.",
   },
   errors: {
     linkGone: "This link is no longer available. Ask the host to create a new session.",
@@ -557,6 +561,8 @@ const zh: Dict = {
     assistedNote: "輔助翻譯，原文持續顯示。",
     waitingPartner: "等待對方…",
     expiresIn: "剩餘",
+    showQr: "邀請更多人",
+    showQrNote: "每位新加入的人將使用對話設定的訪客語言。",
   },
   errors: {
     linkGone: "這個連結已無法使用。請對方重新建立一場對話。",

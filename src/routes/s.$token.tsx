@@ -161,7 +161,7 @@ function HostInvite({
   const [working, setWorking] = useState(false);
 
   useEffect(() => {
-    const link = `${window.location.origin}/s/${session.token}`;
+    const link = shareLink(session.token);
     setUrl(link);
     void QRCode.toDataURL(link, {
       width: 520,

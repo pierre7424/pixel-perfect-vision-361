@@ -49,9 +49,12 @@ function SessionPage() {
   const [failure, setFailure] = useState<FailureCode | null>(null);
   const [role, setRole] = useState<"host" | "guest" | null>(null);
   const [entered, setEntered] = useState(false);
+  const [name, setName] = useState<string | null>(null);
+  const [myLang, setMyLang] = useState<string | null>(null);
 
   useEffect(() => {
     setRole(window.localStorage.getItem(`role-${token}`) === "host" ? "host" : "guest");
+    setName(storedName(token) || null);
   }, [token]);
 
   const load = useCallback(async () => {
@@ -108,6 +111,21 @@ function SessionPage() {
     );
   }
 
+  // Every participant picks a pseudo once per session.
+  if (role === "host" && !name) {
+    return (
+      <div className="mx-auto max-w-xl px-4 py-10">
+        <h1 className="text-2xl font-bold">{t.qr.title}</h1>
+        <NamePrompt
+          onSubmit={(value) => {
+            storeName(session.token, value);
+            setName(value);
+          }}
+        />
+      </div>
+    );
+  }
+
   if (role === "host" && !entered) {
     return (
       <HostInvite
@@ -117,6 +135,7 @@ function SessionPage() {
         onReplaced={(next) => {
           window.localStorage.removeItem(`role-${session.token}`);
           window.localStorage.setItem(`role-${next.token}`, "host");
+          storeName(next.token, name ?? "");
           void navigate({ to: "/s/$token", params: { token: next.token } });
         }}
       />
@@ -127,8 +146,11 @@ function SessionPage() {
     return (
       <GuestWelcome
         session={session}
-        onJoined={(next) => {
+        initialName={name ?? ""}
+        onJoined={(next, chosenName, chosenLang) => {
           setSession(next);
+          setName(chosenName);
+          setMyLang(chosenLang);
           setEntered(true);
         }}
       />
@@ -141,9 +163,12 @@ function SessionPage() {
       role={role}
       initialSession={session}
       micReady={role === "guest" ? guestMicReady : false}
+      displayName={name ?? ""}
+      {...(myLang ? { myLang } : {})}
     />
   );
 }
+
 
 /** Set by the guest consent screen before entering the conversation. */
 let guestMicReady = false;

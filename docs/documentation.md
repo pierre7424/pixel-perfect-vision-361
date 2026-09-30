@@ -12,7 +12,7 @@ code ou lien temporaire. Aucun compte, aucune application à installer.
      confirmation lorsque le fuseau horaire est `Asia/Taipei`) ;
    - consentement facultatif à la localisation (refus sans conséquence, le micro
      n'est jamais activé à cette étape) ;
-   - récapitulatif avec la durée de validité (30 minutes) puis création.
+   - récapitulatif avec la durée de validité (4 heures) puis création.
 2. **Hôte** — `/s/<token>` : QR code, lien copiable, partage natif, bouton de
    régénération du lien (l'ancien est révoqué) et bouton d'annulation.
 3. **Invité** — scanne le QR ou colle le lien dans `/rejoindre`. Il voit la
@@ -65,7 +65,7 @@ Navigateur (TanStack Start, React)
   original, texte traduit, `state` (`processed` / `error`), `error_code`.
 
 Aucune donnée de compte, aucun contact, aucun historique personnel n'est stocké.
-Les sessions expirent automatiquement au bout de 30 minutes.
+Les sessions expirent automatiquement au bout de 4 heures.
 
 ## 3. Codes d'erreur
 

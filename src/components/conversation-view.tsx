@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { AlertCircle, Clock, LogOut, QrCode, Users, Wifi, WifiOff } from "lucide-react";
+import { AlertCircle, Bell, BellOff, Clock, LogOut, QrCode, Users, Wifi, WifiOff } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PushToTalk } from "@/components/push-to-talk";
@@ -8,6 +8,7 @@ import { QrModal } from "@/components/qr-modal";
 import { clientId } from "@/lib/identity";
 import { languageLabel, useI18n } from "@/lib/i18n";
 import { findLanguage } from "@/lib/languages";
+import { notifyMessage, notifyStatus, requestNotifications, type NotifyStatus } from "@/lib/notify";
 import { useRecorder } from "@/lib/use-recorder";
 import {
   endSession as endSessionFn,
@@ -29,7 +30,10 @@ function useCountdown(iso: string) {
     return () => clearInterval(id);
   }, [iso]);
   const total = Math.max(0, Math.floor(left / 1000));
-  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  if (hours > 0) return `${hours} h ${String(minutes).padStart(2, "0")}`;
+  return `${minutes}:${String(total % 60).padStart(2, "0")}`;
 }
 
 export function ConversationView({
@@ -57,6 +61,15 @@ export function ConversationView({
     null,
   );
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [notifState, setNotifState] = useState<NotifyStatus>("default");
+  const seenIds = useRef<Set<string>>(new Set());
+  const primed = useRef(false);
+  const labels = useRef({ newMessage: "New message", partner: "Partner" });
+  labels.current = { newMessage: t.session.newMessage, partner: t.session.partner };
+
+  useEffect(() => {
+    setNotifState(notifyStatus());
+  }, []);
 
   const listMessages = useServerFn(listMessagesFn);
   const sendUtterance = useServerFn(sendUtteranceFn);
@@ -86,6 +99,21 @@ export function ConversationView({
       setSession(res.session);
       setMessages(res.messages);
       setParticipants(res.participants);
+
+      // Notify about messages from other people while the page is in the background.
+      const fresh = res.messages.filter((m) => !seenIds.current.has(m.id));
+      res.messages.forEach((m) => seenIds.current.add(m.id));
+      if (primed.current) {
+        const fromOthers = fresh.filter((m) => (m.displayName ?? "") !== displayName);
+        const latest = fromOthers[fromOthers.length - 1];
+        if (latest) {
+          notifyMessage(
+            `${latest.displayName ?? labels.current.partner} — ${labels.current.newMessage}`,
+            latest.translatedText ?? latest.originalText ?? "",
+          );
+        }
+      }
+      primed.current = true;
     } catch {
       setOnline(false);
     }
@@ -210,6 +238,28 @@ export function ConversationView({
           <Users className="size-4" aria-hidden />
           {peopleCount} {peopleCount > 1 ? t.session.present : t.session.presentOne}
         </button>
+
+        {notifState !== "unsupported" ? (
+          <button
+            type="button"
+            disabled={notifState === "granted" || notifState === "denied"}
+            onClick={async () => setNotifState(await requestNotifications())}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium disabled:opacity-70"
+          >
+            {notifState === "granted" ? (
+              <Bell className="size-4" aria-hidden />
+            ) : (
+              <BellOff className="size-4" aria-hidden />
+            )}
+            {notifState === "granted"
+              ? t.session.notifyOn
+              : notifState === "denied"
+                ? t.session.notifyDenied
+                : notifState === "in-iframe"
+                  ? t.session.notifyTab
+                  : t.session.notify}
+          </button>
+        ) : null}
 
         <button
           type="button"

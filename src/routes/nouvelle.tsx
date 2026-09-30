@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { LanguagePicker } from "@/components/language-picker";
 import { languageLabel, useI18n } from "@/lib/i18n";
 import { findLanguage } from "@/lib/languages";
-import { SESSION_MINUTES, createSession as createSessionFn } from "@/lib/conversation.functions";
+import { SESSION_HOURS, createSession as createSessionFn } from "@/lib/conversation.functions";
 
 export const Route = createFileRoute("/nouvelle")({
   head: () => ({
@@ -209,7 +209,7 @@ function NewSessionPage() {
               <div className="flex justify-between gap-4">
                 <dt className="text-muted-foreground">{t.create.expiry}</dt>
                 <dd className="text-right font-medium">
-                  {SESSION_MINUTES} {t.create.minutes}
+                  {SESSION_HOURS} {t.create.hours}
                 </dd>
               </div>
             </dl>

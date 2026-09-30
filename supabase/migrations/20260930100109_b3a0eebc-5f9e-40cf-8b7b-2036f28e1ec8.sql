@@ -1,0 +1,1 @@
+ALTER TABLE public.conversation_sessions ALTER COLUMN expires_at SET DEFAULT (now() + '04:00:00'::interval);

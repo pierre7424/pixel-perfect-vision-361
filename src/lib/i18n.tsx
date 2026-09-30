@@ -93,6 +93,7 @@ const fr = {
     notAllowed: "non autorisée",
     expiry: "Expiration prévue",
     minutes: "minutes",
+    hours: "heures",
     dataNote:
       "Votre voix est transcrite puis traduite par un fournisseur tiers. Le texte original et traduit est conservé le temps de la session, puis le lien expire.",
     confirm: "Confirmer et créer la session",
@@ -161,6 +162,11 @@ const fr = {
     present: "personnes présentes",
     presentOne: "personne présente",
     participants: "Participants",
+    notify: "Notifications",
+    notifyOn: "Notifications activées",
+    notifyDenied: "Notifications bloquées par votre navigateur.",
+    notifyTab: "Ouvrez le site dans un onglet à part pour activer les notifications.",
+    newMessage: "Nouveau message",
   },
 
   errors: {
@@ -315,6 +321,7 @@ const en: Dict = {
     notAllowed: "not allowed",
     expiry: "Planned expiry",
     minutes: "minutes",
+    hours: "hours",
     dataNote:
       "Your voice is transcribed and translated by a third-party provider. The original and translated text is kept for the duration of the session, then the link expires.",
     confirm: "Confirm and create the session",
@@ -383,6 +390,11 @@ const en: Dict = {
     present: "people here",
     presentOne: "person here",
     participants: "Participants",
+    notify: "Notifications",
+    notifyOn: "Notifications on",
+    notifyDenied: "Notifications are blocked by your browser.",
+    notifyTab: "Open the site in its own tab to enable notifications.",
+    newMessage: "New message",
   },
 
   errors: {
@@ -526,6 +538,7 @@ const zh: Dict = {
     notAllowed: "未允許",
     expiry: "預計失效",
     minutes: "分鐘",
+    hours: "小時",
     dataNote: "你的語音會由第三方服務轉成文字並翻譯。原文與翻譯文字只在對話期間保存，之後連結即失效。",
     confirm: "確認並建立對話",
     edit: "修改",
@@ -592,6 +605,11 @@ const zh: Dict = {
     present: "人在線上",
     presentOne: "人在線上",
     participants: "參與者",
+    notify: "通知",
+    notifyOn: "通知已開啟",
+    notifyDenied: "瀏覽器已封鎖通知。",
+    notifyTab: "請在獨立分頁開啟本網站以啟用通知。",
+    newMessage: "新訊息",
   },
 
   errors: {

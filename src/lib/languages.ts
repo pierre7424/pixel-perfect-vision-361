@@ -75,5 +75,5 @@ const QR_INVITATIONS: Record<string, string> = {
 
 /** Reassurance shown beside the QR code in the guest's selected spoken language. */
 export function qrInvitation(code: string): string {
-  return QR_INVITATIONS[code] ?? QR_INVITATIONS.en;
+  return QR_INVITATIONS[code] ?? QR_INVITATIONS["en"] ?? "Scan the QR code to join.";
 }

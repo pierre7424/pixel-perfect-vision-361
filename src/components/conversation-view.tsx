@@ -8,7 +8,14 @@ import { QrModal } from "@/components/qr-modal";
 import { clientId } from "@/lib/identity";
 import { languageLabel, useI18n } from "@/lib/i18n";
 import { findLanguage } from "@/lib/languages";
-import { notifyMessage, notifyStatus, requestNotifications, type NotifyStatus } from "@/lib/notify";
+import {
+  enableNotificationsByDefault,
+  isEmbedded,
+  notifyMessage,
+  requestNotifications,
+  type NotifyStatus,
+} from "@/lib/notify";
+
 import { useRecorder } from "@/lib/use-recorder";
 import {
   endSession as endSessionFn,
@@ -67,9 +74,11 @@ export function ConversationView({
   const labels = useRef({ newMessage: "New message", partner: "Partner" });
   labels.current = { newMessage: t.session.newMessage, partner: t.session.partner };
 
-  useEffect(() => {
-    setNotifState(notifyStatus());
-  }, []);
+  const [notifHint, setNotifHint] = useState(false);
+
+  // Notifications are on by default: ask as soon as the conversation opens.
+  useEffect(() => enableNotificationsByDefault(setNotifState), []);
+
 
   const listMessages = useServerFn(listMessagesFn);
   const sendUtterance = useServerFn(sendUtteranceFn);

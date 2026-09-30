@@ -6,10 +6,13 @@ import { useCallback, useEffect, useState } from "react";
 
 import { ConversationView } from "@/components/conversation-view";
 import { LanguagePicker } from "@/components/language-picker";
+import { NamePrompt } from "@/components/name-prompt";
+import { clientId, storeName, storedName } from "@/lib/identity";
 import { languageLabel, uiLocaleForSpoken, useI18n } from "@/lib/i18n";
 import { findLanguage, qrInvitation } from "@/lib/languages";
 import { shareLink } from "@/lib/share-origin";
 import { useRecorder } from "@/lib/use-recorder";
+
 import {
   endSession as endSessionFn,
   getSession as getSessionFn,

@@ -127,10 +127,16 @@ const fr = {
     micAllow: "Autoriser le micro",
     micLater: "Pas maintenant",
     joinCta: "Rejoindre la conversation",
+    nameTitle: "Comment souhaitez-vous apparaître ?",
+    nameLabel: "Votre pseudo",
+    namePlaceholder: "Ex. Camille",
+    nameNote: "Ce nom s'affiche à côté de vos messages pendant la session.",
+    nameContinue: "Continuer",
     readOnly:
       "Sans micro, vous pouvez lire les messages reçus. Pour parler, autorisez le micro depuis les réglages de votre navigateur.",
     leave: "Quitter la session",
   },
+
   session: {
     you: "Vous",
     partner: "Interlocuteur",

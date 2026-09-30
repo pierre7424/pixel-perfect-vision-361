@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { AlertCircle, Clock, LogOut, QrCode, Wifi, WifiOff } from "lucide-react";
+import { AlertCircle, Clock, LogOut, QrCode, Users, Wifi, WifiOff } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PushToTalk } from "@/components/push-to-talk";
 import { QrModal } from "@/components/qr-modal";
+import { clientId } from "@/lib/identity";
 import { languageLabel, useI18n } from "@/lib/i18n";
 import { findLanguage } from "@/lib/languages";
 import { useRecorder } from "@/lib/use-recorder";
@@ -14,10 +15,12 @@ import {
   sendUtterance as sendUtteranceFn,
   type FailureCode,
   type MessagePublic,
+  type ParticipantPublic,
   type Role,
   type SessionPublic,
 } from "@/lib/conversation.functions";
 import { cn } from "@/lib/utils";
+
 
 function useCountdown(iso: string) {
   const [left, setLeft] = useState(() => new Date(iso).getTime() - Date.now());
@@ -33,17 +36,23 @@ export function ConversationView({
   role,
   initialSession,
   micReady,
+  displayName,
+  myLang: myLangProp,
 }: {
   role: Role;
   initialSession: SessionPublic;
   micReady: boolean;
+  displayName: string;
+  myLang?: string;
 }) {
   const { t, locale } = useI18n();
   const [session, setSession] = useState(initialSession);
   const [messages, setMessages] = useState<MessagePublic[]>([]);
+  const [participants, setParticipants] = useState<ParticipantPublic[]>([]);
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(true);
   const [showQr, setShowQr] = useState(false);
+  const [showPeople, setShowPeople] = useState(false);
   const [error, setError] = useState<FailureCode | "mic_denied" | "mic_unavailable" | "too_short" | null>(
     null,
   );
@@ -55,12 +64,20 @@ export function ConversationView({
   const recorder = useRecorder();
 
   const countdown = useCountdown(session.expiresAt);
-  const myLang = role === "host" ? session.hostLang : session.guestLang;
+  const myLang = myLangProp ?? (role === "host" ? session.hostLang : session.guestLang);
   const otherLang = role === "host" ? session.guestLang : session.hostLang;
 
   const refresh = useCallback(async () => {
     try {
-      const res = await listMessages({ data: { token: session.token } });
+      const res = await listMessages({
+        data: {
+          token: session.token,
+          clientId: clientId(),
+          displayName,
+          role,
+          lang: myLang,
+        },
+      });
       setOnline(true);
       if (!res.ok) {
         setError(res.code);
@@ -68,16 +85,18 @@ export function ConversationView({
       }
       setSession(res.session);
       setMessages(res.messages);
+      setParticipants(res.participants);
     } catch {
       setOnline(false);
     }
-  }, [listMessages, session.token]);
+  }, [listMessages, session.token, displayName, role, myLang]);
 
   useEffect(() => {
     void refresh();
     const id = setInterval(refresh, 2500);
     return () => clearInterval(id);
   }, [refresh]);
+
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -105,6 +124,8 @@ export function ConversationView({
           role,
           audioBase64: clip.base64,
           mimeType: clip.mimeType,
+          clientId: clientId(),
+          displayName,
         },
       });
       if (!res.ok) {
@@ -119,7 +140,8 @@ export function ConversationView({
     } finally {
       setBusy(false);
     }
-  }, [recorder, role, sendUtterance, session.token]);
+  }, [recorder, role, sendUtterance, session.token, displayName]);
+
 
   const errorText = (() => {
     switch (error) {
@@ -162,7 +184,10 @@ export function ConversationView({
     );
   }
 
+  const peopleCount = Math.max(1, participants.length);
+
   return (
+
     <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-3xl flex-col px-4 pb-6">
       <div className="surface-panel sticky top-16 z-20 mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-sm">
         <span className="font-medium">
@@ -176,6 +201,16 @@ export function ConversationView({
           <Clock className="size-4" aria-hidden />
           {t.session.expiresIn} {countdown}
         </span>
+        <button
+          type="button"
+          onClick={() => setShowPeople((v) => !v)}
+          aria-expanded={showPeople}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium"
+        >
+          <Users className="size-4" aria-hidden />
+          {peopleCount} {peopleCount > 1 ? t.session.present : t.session.presentOne}
+        </button>
+
         <button
           type="button"
           onClick={() => setShowQr(true)}
@@ -197,7 +232,24 @@ export function ConversationView({
         </button>
       </div>
 
+      {showPeople ? (
+        <ul className="surface-panel mt-2 space-y-1 px-4 py-3 text-sm">
+          <li className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t.session.participants}
+          </li>
+          {participants.map((p) => (
+            <li key={p.clientId} className="flex items-center justify-between gap-3">
+              <span className="font-medium">{p.displayName}</span>
+              <span className="text-muted-foreground">
+                {languageLabel(findLanguage(p.lang), locale)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
       <p className="mt-3 text-xs text-muted-foreground">{t.session.assistedNote}</p>
+
 
       <div
         className="mt-3 flex-1 space-y-3"
@@ -210,7 +262,7 @@ export function ConversationView({
         ) : null}
 
         {messages.map((m) => {
-          const mine = m.speaker === role;
+          const mine = m.speaker === role && (m.displayName ?? "") === displayName;
           return (
             <article
               key={m.id}
@@ -222,8 +274,10 @@ export function ConversationView({
               )}
             >
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {mine ? t.session.you : t.session.partner}
+                {m.displayName ?? (mine ? t.session.you : t.session.partner)}
+                {mine ? ` · ${t.session.you}` : ""}
               </p>
+
 
               {m.state === "error" && !m.originalText ? (
                 <p className="mt-2 flex gap-2 text-sm text-destructive">

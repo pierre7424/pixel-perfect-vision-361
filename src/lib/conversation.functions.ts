@@ -21,6 +21,7 @@ export type SessionPublic = {
 export type MessagePublic = {
   id: string;
   speaker: Role;
+  displayName: string | null;
   sourceLang: string;
   targetLang: string;
   originalText: string | null;
@@ -29,6 +30,24 @@ export type MessagePublic = {
   errorCode: string | null;
   createdAt: string;
 };
+
+export type ParticipantPublic = {
+  clientId: string;
+  displayName: string;
+  role: Role;
+  lang: string;
+};
+
+/** A participant is considered present while seen in the last 20 seconds. */
+const PRESENCE_WINDOW_MS = 20_000;
+
+const nameSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(40)
+  .catch("…");
+
 
 export type FailureCode =
   | "not_found"
@@ -109,6 +128,53 @@ async function loadSession(
   return { ok: true, row };
 }
 
+/** Record/refresh presence for one participant and return everyone present. */
+async function touchPresence(
+  sessionId: string,
+  who?: { clientId: string; displayName: string; role: Role; lang: string },
+): Promise<ParticipantPublic[]> {
+  const db = await admin();
+  const now = new Date().toISOString();
+
+  if (who) {
+    const { error } = await db.from("conversation_participants").upsert(
+      {
+        session_id: sessionId,
+        client_id: who.clientId,
+        display_name: who.displayName,
+        role: who.role,
+        lang: who.lang,
+        last_seen_at: now,
+      },
+      { onConflict: "session_id,client_id" },
+    );
+    if (error) console.error("[presence] upsert failed", error);
+  }
+
+  const since = new Date(Date.now() - PRESENCE_WINDOW_MS).toISOString();
+  const { data, error } = await db
+    .from("conversation_participants")
+    .select("client_id, display_name, role, lang, joined_at")
+    .eq("session_id", sessionId)
+    .gte("last_seen_at", since)
+    .order("joined_at", { ascending: true })
+    .limit(200);
+
+  if (error) {
+    console.error("[presence] list failed", error);
+    return [];
+  }
+
+  return (data ?? []).map((p) => ({
+    clientId: p.client_id as string,
+    displayName: p.display_name as string,
+    role: p.role as Role,
+    lang: p.lang as string,
+  }));
+}
+
+
+
 /** Create a session — only ever called after the host's manual confirmation. */
 export const createSession = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>
@@ -151,29 +217,67 @@ export const getSession = createServerFn({ method: "POST" })
 
 export const joinSession = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>
-    z.object({ token: tokenSchema, guestLang: langSchema.optional() }).parse(d),
-  )
-  .handler(async ({ data }): Promise<{ ok: true; session: SessionPublic } | Failure> => {
-    const res = await loadSession(data.token);
-    if (!res.ok) return res;
-    const db = await admin();
-    const { data: updated, error } = await db
-      .from("conversation_sessions")
-      .update({
-        guest_joined_at: res.row.guest_joined_at ?? new Date().toISOString(),
-        status: "active",
-        ...(data.guestLang ? { guest_lang: data.guestLang } : {}),
+    z
+      .object({
+        token: tokenSchema,
+        guestLang: langSchema.optional(),
+        clientId: z.string().min(4).max(64).optional(),
+        displayName: nameSchema.optional(),
+        role: z.enum(["host", "guest"]).catch("guest"),
       })
-      .eq("id", res.row.id)
-      .select("*")
-      .single();
+      .parse(d),
+  )
+  .handler(
+    async ({
+      data,
+    }): Promise<
+      { ok: true; session: SessionPublic; participants: ParticipantPublic[] } | Failure
+    > => {
+      const res = await loadSession(data.token);
+      if (!res.ok) return res;
+      const db = await admin();
+      const firstGuest = res.row.guest_joined_at == null;
 
-    if (error || !updated) {
-      console.error("[session] join failed", error);
-      return fail("unavailable");
-    }
-    return { ok: true, session: toPublic(updated as SessionRow) };
-  });
+      const { data: updated, error } = await db
+        .from("conversation_sessions")
+        .update({
+          guest_joined_at: res.row.guest_joined_at ?? new Date().toISOString(),
+          status: "active",
+          // Only the first guest may adjust the session's guest language;
+          // later arrivals keep their own language on their participant row.
+          ...(data.guestLang && firstGuest && data.role === "guest"
+            ? { guest_lang: data.guestLang }
+            : {}),
+        })
+        .eq("id", res.row.id)
+        .select("*")
+        .single();
+
+      if (error || !updated) {
+        console.error("[session] join failed", error);
+        return fail("unavailable");
+      }
+
+      const row = updated as SessionRow;
+      const participants = await touchPresence(
+        row.id,
+        data.clientId && data.displayName
+          ? {
+              clientId: data.clientId,
+              displayName: data.displayName,
+              role: data.role,
+              lang:
+                data.role === "host"
+                  ? row.host_lang
+                  : (data.guestLang ?? row.guest_lang),
+            }
+          : undefined,
+      );
+
+      return { ok: true, session: toPublic(row), participants };
+    },
+  );
+
 
 export const endSession = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ token: tokenSchema }).parse(d))
@@ -224,12 +328,29 @@ export const regenerateLink = createServerFn({ method: "POST" })
 
 export const listMessages = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>
-    z.object({ token: tokenSchema, since: z.string().optional() }).parse(d),
+    z
+      .object({
+        token: tokenSchema,
+        since: z.string().optional(),
+        clientId: z.string().min(4).max(64).optional(),
+        displayName: nameSchema.optional(),
+        role: z.enum(["host", "guest"]).catch("guest"),
+        lang: z.string().max(20).optional(),
+      })
+      .parse(d),
   )
   .handler(
     async ({
       data,
-    }): Promise<{ ok: true; session: SessionPublic; messages: MessagePublic[] } | Failure> => {
+    }): Promise<
+      | {
+          ok: true;
+          session: SessionPublic;
+          messages: MessagePublic[];
+          participants: ParticipantPublic[];
+        }
+      | Failure
+    > => {
       const res = await loadSession(data.token, { allowEnded: true });
       if (!res.ok) return res;
       const db = await admin();
@@ -248,12 +369,28 @@ export const listMessages = createServerFn({ method: "POST" })
         return fail("unavailable");
       }
 
+      // Polling doubles as the presence heartbeat.
+      const participants = await touchPresence(
+        res.row.id,
+        data.clientId && data.displayName
+          ? {
+              clientId: data.clientId,
+              displayName: data.displayName,
+              role: data.role,
+              lang:
+                data.lang ?? (data.role === "host" ? res.row.host_lang : res.row.guest_lang),
+            }
+          : undefined,
+      );
+
       return {
         ok: true,
         session: toPublic(res.row),
+        participants,
         messages: (rows ?? []).map((m) => ({
           id: m.id as string,
           speaker: m.speaker as Role,
+          displayName: (m.display_name as string | null) ?? null,
           sourceLang: m.source_lang as string,
           targetLang: m.target_lang as string,
           originalText: m.original_text as string | null,
@@ -266,6 +403,7 @@ export const listMessages = createServerFn({ method: "POST" })
     },
   );
 
+
 /** Transcribe + translate one push-to-talk utterance and store it. */
 export const sendUtterance = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => d)
@@ -276,6 +414,8 @@ export const sendUtterance = createServerFn({ method: "POST" })
         role: z.enum(["host", "guest"]),
         audioBase64: z.string().max(9_000_000),
         mimeType: z.string().max(80).catch("audio/webm"),
+        clientId: z.string().min(4).max(64).optional(),
+        displayName: nameSchema.optional(),
       })
       .safeParse(raw);
     if (!parsed.success) return { ok: false, code: "unavailable" };
@@ -285,13 +425,29 @@ export const sendUtterance = createServerFn({ method: "POST" })
     if (!res.ok) return res;
     const row = res.row;
 
-    const sourceLang = data.role === "host" ? row.host_lang : row.guest_lang;
+    const db = await admin();
+
+    // A participant may speak a language of their own (later arrivals);
+    // fall back to the session's configured languages.
+    let ownLang = data.role === "host" ? row.host_lang : row.guest_lang;
+    if (data.clientId) {
+      const { data: me } = await db
+        .from("conversation_participants")
+        .select("lang")
+        .eq("session_id", row.id)
+        .eq("client_id", data.clientId)
+        .maybeSingle();
+      if (me?.lang) ownLang = me.lang as string;
+    }
+
+    const sourceLang = ownLang;
     const targetLang = data.role === "host" ? row.guest_lang : row.host_lang;
+    const speakerName = data.displayName ?? null;
 
     const { transcribeAudio, translateText, AiError } = await import("./ai.server");
-    const db = await admin();
     const sourceMeta = findLanguage(sourceLang);
     const targetMeta = findLanguage(targetLang);
+
 
     let original: string;
     try {
@@ -306,11 +462,13 @@ export const sendUtterance = createServerFn({ method: "POST" })
       await db.from("conversation_messages").insert({
         session_id: row.id,
         speaker: data.role,
+        display_name: speakerName,
         source_lang: sourceLang,
         target_lang: targetLang,
         state: "error",
         error_code: code,
       });
+
       return fail(code);
     }
 
@@ -332,6 +490,7 @@ export const sendUtterance = createServerFn({ method: "POST" })
       .insert({
         session_id: row.id,
         speaker: data.role,
+        display_name: speakerName,
         source_lang: sourceLang,
         target_lang: targetLang,
         original_text: original,
@@ -352,8 +511,10 @@ export const sendUtterance = createServerFn({ method: "POST" })
       message: {
         id: inserted.id as string,
         speaker: data.role,
+        displayName: speakerName,
         sourceLang,
         targetLang,
+
         originalText: original,
         translatedText: translated,
         state: errorCode ? "error" : "processed",

@@ -251,9 +251,22 @@ export function ConversationView({
         {notifState !== "unsupported" ? (
           <button
             type="button"
-            disabled={notifState === "granted" || notifState === "denied"}
-            onClick={async () => setNotifState(await requestNotifications())}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium disabled:opacity-70"
+            onClick={async () => {
+              setNotifHint(false);
+              if (isEmbedded()) {
+                window.open(window.location.href, "_blank", "noopener");
+                return;
+              }
+              if (notifState === "denied") {
+                setNotifHint(true);
+                return;
+              }
+              if (notifState === "granted") return;
+              const next = await requestNotifications();
+              setNotifState(next);
+              if (next !== "granted") setNotifHint(true);
+            }}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium"
           >
             {notifState === "granted" ? (
               <Bell className="size-4" aria-hidden />
@@ -269,6 +282,7 @@ export function ConversationView({
                   : t.session.notify}
           </button>
         ) : null}
+
 
         <button
           type="button"

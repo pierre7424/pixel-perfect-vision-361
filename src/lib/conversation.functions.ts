@@ -128,6 +128,53 @@ async function loadSession(
   return { ok: true, row };
 }
 
+/** Record/refresh presence for one participant and return everyone present. */
+async function touchPresence(
+  sessionId: string,
+  who?: { clientId: string; displayName: string; role: Role; lang: string },
+): Promise<ParticipantPublic[]> {
+  const db = await admin();
+  const now = new Date().toISOString();
+
+  if (who) {
+    const { error } = await db.from("conversation_participants").upsert(
+      {
+        session_id: sessionId,
+        client_id: who.clientId,
+        display_name: who.displayName,
+        role: who.role,
+        lang: who.lang,
+        last_seen_at: now,
+      },
+      { onConflict: "session_id,client_id" },
+    );
+    if (error) console.error("[presence] upsert failed", error);
+  }
+
+  const since = new Date(Date.now() - PRESENCE_WINDOW_MS).toISOString();
+  const { data, error } = await db
+    .from("conversation_participants")
+    .select("client_id, display_name, role, lang, joined_at")
+    .eq("session_id", sessionId)
+    .gte("last_seen_at", since)
+    .order("joined_at", { ascending: true })
+    .limit(200);
+
+  if (error) {
+    console.error("[presence] list failed", error);
+    return [];
+  }
+
+  return (data ?? []).map((p) => ({
+    clientId: p.client_id as string,
+    displayName: p.display_name as string,
+    role: p.role as Role,
+    lang: p.lang as string,
+  }));
+}
+
+
+
 /** Create a session — only ever called after the host's manual confirmation. */
 export const createSession = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>

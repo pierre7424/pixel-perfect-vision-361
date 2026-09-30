@@ -305,6 +305,13 @@ export function ConversationView({
         </button>
       </div>
 
+      {notifHint ? (
+        <p role="status" className="surface-panel mt-2 px-4 py-3 text-sm text-muted-foreground">
+          {t.session.notifyHelp}
+        </p>
+      ) : null}
+
+
       {showPeople ? (
         <ul className="surface-panel mt-2 space-y-1 px-4 py-3 text-sm">
           <li className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">

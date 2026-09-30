@@ -158,7 +158,11 @@ const fr = {
     expiresIn: "Expire dans",
     showQr: "Inviter d'autres personnes",
     showQrNote: "Chaque nouvelle personne parlera la langue invitée de la session.",
+    present: "personnes présentes",
+    presentOne: "personne présente",
+    participants: "Participants",
   },
+
   errors: {
     linkGone: "Ce lien n'est plus disponible. Demandez à l'initiateur de créer une nouvelle session.",
     sessionEnded: "Cette session est terminée.",
@@ -345,10 +349,16 @@ const en: Dict = {
     micAllow: "Allow microphone",
     micLater: "Not now",
     joinCta: "Join the conversation",
+    nameTitle: "How should you appear?",
+    nameLabel: "Your display name",
+    namePlaceholder: "e.g. Alex",
+    nameNote: "This name appears next to your messages during the session.",
+    nameContinue: "Continue",
     readOnly:
       "Without a microphone you can still read incoming messages. To speak, allow the microphone in your browser settings.",
     leave: "Leave session",
   },
+
   session: {
     you: "You",
     partner: "Other person",
@@ -370,7 +380,11 @@ const en: Dict = {
     expiresIn: "Expires in",
     showQr: "Invite more people",
     showQrNote: "Each new person will speak the session's guest language.",
+    present: "people here",
+    presentOne: "person here",
+    participants: "Participants",
   },
+
   errors: {
     linkGone: "This link is no longer available. Ask the host to create a new session.",
     sessionEnded: "This session has ended.",
@@ -545,9 +559,15 @@ const zh: Dict = {
     micAllow: "允許麥克風",
     micLater: "現在不要",
     joinCta: "加入對話",
+    nameTitle: "你想以什麼名稱出現？",
+    nameLabel: "你的暱稱",
+    namePlaceholder: "例如：小明",
+    nameNote: "對話期間，這個名稱會顯示在你的訊息旁。",
+    nameContinue: "繼續",
     readOnly: "沒有麥克風時你仍可閱讀收到的訊息。若要說話，請到瀏覽器設定允許麥克風。",
     leave: "離開對話",
   },
+
   session: {
     you: "你",
     partner: "對方",
@@ -569,7 +589,11 @@ const zh: Dict = {
     expiresIn: "剩餘",
     showQr: "邀請更多人",
     showQrNote: "每位新加入的人將使用對話設定的訪客語言。",
+    present: "人在線上",
+    presentOne: "人在線上",
+    participants: "參與者",
   },
+
   errors: {
     linkGone: "這個連結已無法使用。請對方重新建立一場對話。",
     sessionEnded: "這場對話已結束。",

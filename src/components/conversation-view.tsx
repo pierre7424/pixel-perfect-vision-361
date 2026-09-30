@@ -232,7 +232,24 @@ export function ConversationView({
         </button>
       </div>
 
+      {showPeople ? (
+        <ul className="surface-panel mt-2 space-y-1 px-4 py-3 text-sm">
+          <li className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t.session.participants}
+          </li>
+          {participants.map((p) => (
+            <li key={p.clientId} className="flex items-center justify-between gap-3">
+              <span className="font-medium">{p.displayName}</span>
+              <span className="text-muted-foreground">
+                {languageLabel(findLanguage(p.lang), locale)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
       <p className="mt-3 text-xs text-muted-foreground">{t.session.assistedNote}</p>
+
 
       <div
         className="mt-3 flex-1 space-y-3"

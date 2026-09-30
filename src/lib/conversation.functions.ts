@@ -490,6 +490,7 @@ export const sendUtterance = createServerFn({ method: "POST" })
       .insert({
         session_id: row.id,
         speaker: data.role,
+        display_name: speakerName,
         source_lang: sourceLang,
         target_lang: targetLang,
         original_text: original,
@@ -510,8 +511,10 @@ export const sendUtterance = createServerFn({ method: "POST" })
       message: {
         id: inserted.id as string,
         speaker: data.role,
+        displayName: speakerName,
         sourceLang,
         targetLang,
+
         originalText: original,
         translatedText: translated,
         state: errorCode ? "error" : "processed",

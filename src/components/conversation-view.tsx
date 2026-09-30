@@ -200,6 +200,16 @@ export function ConversationView({
         </span>
         <button
           type="button"
+          onClick={() => setShowPeople((v) => !v)}
+          aria-expanded={showPeople}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium"
+        >
+          <Users className="size-4" aria-hidden />
+          {peopleCount} {peopleCount > 1 ? t.session.present : t.session.presentOne}
+        </button>
+
+        <button
+          type="button"
           onClick={() => setShowQr(true)}
           className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium"
         >

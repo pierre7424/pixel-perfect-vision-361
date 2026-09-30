@@ -262,7 +262,7 @@ export function ConversationView({
         ) : null}
 
         {messages.map((m) => {
-          const mine = m.speaker === role;
+          const mine = m.speaker === role && (m.displayName ?? "") === displayName;
           return (
             <article
               key={m.id}
@@ -274,8 +274,10 @@ export function ConversationView({
               )}
             >
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {mine ? t.session.you : t.session.partner}
+                {m.displayName ?? (mine ? t.session.you : t.session.partner)}
+                {mine ? ` · ${t.session.you}` : ""}
               </p>
+
 
               {m.state === "error" && !m.originalText ? (
                 <p className="mt-2 flex gap-2 text-sm text-destructive">

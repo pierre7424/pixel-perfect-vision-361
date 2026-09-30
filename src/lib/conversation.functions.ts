@@ -21,6 +21,7 @@ export type SessionPublic = {
 export type MessagePublic = {
   id: string;
   speaker: Role;
+  displayName: string | null;
   sourceLang: string;
   targetLang: string;
   originalText: string | null;
@@ -29,6 +30,24 @@ export type MessagePublic = {
   errorCode: string | null;
   createdAt: string;
 };
+
+export type ParticipantPublic = {
+  clientId: string;
+  displayName: string;
+  role: Role;
+  lang: string;
+};
+
+/** A participant is considered present while seen in the last 20 seconds. */
+const PRESENCE_WINDOW_MS = 20_000;
+
+const nameSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(40)
+  .catch("…");
+
 
 export type FailureCode =
   | "not_found"

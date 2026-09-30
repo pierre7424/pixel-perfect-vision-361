@@ -43,6 +43,7 @@ export function ConversationView({
   const [messages, setMessages] = useState<MessagePublic[]>([]);
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(true);
+  const [showQr, setShowQr] = useState(false);
   const [error, setError] = useState<FailureCode | "mic_denied" | "mic_unavailable" | "too_short" | null>(
     null,
   );
@@ -177,11 +178,19 @@ export function ConversationView({
         </span>
         <button
           type="button"
+          onClick={() => setShowQr(true)}
+          className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium"
+        >
+          <QrCode className="size-4" aria-hidden />
+          {t.session.showQr}
+        </button>
+        <button
+          type="button"
           onClick={async () => {
             await endSession({ data: { token: session.token } });
             setSession((s) => ({ ...s, status: "ended" }));
           }}
-          className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-destructive/50 px-3 py-1.5 font-medium text-destructive"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-destructive/50 px-3 py-1.5 font-medium text-destructive"
         >
           <LogOut className="size-4" aria-hidden />
           {role === "host" ? t.session.end : t.join.leave}
@@ -289,6 +298,14 @@ export function ConversationView({
           </div>
         )}
       </div>
+
+      {showQr ? (
+        <QrModal
+          token={session.token}
+          guestLang={session.guestLang}
+          onClose={() => setShowQr(false)}
+        />
+      ) : null}
     </div>
   );
 }

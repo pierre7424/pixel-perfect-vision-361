@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ConversationView } from "@/components/conversation-view";
 import { LanguagePicker } from "@/components/language-picker";
 import { languageLabel, useI18n } from "@/lib/i18n";
-import { findLanguage } from "@/lib/languages";
+import { findLanguage, qrInvitation } from "@/lib/languages";
 import { shareLink } from "@/lib/share-origin";
 import { useRecorder } from "@/lib/use-recorder";
 import {
@@ -160,6 +160,7 @@ function HostInvite({
   const [url, setUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const [working, setWorking] = useState(false);
+  const guestInvitation = qrInvitation(session.guestLang);
 
   useEffect(() => {
     const link = shareLink(session.token);
@@ -195,9 +196,12 @@ function HostInvite({
           )}
         </div>
 
-        <p className="mt-5 text-sm leading-relaxed">{t.qr.invite}</p>
-        <p className="mt-3 rounded-xl border border-border bg-surface p-3 text-sm font-medium">
-          {t.qr.short}
+        <p
+          lang={session.guestLang}
+          dir={session.guestLang === "ar" ? "rtl" : "ltr"}
+          className="mt-5 rounded-xl border border-border bg-surface p-4 text-base font-medium leading-relaxed"
+        >
+          {guestInvitation}
         </p>
 
         <div className="mt-5 flex flex-col gap-2 sm:flex-row">
@@ -218,7 +222,7 @@ function HostInvite({
             onClick={async () => {
               if (navigator.share) {
                 try {
-                  await navigator.share({ title: t.qr.title, text: t.qr.short, url });
+                  await navigator.share({ title: t.qr.title, text: guestInvitation, url });
                 } catch {
                   /* dismissed */
                 }

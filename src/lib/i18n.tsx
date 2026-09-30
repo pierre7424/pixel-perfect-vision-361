@@ -653,6 +653,15 @@ export function useI18n() {
   return ctx;
 }
 
+/** UI locale best matching a spoken language code (guest pages follow the session's guest language). */
+export function uiLocaleForSpoken(code: string): UiLocale {
+  const c = code.toLowerCase();
+  if (c.startsWith("zh") || c.startsWith("nan")) return "zh";
+  if (c.startsWith("fr")) return "fr";
+  if (c.startsWith("en")) return "en";
+  return "en";
+}
+
 export function languageLabel(
   lang: { native: string; fr: string; en: string; zh: string } | undefined,
   locale: UiLocale,

@@ -328,12 +328,29 @@ export const regenerateLink = createServerFn({ method: "POST" })
 
 export const listMessages = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>
-    z.object({ token: tokenSchema, since: z.string().optional() }).parse(d),
+    z
+      .object({
+        token: tokenSchema,
+        since: z.string().optional(),
+        clientId: z.string().min(4).max(64).optional(),
+        displayName: nameSchema.optional(),
+        role: z.enum(["host", "guest"]).catch("guest"),
+        lang: z.string().max(20).optional(),
+      })
+      .parse(d),
   )
   .handler(
     async ({
       data,
-    }): Promise<{ ok: true; session: SessionPublic; messages: MessagePublic[] } | Failure> => {
+    }): Promise<
+      | {
+          ok: true;
+          session: SessionPublic;
+          messages: MessagePublic[];
+          participants: ParticipantPublic[];
+        }
+      | Failure
+    > => {
       const res = await loadSession(data.token, { allowEnded: true });
       if (!res.ok) return res;
       const db = await admin();
@@ -352,12 +369,28 @@ export const listMessages = createServerFn({ method: "POST" })
         return fail("unavailable");
       }
 
+      // Polling doubles as the presence heartbeat.
+      const participants = await touchPresence(
+        res.row.id,
+        data.clientId && data.displayName
+          ? {
+              clientId: data.clientId,
+              displayName: data.displayName,
+              role: data.role,
+              lang:
+                data.lang ?? (data.role === "host" ? res.row.host_lang : res.row.guest_lang),
+            }
+          : undefined,
+      );
+
       return {
         ok: true,
         session: toPublic(res.row),
+        participants,
         messages: (rows ?? []).map((m) => ({
           id: m.id as string,
           speaker: m.speaker as Role,
+          displayName: (m.display_name as string | null) ?? null,
           sourceLang: m.source_lang as string,
           targetLang: m.target_lang as string,
           originalText: m.original_text as string | null,
@@ -369,6 +402,7 @@ export const listMessages = createServerFn({ method: "POST" })
       };
     },
   );
+
 
 /** Transcribe + translate one push-to-talk utterance and store it. */
 export const sendUtterance = createServerFn({ method: "POST" })

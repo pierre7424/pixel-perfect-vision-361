@@ -184,7 +184,10 @@ export function ConversationView({
     );
   }
 
+  const peopleCount = Math.max(1, participants.length);
+
   return (
+
     <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-3xl flex-col px-4 pb-6">
       <div className="surface-panel sticky top-16 z-20 mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-sm">
         <span className="font-medium">

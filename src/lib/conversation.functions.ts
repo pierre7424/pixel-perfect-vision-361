@@ -414,6 +414,8 @@ export const sendUtterance = createServerFn({ method: "POST" })
         role: z.enum(["host", "guest"]),
         audioBase64: z.string().max(9_000_000),
         mimeType: z.string().max(80).catch("audio/webm"),
+        clientId: z.string().min(4).max(64).optional(),
+        displayName: nameSchema.optional(),
       })
       .safeParse(raw);
     if (!parsed.success) return { ok: false, code: "unavailable" };
@@ -423,13 +425,29 @@ export const sendUtterance = createServerFn({ method: "POST" })
     if (!res.ok) return res;
     const row = res.row;
 
-    const sourceLang = data.role === "host" ? row.host_lang : row.guest_lang;
+    const db = await admin();
+
+    // A participant may speak a language of their own (later arrivals);
+    // fall back to the session's configured languages.
+    let ownLang = data.role === "host" ? row.host_lang : row.guest_lang;
+    if (data.clientId) {
+      const { data: me } = await db
+        .from("conversation_participants")
+        .select("lang")
+        .eq("session_id", row.id)
+        .eq("client_id", data.clientId)
+        .maybeSingle();
+      if (me?.lang) ownLang = me.lang as string;
+    }
+
+    const sourceLang = ownLang;
     const targetLang = data.role === "host" ? row.guest_lang : row.host_lang;
+    const speakerName = data.displayName ?? null;
 
     const { transcribeAudio, translateText, AiError } = await import("./ai.server");
-    const db = await admin();
     const sourceMeta = findLanguage(sourceLang);
     const targetMeta = findLanguage(targetLang);
+
 
     let original: string;
     try {

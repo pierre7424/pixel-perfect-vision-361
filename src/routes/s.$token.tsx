@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { ConversationView } from "@/components/conversation-view";
 import { LanguagePicker } from "@/components/language-picker";
-import { languageLabel, useI18n } from "@/lib/i18n";
+import { languageLabel, uiLocaleForSpoken, useI18n } from "@/lib/i18n";
 import { findLanguage, qrInvitation } from "@/lib/languages";
 import { shareLink } from "@/lib/share-origin";
 import { useRecorder } from "@/lib/use-recorder";
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/s/$token")({
 
 function SessionPage() {
   const { token } = Route.useParams();
-  const { t } = useI18n();
+  const { t, setLocale } = useI18n();
   const navigate = useNavigate();
 
   const getSession = useServerFn(getSessionFn);
@@ -71,6 +71,14 @@ function SessionPage() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  // The guest's whole page follows the session's guest language, so the
+  // person who scans the QR code reads it in their own language.
+  useEffect(() => {
+    if (role === "guest" && session) {
+      setLocale(uiLocaleForSpoken(session.guestLang));
+    }
+  }, [role, session, setLocale]);
 
   if (failure) {
     const message =

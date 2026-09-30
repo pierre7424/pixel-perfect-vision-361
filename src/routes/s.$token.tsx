@@ -72,6 +72,14 @@ function SessionPage() {
     void load();
   }, [load]);
 
+  // The guest's whole page follows the session's guest language, so the
+  // person who scans the QR code reads it in their own language.
+  useEffect(() => {
+    if (role === "guest" && session) {
+      setLocale(uiLocaleForSpoken(session.guestLang));
+    }
+  }, [role, session, setLocale]);
+
   if (failure) {
     const message =
       failure === "ended"

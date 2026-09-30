@@ -327,10 +327,12 @@ function HostInvite({
 
 function GuestWelcome({
   session,
+  initialName,
   onJoined,
 }: {
   session: SessionPublic;
-  onJoined: (s: SessionPublic) => void;
+  initialName: string;
+  onJoined: (s: SessionPublic, name: string, lang: string) => void;
 }) {
   const { t, locale } = useI18n();
   const join = useServerFn(joinSessionFn);
@@ -341,28 +343,30 @@ function GuestWelcome({
   const [error, setError] = useState<string | null>(null);
   const [working, setWorking] = useState(false);
 
-  async function enter(withMic: boolean) {
+  async function enter(name: string) {
     setWorking(true);
     setError(null);
-    if (withMic) {
-      const ok = await recorder.requestMic();
-      guestMicReady = ok;
-      if (!ok) {
-        setError(recorder.micState === "unavailable" ? t.errors.micUnavailable : t.errors.micDenied);
-        setWorking(false);
-        return;
-      }
-    } else {
-      guestMicReady = false;
-    }
+    storeName(session.token, name);
 
-    const res = await join({ data: { token: session.token, guestLang: lang } });
+    // Ask for the microphone right away; a refusal still lets them read.
+    const micOk = await recorder.requestMic();
+    guestMicReady = micOk;
+
+    const res = await join({
+      data: {
+        token: session.token,
+        guestLang: lang,
+        clientId: clientId(),
+        displayName: name,
+        role: "guest",
+      },
+    });
     setWorking(false);
     if (!res.ok) {
       setError(res.code === "ended" ? t.errors.sessionEnded : t.errors.linkGone);
       return;
     }
-    onJoined(res.session);
+    onJoined(res.session, name, lang);
   }
 
   return (
@@ -372,76 +376,46 @@ function GuestWelcome({
       <div className="glass-card mt-6 p-6">
         <p className="text-sm leading-relaxed">{t.qr.invite}</p>
 
-        <dl className="mt-5 space-y-2 text-sm">
-          <div className="flex justify-between gap-4">
-            <dt className="text-muted-foreground">{t.join.languages}</dt>
-            <dd className="text-right font-medium">
-              {languageLabel(findLanguage(session.hostLang), locale)} ↔{" "}
-              {languageLabel(findLanguage(lang), locale)}
-            </dd>
-          </div>
-          <div className="flex justify-between gap-4">
-            <dt className="text-muted-foreground">{t.join.expires}</dt>
-            <dd className="text-right font-medium">
-              {new Date(session.expiresAt).toLocaleTimeString()}
-            </dd>
-          </div>
-        </dl>
-      </div>
-
-      <div className="glass-card mt-4 p-6">
-        <h2 className="text-lg font-semibold">{t.join.chooseYourLang}</h2>
-        <p className="mt-2 text-sm text-muted-foreground">{t.join.chooseNote}</p>
+        <div className="mt-5 flex items-center justify-between gap-3 text-sm">
+          <span className="text-muted-foreground">{t.join.chooseYourLang}</span>
+          {editingLang ? null : (
+            <span className="flex items-center gap-2">
+              <span className="font-medium">{languageLabel(findLanguage(lang), locale)}</span>
+              <button
+                type="button"
+                onClick={() => setEditingLang(true)}
+                className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium"
+              >
+                {t.create.edit}
+              </button>
+            </span>
+          )}
+        </div>
         {editingLang ? (
-          <div className="mt-4">
+          <div className="mt-3">
             <LanguagePicker value={lang} onChange={setLang} />
           </div>
-        ) : (
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <span className="font-medium">{languageLabel(findLanguage(lang), locale)}</span>
-            <button
-              type="button"
-              onClick={() => setEditingLang(true)}
-              className="rounded-lg border border-border px-3 py-2 text-sm font-medium"
-            >
-              {t.create.edit}
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="glass-card mt-4 p-6">
-        <h2 className="flex items-center gap-2 text-lg font-semibold">
-          <Mic className="size-5 text-accent" aria-hidden />
-          {t.join.micTitle}
-        </h2>
-        <p className="mt-2 text-sm text-muted-foreground">{t.join.micText}</p>
-
-        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-          <button
-            type="button"
-            disabled={working}
-            onClick={() => void enter(true)}
-            className="flex-1 rounded-xl bg-[image:var(--gradient-primary)] px-4 py-3 font-semibold text-primary-foreground disabled:opacity-60"
-          >
-            {t.join.micAllow}
-          </button>
-          <button
-            type="button"
-            disabled={working}
-            onClick={() => void enter(false)}
-            className="flex-1 rounded-xl border border-border bg-surface px-4 py-3 font-medium disabled:opacity-60"
-          >
-            {t.join.micLater}
-          </button>
-        </div>
-
-        {error ? (
-          <p role="alert" className="mt-4 text-sm text-destructive">
-            {error}
-          </p>
         ) : null}
       </div>
+
+      <NamePrompt
+        initial={initialName}
+        submitLabel={t.join.joinCta}
+        busy={working}
+        onSubmit={(value) => void enter(value)}
+      />
+
+      <p className="mt-3 flex items-start gap-2 text-sm text-muted-foreground">
+        <Mic className="mt-0.5 size-4 shrink-0" aria-hidden />
+        {t.join.micText}
+      </p>
+
+      {error ? (
+        <p role="alert" className="mt-4 text-sm text-destructive">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }
+

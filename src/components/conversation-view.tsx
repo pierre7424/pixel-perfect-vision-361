@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { AlertCircle, Clock, LogOut, Wifi, WifiOff } from "lucide-react";
+import { AlertCircle, Clock, LogOut, QrCode, Wifi, WifiOff } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PushToTalk } from "@/components/push-to-talk";
+import { QrModal } from "@/components/qr-modal";
 import { languageLabel, useI18n } from "@/lib/i18n";
 import { findLanguage } from "@/lib/languages";
 import { useRecorder } from "@/lib/use-recorder";

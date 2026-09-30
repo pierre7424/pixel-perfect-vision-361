@@ -217,29 +217,67 @@ export const getSession = createServerFn({ method: "POST" })
 
 export const joinSession = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) =>
-    z.object({ token: tokenSchema, guestLang: langSchema.optional() }).parse(d),
-  )
-  .handler(async ({ data }): Promise<{ ok: true; session: SessionPublic } | Failure> => {
-    const res = await loadSession(data.token);
-    if (!res.ok) return res;
-    const db = await admin();
-    const { data: updated, error } = await db
-      .from("conversation_sessions")
-      .update({
-        guest_joined_at: res.row.guest_joined_at ?? new Date().toISOString(),
-        status: "active",
-        ...(data.guestLang ? { guest_lang: data.guestLang } : {}),
+    z
+      .object({
+        token: tokenSchema,
+        guestLang: langSchema.optional(),
+        clientId: z.string().min(4).max(64).optional(),
+        displayName: nameSchema.optional(),
+        role: z.enum(["host", "guest"]).catch("guest"),
       })
-      .eq("id", res.row.id)
-      .select("*")
-      .single();
+      .parse(d),
+  )
+  .handler(
+    async ({
+      data,
+    }): Promise<
+      { ok: true; session: SessionPublic; participants: ParticipantPublic[] } | Failure
+    > => {
+      const res = await loadSession(data.token);
+      if (!res.ok) return res;
+      const db = await admin();
+      const firstGuest = res.row.guest_joined_at == null;
 
-    if (error || !updated) {
-      console.error("[session] join failed", error);
-      return fail("unavailable");
-    }
-    return { ok: true, session: toPublic(updated as SessionRow) };
-  });
+      const { data: updated, error } = await db
+        .from("conversation_sessions")
+        .update({
+          guest_joined_at: res.row.guest_joined_at ?? new Date().toISOString(),
+          status: "active",
+          // Only the first guest may adjust the session's guest language;
+          // later arrivals keep their own language on their participant row.
+          ...(data.guestLang && firstGuest && data.role === "guest"
+            ? { guest_lang: data.guestLang }
+            : {}),
+        })
+        .eq("id", res.row.id)
+        .select("*")
+        .single();
+
+      if (error || !updated) {
+        console.error("[session] join failed", error);
+        return fail("unavailable");
+      }
+
+      const row = updated as SessionRow;
+      const participants = await touchPresence(
+        row.id,
+        data.clientId && data.displayName
+          ? {
+              clientId: data.clientId,
+              displayName: data.displayName,
+              role: data.role,
+              lang:
+                data.role === "host"
+                  ? row.host_lang
+                  : (data.guestLang ?? row.guest_lang),
+            }
+          : undefined,
+      );
+
+      return { ok: true, session: toPublic(row), participants };
+    },
+  );
+
 
 export const endSession = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ token: tokenSchema }).parse(d))

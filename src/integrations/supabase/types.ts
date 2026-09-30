@@ -17,6 +17,7 @@ export type Database = {
       conversation_messages: {
         Row: {
           created_at: string
+          display_name: string | null
           error_code: string | null
           id: string
           original_text: string | null
@@ -29,6 +30,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          display_name?: string | null
           error_code?: string | null
           id?: string
           original_text?: string | null
@@ -41,6 +43,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          display_name?: string | null
           error_code?: string | null
           id?: string
           original_text?: string | null
@@ -54,6 +57,47 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "conversation_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversation_participants: {
+        Row: {
+          client_id: string
+          display_name: string
+          id: string
+          joined_at: string
+          lang: string
+          last_seen_at: string
+          role: string
+          session_id: string
+        }
+        Insert: {
+          client_id: string
+          display_name: string
+          id?: string
+          joined_at?: string
+          lang: string
+          last_seen_at?: string
+          role?: string
+          session_id: string
+        }
+        Update: {
+          client_id?: string
+          display_name?: string
+          id?: string
+          joined_at?: string
+          lang?: string
+          last_seen_at?: string
+          role?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_participants_session_id_fkey"
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "conversation_sessions"

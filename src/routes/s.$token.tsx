@@ -8,6 +8,7 @@ import { ConversationView } from "@/components/conversation-view";
 import { LanguagePicker } from "@/components/language-picker";
 import { languageLabel, useI18n } from "@/lib/i18n";
 import { findLanguage } from "@/lib/languages";
+import { shareLink } from "@/lib/share-origin";
 import { useRecorder } from "@/lib/use-recorder";
 import {
   endSession as endSessionFn,

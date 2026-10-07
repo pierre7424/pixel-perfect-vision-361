@@ -525,3 +525,90 @@ export const sendUtterance = createServerFn({ method: "POST" })
       },
     };
   });
+
+/** Translate one typed message and store it. */
+export const sendTextMessage = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => d)
+  .handler(async ({ data: raw }): Promise<{ ok: true; message: MessagePublic } | Failure> => {
+    const parsed = z
+      .object({
+        token: tokenSchema,
+        role: z.enum(["host", "guest"]),
+        text: z.string().trim().min(1).max(2000),
+        clientId: z.string().min(4).max(64).optional(),
+        displayName: nameSchema.optional(),
+      })
+      .safeParse(raw);
+    if (!parsed.success) return { ok: false, code: "unavailable" };
+    const data = parsed.data;
+    const res = await loadSession(data.token);
+    if (!res.ok) return res;
+    const row = res.row;
+    const db = await admin();
+
+    let ownLang = data.role === "host" ? row.host_lang : row.guest_lang;
+    if (data.clientId) {
+      const { data: me } = await db
+        .from("conversation_participants")
+        .select("lang")
+        .eq("session_id", row.id)
+        .eq("client_id", data.clientId)
+        .maybeSingle();
+      if (me?.lang) ownLang = me.lang as string;
+    }
+    const sourceLang = ownLang;
+    const targetLang = data.role === "host" ? row.guest_lang : row.host_lang;
+    const speakerName = data.displayName ?? null;
+
+    const { translateText, AiError } = await import("./ai.server");
+    const sourceMeta = findLanguage(sourceLang);
+    const targetMeta = findLanguage(targetLang);
+
+    let translated: string | null = null;
+    let errorCode: string | null = null;
+    try {
+      translated = await translateText(
+        data.text,
+        `${sourceMeta?.en ?? sourceLang} (${sourceLang})`,
+        `${targetMeta?.en ?? targetLang} (${targetLang})`,
+      );
+    } catch (err) {
+      errorCode = err instanceof AiError ? err.code : "translation_failed";
+      console.error("[text] translation failed", err);
+    }
+
+    const { data: inserted, error } = await db
+      .from("conversation_messages")
+      .insert({
+        session_id: row.id,
+        speaker: data.role,
+        display_name: speakerName,
+        source_lang: sourceLang,
+        target_lang: targetLang,
+        original_text: data.text,
+        translated_text: translated,
+        state: errorCode ? "error" : "processed",
+        error_code: errorCode,
+      })
+      .select("*")
+      .single();
+    if (error || !inserted) {
+      console.error("[text] insert failed", error);
+      return fail("unavailable");
+    }
+    return {
+      ok: true,
+      message: {
+        id: inserted.id as string,
+        speaker: data.role,
+        displayName: speakerName,
+        sourceLang,
+        targetLang,
+        originalText: data.text,
+        translatedText: translated,
+        state: errorCode ? "error" : "processed",
+        errorCode,
+        createdAt: inserted.created_at as string,
+      },
+    };
+  });

@@ -34,6 +34,7 @@ import { useRecorder } from "@/lib/use-recorder";
 import {
   endSession as endSessionFn,
   listMessages as listMessagesFn,
+  sendTextMessage as sendTextMessageFn,
   sendUtterance as sendUtteranceFn,
   type FailureCode,
   type MessagePublic,
@@ -96,6 +97,7 @@ export function ConversationView({
 
   const listMessages = useServerFn(listMessagesFn);
   const sendUtterance = useServerFn(sendUtteranceFn);
+  const sendText = useServerFn(sendTextMessageFn);
   const endSession = useServerFn(endSessionFn);
   const recorder = useRecorder();
 

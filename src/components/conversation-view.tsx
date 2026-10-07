@@ -1,6 +1,20 @@
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { AlertCircle, Bell, BellOff, Clock, LogOut, QrCode, Users, Wifi, WifiOff } from "lucide-react";
+import {
+  AlertCircle,
+  Bell,
+  BellOff,
+  Clock,
+  Keyboard,
+  Loader2,
+  LogOut,
+  Mic,
+  QrCode,
+  Send,
+  Users,
+  Wifi,
+  WifiOff,
+} from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PushToTalk } from "@/components/push-to-talk";
@@ -178,6 +192,34 @@ export function ConversationView({
       setBusy(false);
     }
   }, [recorder, role, sendUtterance, session.token, displayName]);
+
+  const [inputMode, setInputMode] = useState<"voice" | "text">("voice");
+  const [draft, setDraft] = useState("");
+
+  const handleSendText = useCallback(async () => {
+    const text = draft.trim();
+    if (!text || busy) return;
+    setError(null);
+    setBusy(true);
+    try {
+      const res = await sendText({
+        data: { token: session.token, role, text, clientId: clientId(), displayName },
+      });
+      if (!res.ok) {
+        setError(res.code);
+      } else {
+        setDraft("");
+        setMessages((prev) => [...prev, res.message]);
+      }
+      setOnline(true);
+    } catch {
+      setOnline(false);
+      setError("unavailable");
+    } finally {
+      setBusy(false);
+    }
+  }, [draft, busy, sendText, session.token, role, displayName]);
+
 
 
   const errorText = (() => {
@@ -412,7 +454,68 @@ export function ConversationView({
       ) : null}
 
       <div className="sticky bottom-0 mt-6 flex flex-col items-center gap-3 bg-background/80 py-5 backdrop-blur-xl">
-        {micReady || recorder.micState === "granted" ? (
+        <div role="tablist" className="inline-flex rounded-full border border-border bg-surface p-1 text-sm">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={inputMode === "voice"}
+            onClick={() => setInputMode("voice")}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 font-medium",
+              inputMode === "voice" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+            )}
+          >
+            <Mic className="size-4" aria-hidden />
+            {t.session.modeVoice}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={inputMode === "text"}
+            onClick={() => setInputMode("text")}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 font-medium",
+              inputMode === "text" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+            )}
+          >
+            <Keyboard className="size-4" aria-hidden />
+            {t.session.modeText}
+          </button>
+        </div>
+
+        {inputMode === "text" ? (
+          <form
+            className="flex w-full max-w-xl items-end gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              void handleSendText();
+            }}
+          >
+            <textarea
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  void handleSendText();
+                }
+              }}
+              rows={2}
+              maxLength={2000}
+              aria-label={t.session.typePlaceholder}
+              placeholder={t.session.typePlaceholder}
+              className="min-h-12 flex-1 resize-none rounded-xl border border-border bg-surface px-4 py-3 text-base outline-none focus:border-primary"
+            />
+            <button
+              type="submit"
+              disabled={busy || !draft.trim()}
+              aria-label={t.session.send}
+              className="grid size-12 shrink-0 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground disabled:opacity-50"
+            >
+              {busy ? <Loader2 className="size-5 animate-spin" aria-hidden /> : <Send className="size-5" aria-hidden />}
+            </button>
+          </form>
+        ) : micReady || recorder.micState === "granted" ? (
           <PushToTalk
             recording={recorder.recording}
             busy={busy}
@@ -432,6 +535,7 @@ export function ConversationView({
           </div>
         )}
       </div>
+
 
       {showQr ? (
         <QrModal

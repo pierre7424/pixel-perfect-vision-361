@@ -476,15 +476,15 @@ export function ConversationView({
         </div>
       ) : null}
 
-      <div className="sticky bottom-0 mt-6 flex flex-col items-center gap-3 bg-background/80 py-5 backdrop-blur-xl">
-        <div role="tablist" className="inline-flex rounded-full border border-border bg-surface p-1 text-sm">
+      <div className="sticky bottom-0 mt-3 flex flex-col items-center gap-2 bg-background/80 py-2 backdrop-blur-xl">
+        <div role="tablist" className="inline-flex rounded-full border border-border bg-surface p-0.5 text-xs">
           <button
             type="button"
             role="tab"
             aria-selected={inputMode === "voice"}
             onClick={() => setInputMode("voice")}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 font-medium",
+              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-medium",
               inputMode === "voice" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
             )}
           >
@@ -497,7 +497,7 @@ export function ConversationView({
             aria-selected={inputMode === "text"}
             onClick={() => setInputMode("text")}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 font-medium",
+              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-medium",
               inputMode === "text" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
             )}
           >
@@ -523,17 +523,17 @@ export function ConversationView({
                   void handleSendText();
                 }
               }}
-              rows={2}
+              rows={1}
               maxLength={2000}
               aria-label={t.session.typePlaceholder}
               placeholder={t.session.typePlaceholder}
-              className="min-h-12 flex-1 resize-none rounded-xl border border-border bg-surface px-4 py-3 text-base outline-none focus:border-primary"
+              className="min-h-10 flex-1 resize-none rounded-xl border border-border bg-surface px-3 py-2 text-base outline-none focus:border-primary"
             />
             <button
               type="submit"
               disabled={busy || !draft.trim()}
               aria-label={t.session.send}
-              className="grid size-12 shrink-0 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground disabled:opacity-50"
+              className="grid size-10 shrink-0 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground disabled:opacity-50"
             >
               {busy ? <Loader2 className="size-5 animate-spin" aria-hidden /> : <Send className="size-5" aria-hidden />}
             </button>
@@ -546,7 +546,7 @@ export function ConversationView({
             onStop={handleStop}
           />
         ) : (
-          <div className="w-full max-w-sm space-y-3 text-center">
+          <div className="w-full max-w-sm space-y-2 text-center">
             <p className="text-sm text-muted-foreground">{t.join.readOnly}</p>
             <button
               type="button"

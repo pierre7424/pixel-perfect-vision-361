@@ -362,7 +362,10 @@ export function ConversationView({
           <LogOut className="size-4" aria-hidden />
           {role === "host" ? t.session.end : t.join.leave}
         </button>
+        </>
+        ) : null}
       </div>
+
 
       {notifHint ? (
         <p role="status" className="surface-panel mt-2 px-4 py-3 text-sm text-muted-foreground">

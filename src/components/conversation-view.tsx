@@ -271,9 +271,21 @@ export function ConversationView({
 
     <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-3xl flex-col px-4 pb-6">
       <div className="surface-panel sticky top-16 z-20 mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-sm">
-        <span className="font-medium">
-          {languageLabel(findLanguage(myLang), locale)} → {languageLabel(findLanguage(otherLang), locale)}
-        </span>
+        <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <span className="truncate font-medium">
+            {languageLabel(findLanguage(myLang), locale)} → {languageLabel(findLanguage(otherLang), locale)}
+          </span>
+          <button
+            type="button"
+            onClick={() => setHeaderOpen((v) => !v)}
+            aria-expanded={headerOpen}
+            aria-label={headerOpen ? t.session.collapse : t.session.expand}
+            title={headerOpen ? t.session.collapse : t.session.expand}
+            className="grid size-9 shrink-0 place-items-center rounded-lg border border-border bg-surface"
+          >
+            {headerOpen ? <ChevronUp className="size-4" aria-hidden /> : <ChevronDown className="size-4" aria-hidden />}
+          </button>
+        </div>
         <span className="flex items-center gap-1.5 text-muted-foreground">
           {online ? <Wifi className="size-4" aria-hidden /> : <WifiOff className="size-4" aria-hidden />}
           {online ? t.session.connected : t.session.reconnecting}
@@ -282,6 +294,9 @@ export function ConversationView({
           <Clock className="size-4" aria-hidden />
           {t.session.expiresIn} {countdown}
         </span>
+        {headerOpen ? (
+        <>
+
         <button
           type="button"
           onClick={() => setShowPeople((v) => !v)}

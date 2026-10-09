@@ -23,7 +23,7 @@ export function PushToTalk({
   const label = busy ? t.session.processing : recording ? t.session.releaseToSend : t.session.holdToTalk;
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-1">
       <button
         type="button"
         disabled={disabled || busy}
@@ -53,19 +53,19 @@ export function PushToTalk({
           }
         }}
         className={cn(
-          "grid size-24 touch-none select-none place-items-center rounded-full transition-transform",
+          "grid size-14 touch-none select-none place-items-center rounded-full transition-transform",
           "bg-[image:var(--gradient-primary)] text-primary-foreground shadow-[var(--shadow-glow)]",
           recording && "scale-110 animate-pulse-ring",
           (disabled || busy) && "opacity-50",
         )}
       >
         {busy ? (
-          <Loader2 className="size-9 animate-spin" aria-hidden />
+          <Loader2 className="size-6 animate-spin" aria-hidden />
         ) : (
-          <Mic className="size-9" aria-hidden />
+          <Mic className="size-6" aria-hidden />
         )}
       </button>
-      <p aria-live="polite" className="text-sm font-medium text-muted-foreground">
+      <p aria-live="polite" className="text-xs font-medium text-muted-foreground">
         {label}
       </p>
     </div>

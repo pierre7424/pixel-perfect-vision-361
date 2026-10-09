@@ -4,6 +4,8 @@ import {
   AlertCircle,
   Bell,
   BellOff,
+  ChevronDown,
+  ChevronUp,
   Clock,
   Keyboard,
   Loader2,
@@ -90,6 +92,7 @@ export function ConversationView({
   labels.current = { newMessage: t.session.newMessage, partner: t.session.partner };
 
   const [notifHint, setNotifHint] = useState(false);
+  const [headerOpen, setHeaderOpen] = useState(false);
 
   // Notifications are on by default: ask as soon as the conversation opens.
   useEffect(() => enableNotificationsByDefault(setNotifState), []);

@@ -102,3 +102,7 @@ bun run dev      # http://localhost:8080
 
 La base et les clés IA sont fournies par Lovable Cloud ; aucune configuration
 manuelle n'est nécessaire.
+
+## Conversations multilingues
+
+Chaque participant choisit sa langue en rejoignant. Chaque message (voix ou clavier) est traduit dans toutes les langues des participants présents (vus dans les 5 dernières minutes) ; chacun lit la traduction dans sa propre langue (colonne `translations`).

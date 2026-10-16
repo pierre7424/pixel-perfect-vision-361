@@ -408,6 +408,10 @@ export function ConversationView({
 
         {messages.map((m) => {
           const mine = m.speaker === role && (m.displayName ?? "") === displayName;
+          const sameLang = m.sourceLang === myLang;
+          const myText = m.translations?.[myLang] ?? (m.targetLang === myLang ? m.translatedText : null);
+          const shownText = sameLang ? null : (myText ?? m.translatedText);
+          const shownLang = myText ? myLang : m.targetLang;
           return (
             <article
               key={m.id}
@@ -436,13 +440,13 @@ export function ConversationView({
                     {t.session.original} · {m.sourceLang}
                   </p>
 
-                  {m.translatedText ? (
+                  {sameLang ? null : shownText ? (
                     <>
                       <p className="mt-3 border-t border-border/70 pt-3 text-lg font-medium leading-relaxed">
-                        {m.translatedText}
+                        {shownText}
                       </p>
                       <p className="mt-1 text-[11px] uppercase tracking-wide text-muted-foreground">
-                        {t.session.translation} · {m.targetLang}
+                        {t.session.translation} · {shownLang}
                       </p>
                     </>
                   ) : (

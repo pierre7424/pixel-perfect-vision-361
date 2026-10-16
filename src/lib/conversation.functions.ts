@@ -28,6 +28,8 @@ export type MessagePublic = {
   targetLang: string;
   originalText: string | null;
   translatedText: string | null;
+  /** Translation per target language code. */
+  translations: Record<string, string>;
   state: "processed" | "error";
   errorCode: string | null;
   createdAt: string;
@@ -397,6 +399,7 @@ export const listMessages = createServerFn({ method: "POST" })
           targetLang: m.target_lang as string,
           originalText: m.original_text as string | null,
           translatedText: m.translated_text as string | null,
+          translations: ((m as { translations?: unknown }).translations ?? {}) as Record<string, string>,
           state: m.state as MessagePublic["state"],
           errorCode: m.error_code as string | null,
           createdAt: m.created_at as string,
@@ -405,6 +408,47 @@ export const listMessages = createServerFn({ method: "POST" })
     },
   );
 
+
+/** Translate `text` into every language spoken by present participants. */
+async function translateForEveryone(
+  sessionId: string,
+  fallbackTarget: string,
+  sourceLang: string,
+  text: string,
+): Promise<{ translations: Record<string, string>; primary: string | null; targetLang: string; errorCode: string | null }> {
+  const db = await admin();
+  const since = new Date(Date.now() - 5 * 60_000).toISOString();
+  const { data: rows } = await db
+    .from("conversation_participants")
+    .select("lang")
+    .eq("session_id", sessionId)
+    .gte("last_seen_at", since);
+  const targets = Array.from(
+    new Set((rows ?? []).map((r) => r.lang as string).filter((l) => l && l !== sourceLang)),
+  );
+  if (targets.length === 0 && fallbackTarget !== sourceLang) targets.push(fallbackTarget);
+  const { translateText, AiError } = await import("./ai.server");
+  const src = findLanguage(sourceLang);
+  const translations: Record<string, string> = {};
+  let errorCode: string | null = null;
+  await Promise.all(
+    targets.map(async (lang) => {
+      const meta = findLanguage(lang);
+      try {
+        translations[lang] = await translateText(
+          text,
+          `${src?.en ?? sourceLang} (${sourceLang})`,
+          `${meta?.en ?? lang} (${lang})`,
+        );
+      } catch (err) {
+        errorCode = err instanceof AiError ? err.code : "translation_failed";
+        console.error("[translate] failed", lang, err);
+      }
+    }),
+  );
+  const targetLang = translations[fallbackTarget] ? fallbackTarget : (Object.keys(translations)[0] ?? targets[0] ?? fallbackTarget);
+  return { translations, primary: translations[targetLang] ?? null, targetLang, errorCode: Object.keys(translations).length ? null : errorCode };
+}
 
 /** Transcribe + translate one push-to-talk utterance and store it. */
 export const sendUtterance = createServerFn({ method: "POST" })
@@ -474,18 +518,10 @@ export const sendUtterance = createServerFn({ method: "POST" })
       return fail(code);
     }
 
-    let translated: string | null = null;
-    let errorCode: string | null = null;
-    try {
-      translated = await translateText(
-        original,
-        `${sourceMeta?.en ?? sourceLang} (${sourceLang})`,
-        `${targetMeta?.en ?? targetLang} (${targetLang})`,
-      );
-    } catch (err) {
-      errorCode = err instanceof AiError ? err.code : "translation_failed";
-      console.error("[utterance] translation failed", err);
-    }
+    const tr = await translateForEveryone(row.id, targetLang, sourceLang, original);
+    const translated = tr.primary;
+    const errorCode = tr.errorCode;
+    const finalTarget = tr.targetLang;
 
     const { data: inserted, error } = await db
       .from("conversation_messages")
@@ -494,7 +530,8 @@ export const sendUtterance = createServerFn({ method: "POST" })
         speaker: data.role,
         display_name: speakerName,
         source_lang: sourceLang,
-        target_lang: targetLang,
+        target_lang: finalTarget,
+        translations: tr.translations,
         original_text: original,
         translated_text: translated,
         state: errorCode ? "error" : "processed",
@@ -515,10 +552,11 @@ export const sendUtterance = createServerFn({ method: "POST" })
         speaker: data.role,
         displayName: speakerName,
         sourceLang,
-        targetLang,
+        targetLang: finalTarget,
 
         originalText: original,
         translatedText: translated,
+        translations: tr.translations,
         state: errorCode ? "error" : "processed",
         errorCode,
         createdAt: inserted.created_at as string,
@@ -560,22 +598,10 @@ export const sendTextMessage = createServerFn({ method: "POST" })
     const targetLang = data.role === "host" ? row.guest_lang : row.host_lang;
     const speakerName = data.displayName ?? null;
 
-    const { translateText, AiError } = await import("./ai.server");
-    const sourceMeta = findLanguage(sourceLang);
-    const targetMeta = findLanguage(targetLang);
-
-    let translated: string | null = null;
-    let errorCode: string | null = null;
-    try {
-      translated = await translateText(
-        data.text,
-        `${sourceMeta?.en ?? sourceLang} (${sourceLang})`,
-        `${targetMeta?.en ?? targetLang} (${targetLang})`,
-      );
-    } catch (err) {
-      errorCode = err instanceof AiError ? err.code : "translation_failed";
-      console.error("[text] translation failed", err);
-    }
+    const tr = await translateForEveryone(row.id, targetLang, sourceLang, data.text);
+    const translated = tr.primary;
+    const errorCode = tr.errorCode;
+    const finalTarget = tr.targetLang;
 
     const { data: inserted, error } = await db
       .from("conversation_messages")
@@ -584,7 +610,8 @@ export const sendTextMessage = createServerFn({ method: "POST" })
         speaker: data.role,
         display_name: speakerName,
         source_lang: sourceLang,
-        target_lang: targetLang,
+        target_lang: finalTarget,
+        translations: tr.translations,
         original_text: data.text,
         translated_text: translated,
         state: errorCode ? "error" : "processed",
@@ -603,9 +630,10 @@ export const sendTextMessage = createServerFn({ method: "POST" })
         speaker: data.role,
         displayName: speakerName,
         sourceLang,
-        targetLang,
+        targetLang: finalTarget,
         originalText: data.text,
         translatedText: translated,
+        translations: tr.translations,
         state: errorCode ? "error" : "processed",
         errorCode,
         createdAt: inserted.created_at as string,

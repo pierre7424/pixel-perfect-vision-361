@@ -45,10 +45,7 @@ function NewSessionPage() {
 
   useEffect(() => {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (tz === "Asia/Taipei") {
-      setGuestLang("zh-TW");
-      setShowZhConfirm(true);
-    }
+    void tz;
   }, []);
 
   async function askLocation() {
@@ -71,12 +68,12 @@ function NewSessionPage() {
   }
 
   async function confirmAndCreate() {
-    if (!hostLang || !guestLang) return;
+    if (!hostLang) return;
     setCreating(true);
     setError(null);
     try {
       const res = await createSession({
-        data: { hostLang, guestLang, geolocationAllowed: geo === "allowed" },
+        data: { hostLang, guestLang: guestLang ?? hostLang, geolocationAllowed: geo === "allowed" },
       });
       if (!res.ok) {
         setError(t.errors.generic);
@@ -94,7 +91,7 @@ function NewSessionPage() {
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
       <p className="text-sm font-medium text-accent">
-        {t.create.step} {step} {t.create.of} 4
+        {t.create.step} {step === 1 ? 1 : step - 1} {t.create.of} 3
       </p>
       <h1 className="mt-2 text-2xl font-bold">{t.create.title}</h1>
 
@@ -106,45 +103,6 @@ function NewSessionPage() {
             </h2>
             <div className="mt-4">
               <LanguagePicker value={hostLang} onChange={setHostLang} labelledBy="host-lang" />
-            </div>
-          </>
-        ) : null}
-
-        {step === 2 ? (
-          <>
-            <h2 id="guest-lang" className="text-lg font-semibold">
-              {t.create.q2}
-            </h2>
-
-            {showZhConfirm && guestLang === "zh-TW" ? (
-              <div className="mt-4 rounded-xl border border-accent/50 bg-accent/10 p-4">
-                <p className="font-medium">{t.create.zhTwTitle}</p>
-                <p className="mt-2 text-sm text-muted-foreground">{t.create.zhTwText}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowZhConfirm(false)}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground"
-                  >
-                    <Check className="size-4" aria-hidden />
-                    {t.create.zhTwAccept}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowZhConfirm(false);
-                      setGuestLang(null);
-                    }}
-                    className="rounded-lg border border-border px-4 py-2 text-sm font-medium"
-                  >
-                    {t.create.zhTwChange}
-                  </button>
-                </div>
-              </div>
-            ) : null}
-
-            <div className="mt-4">
-              <LanguagePicker value={guestLang} onChange={setGuestLang} labelledBy="guest-lang" />
             </div>
           </>
         ) : null}
@@ -192,12 +150,6 @@ function NewSessionPage() {
                 <dt className="text-muted-foreground">{t.create.youSpeak}</dt>
                 <dd className="text-right font-medium">
                   {languageLabel(findLanguage(hostLang ?? ""), locale)}
-                </dd>
-              </div>
-              <div className="flex justify-between gap-4 border-b border-border/70 pb-3">
-                <dt className="text-muted-foreground">{t.create.partnerSpeaks}</dt>
-                <dd className="text-right font-medium">
-                  {languageLabel(findLanguage(guestLang ?? ""), locale)}
                 </dd>
               </div>
               <div className="flex justify-between gap-4 border-b border-border/70 pb-3">
@@ -253,7 +205,7 @@ function NewSessionPage() {
           {step > 1 ? (
             <button
               type="button"
-              onClick={() => setStep(step - 1)}
+              onClick={() => setStep(step === 3 ? 1 : step - 1)}
               className="inline-flex items-center gap-1.5 rounded-xl border border-border px-4 py-3 text-sm font-medium"
             >
               <ArrowLeft className="size-4" aria-hidden />
@@ -263,8 +215,8 @@ function NewSessionPage() {
           {step < 3 ? (
             <button
               type="button"
-              disabled={step === 1 ? !hostLang : !guestLang || showZhConfirm}
-              onClick={() => setStep(step + 1)}
+              disabled={!hostLang}
+              onClick={() => setStep(3)}
               className="ml-auto rounded-xl bg-[image:var(--gradient-primary)] px-6 py-3 font-semibold text-primary-foreground disabled:opacity-50"
             >
               {t.create.next}

@@ -1,0 +1,214 @@
+{
+ "brand": "Deux voix",
+ "nav": {
+  "home": "Ana Sayfa",
+  "start": "Başla",
+  "join": "Katıl",
+  "privacy": "Gizlilik",
+  "accessibility": "Erişilebilirlik",
+  "interfaceLanguage": "Arayüz dili",
+  "reduceMotion": "Animasyonları azalt"
+ },
+ "home": {
+  "overline": "Tek bir konuşma. İki dil. Tek bir bağlantı.",
+  "title": "Herkes kendi dilinde konuşsun.",
+  "subtitle": "Bir oturum oluşturun, geçici bir QR kodu paylaşın ve ekranda çeviri gösterilirken sesli konuşun. Denemek için hesap gerekmez.",
+  "ctaPrimary": "Bir konuşma başlat",
+  "ctaSecondary": "Bir konuşmaya katıl",
+  "reassurance": "Dilleri siz seçersiniz ve mikrofonu yalnızca konuşmaya karar verdiğinizde etkinleştirirsiniz. Konum isteğe bağlıdır.",
+  "privacyNote": "İşlenen veriler, ne kadar süreyle saklandığı ve çeviri sağlayıcısı başlamadan önce gösterilir.",
+  "stepsTitle": "Üç adım",
+  "step1": "Dillerinizi seçin",
+  "step2": "QR kodunu paylaşın",
+  "step3": "Sırayla konuşun",
+  "step1Text": "Sizin ve partnerinizin dilleri, herhangi bir oturum oluşturulmadan önce onaylanır.",
+  "step2Text": "Taranacak geçici bir bağlantı. Bluetooth yok, kurulum yok, hesap yok.",
+  "step3Text": "Konuşmak için düğmeyi basılı tutun, göndermek için bırakın. Hem orijinal hem de çeviri görünür.",
+  "howTitle": "Nasıl çalışır?",
+  "howText": "Her konuşma sırası yazıya dönüştürülür, sonra çevrilir. Orijinal metin çevirinin yanında kalır: bunlar destekli çevirilerdir, doğruluk garantisi değildir.",
+  "exampleOriginal": "Orijinal (İngilizce)",
+  "exampleOriginalText": "Excuse me, where is the nearest station?",
+  "exampleTranslated": "Çeviri (中文（繁體）)",
+  "exampleTranslatedText": "不好意思，請問最近的車站在哪裡？",
+  "trustTitle": "Taahhütlerimiz",
+  "trust1Title": "Açık mikrofon onayı",
+  "trust1Text": "Mikrofon asla otomatik olarak açılmaz ve tarayıcı reddi açıkça ele alınır.",
+  "trust2Title": "Geçici oturum",
+  "trust2Text": "Bağlantının süresi dolar ve oturumu oluşturan kişi tarafından istediği zaman yeniden oluşturulabilir veya iptal edilebilir.",
+  "trust3Title": "Oturumun net sonu",
+  "trust3Text": "Konuşmayı sonlandırmak, alışverişi durdurur ve paylaşılan bağlantıyı geçersiz kılar.",
+  "languagesNote": "Kullanılabilir diller tarayıcıya ve seçilen sağlayıcıya bağlıdır. Güvenmeden önce çevrilmiş bir konuşmayı test edin."
+ },
+ "create": {
+  "title": "Oturumu siz oluşturuyorsunuz.",
+  "step": "Adım",
+  "of": "/",
+  "q1": "Siz hangi dili konuşacaksınız?",
+  "q2": "Diğer kişi hangi dili konuşacak?",
+  "searchPlaceholder": "Bir dil ara…",
+  "zhTwTitle": "Geleneksel Mandarin (zh-TW) sizin için uygun mu?",
+  "zhTwText": "Önerilen varsayılan dildir. Taigi (Tayvanca) ayrı olarak sunulur: bu, “Tayvanca”nın otomatik bir karşılığı değildir.",
+  "zhTwAccept": "Evet, Geleneksel Mandarin'i koru",
+  "zhTwChange": "Başka bir dil seç",
+  "limitedWarning": "Sınırlı erişim: bu dil için konuşma tanıma ve çeviri sağlayıcıya bağlıdır ve garanti edilmez.",
+  "next": "Devam et",
+  "back": "Geri",
+  "geoTitle": "Konumunuza izin verilsin mi? (İsteğe bağlı)",
+  "geoText": "Bağlam veya ilgili diller önermeye yardımcı olabilir. Mikrofonu başlatmaz ve izin vermeden devam edebilirsiniz.",
+  "geoAllow": "Konuma izin ver",
+  "geoSkip": "Konumsuz devam et",
+  "geoDenied": "Konuma izin verilmedi. Normal şekilde devam edebilirsiniz.",
+  "geoGranted": "Konuma izin verildi (yaklaşık alan, depolanmaz).",
+  "confirmTitle": "Onay",
+  "youSpeak": "Siz konuşacaksınız",
+  "partnerSpeaks": "Partneriniz konuşacak",
+  "geolocation": "Konum",
+  "allowed": "izin verildi",
+  "notAllowed": "izin verilmedi",
+  "expiry": "Planlanan süre sonu",
+  "minutes": "dakika",
+  "hours": "saat",
+  "dataNote": "Sesiniz üçüncü taraf bir sağlayıcı tarafından yazıya dönüştürülür ve çevrilir. Orijinal ve çevrilmiş metin oturum süresince saklanır, ardından bağlantının süresi dolar.",
+  "confirm": "Onayla ve oturumu oluştur",
+  "edit": "Düzenle",
+  "creating": "Oluşturuluyor…"
+ },
+ "qr": {
+  "title": "Oturumunuz hazır",
+  "invite": "Konuşmaya katılmak için bu QR kodunu tarayın. Herkes kendi dilini konuşur: konuşmak için düğmeyi basılı tutun, göndermek için bırakın, ardından orijinal ve çevirisi ekranda görünür. Mikrofonunuz yalnızca siz kabul ettikten sonra kullanılacaktır.",
+  "short": "Herkesin kendi dilini konuşması için tarayın. Geçici oturum — hesap gerekmez.",
+  "copy": "Bağlantıyı kopyala",
+  "copied": "Bağlantı kopyalandı",
+  "share": "Bağlantıyı paylaş",
+  "waiting": "Diğer kişi bekleniyor",
+  "joined": "Diğer kişi katıldı",
+  "cancel": "Oturumu iptal et",
+  "regenerate": "Bağlantıyı yeniden oluştur",
+  "regenerateNote": "Eski bağlantı geçersiz olur.",
+  "enter": "Konuşmaya gir",
+  "expiresIn": "Şu süre içinde sona eriyor"
+ },
+ "join": {
+  "title": "Bir konuşmaya davet edildiniz",
+  "languages": "Yapılandırılmış diller",
+  "session": "Oturum",
+  "expires": "Sona erme",
+  "chooseYourLang": "Konuşacağınız dili onaylayın",
+  "chooseNote": "Diliniz asla konumunuzdan çıkarılmaz.",
+  "micTitle": "Konuşmak için mikrofona erişime izin verin.",
+  "micText": "Her sırayı düğme ile kontrol edersiniz.",
+  "micAllow": "Mikrofona izin ver",
+  "micLater": "Şimdi değil",
+  "joinCta": "Konuşmaya katıl",
+  "nameTitle": "Nasıl görünmelisiniz?",
+  "nameLabel": "Görünen adınız",
+  "namePlaceholder": "örn. Ali",
+  "nameNote": "Bu ad, oturum sırasında mesajlarınızın yanında görünür.",
+  "nameContinue": "Devam et",
+  "readOnly": "Mikrofon olmadan gelen mesajları yine de okuyabilirsiniz. Konuşmak için tarayıcı ayarlarınızda mikrofona izin verin.",
+  "leave": "Oturumdan ayrıl"
+ },
+ "session": {
+  "you": "Siz",
+  "partner": "Diğer kişi",
+  "end": "Bitir",
+  "ended": "Oturum sona erdi",
+  "connected": "Bağlandı",
+  "reconnecting": "Bağlantı kesildi",
+  "original": "Orijinal",
+  "translation": "Çeviri",
+  "holdToTalk": "Konuşmak için basılı tut",
+  "releaseToSend": "Göndermek için bırak",
+  "processing": "İşleniyor…",
+  "empty": "Henüz mesaj yok. Düğmeyi basılı tutun ve konuşun.",
+  "micRequest": "Mikrofona izin ver",
+  "modeVoice": "Ses",
+  "collapse": "Daralt",
+  "expand": "Daha fazla göster",
+  "modeText": "Klavye",
+  "typePlaceholder": "Mesajınızı yazın…",
+  "send": "Gönder",
+  "retry": "Tekrar dene",
+  "repeat": "Tekrar et",
+  "assistedNote": "Destekli çeviriler — orijinal metin görünür kalır.",
+  "waitingPartner": "Diğer kişi bekleniyor…",
+  "expiresIn": "Şu süre içinde sona eriyor",
+  "showQr": "Daha fazla kişiyi davet et",
+  "showQrNote": "Her yeni kişi, oturumun misafir dilini konuşacaktır.",
+  "present": "kişi burada",
+  "presentOne": "kişi burada",
+  "participants": "Katılımcılar",
+  "notify": "Bildirimler",
+  "notifyOn": "Bildirimler açık",
+  "notifyDenied": "Bildirimler tarayıcınız tarafından engellendi.",
+  "notifyTab": "Bildirimleri etkinleştirmek için siteyi kendi sekmesinde açın.",
+  "notifyHelp": "Uyarı almak için tarayıcı ayarlarınızda bu site için bildirimlere izin verin (adres çubuğunun solundaki simge).",
+  "newMessage": "Yeni mesaj"
+ },
+ "errors": {
+  "linkGone": "Bu bağlantı artık kullanılabilir değil. Barındırıcıdan yeni bir oturum oluşturmasını isteyin.",
+  "sessionEnded": "Bu oturum sona erdi.",
+  "sessionFull": "Bu oturumda zaten iki katılımcı var.",
+  "backHome": "Ana sayfaya dön",
+  "micDenied": "Mikrofona izin verilmedi. Bu site için tarayıcı ayarlarınızı açın, mikrofona izin verin ve tekrar deneyin.",
+  "micUnavailable": "Bu cihazda mikrofon algılanmadı.",
+  "transcriptionFailed": "Yazıya dökme başarılı olamadı. Tekrar edin, mikrofona daha yakın konuşun veya bir süre sonra tekrar deneyin.",
+  "translationFailed": "Çeviri başarılı olamadı. Tekrar deneyin veya cümleyi tekrarlayın.",
+  "tooShort": "Kayıt çok kısa. Konuşurken düğmeyi basılı tutun.",
+  "network": "Bağlantı kesildi. Ağınızı kontrol edin, sonra tekrar deneyin.",
+  "generic": "Bir şeyler ters gitti. Tekrar deneyin.",
+  "unsupportedLanguage": "Bu dil işlenemedi. Başka bir dil seçin: kullanılabilirlik sağlayıcılara ve tarayıcıya bağlıdır."
+ },
+ "privacy": {
+  "title": "Gizlilik",
+  "intro": "Bu sayfa, çevrilmiş bir konuşmayı yürütmek için hizmetin neyi işlediğini açıklar. Ürün ve hukuki inceleme için sunulmuştur ve yasal tavsiye niteliğinde değildir.",
+  "sections": [
+   {
+    "h": "İşlenen nedir",
+    "p": "Seçilen diller, rastgele bir oturum belirteci ve konuşma tanıma tarafından üretilen metin ile çevirisi. Konum isteğe bağlıdır ve saklanmaz."
+   },
+   {
+    "h": "Ses",
+    "p": "Ses yalnızca düğmeyi bıraktığınızda sunucuya gönderilir, konuşma tanıma sağlayıcısına iletilir ve ardından atılır. Hiçbir ses kaydı saklanmaz."
+   },
+   {
+    "h": "Saklama",
+    "p": "Orijinal ve çevrilmiş metin, konuşmayı görüntülemek için oturum süresince saklanır. Oturum otomatik olarak sona erer ve bağlantı geçersiz hale gelir."
+   },
+   {
+    "h": "Sağlayıcılar",
+    "p": "Konuşma tanıma ve çeviri, sunucudan çağrılan üçüncü taraf modeller tarafından gerçekleştirilir. Erişim anahtarları sunucu tarafında kalır ve asla tarayıcıya ifşa edilmez."
+   },
+   {
+    "h": "Güvenlik",
+    "p": "Her yerde HTTPS. Oturum belirteci rastgele ve tahmin edilemezdir. QR kodu güçlü bir kimlik doğrulama değildir: barındırıcı bağlantıyı istediği zaman iptal edebilir."
+   }
+  ]
+ },
+ "accessibility": {
+  "title": "Erişilebilirlik",
+  "intro": "Bu sürümdeki taahhütlerimiz ve bilinen sınırlar. Karşılaştığınız herhangi bir engeli bize bildirin.",
+  "sections": [
+   {
+    "h": "Kontrast ve okunabilirlik",
+    "p": "Metin, koyu bir arka plan üzerinde yüksek kontrast hedefler ve mobil cihazlarda rahat boyutlardadır."
+   },
+   {
+    "h": "Renk kullanmayan durumlar",
+    "p": "Durumlar (işleme, hata, bağlantı) yalnızca metin ve simgelerle duyurulur, asla yalnızca renk veya sesle değil."
+   },
+   {
+    "h": "Animasyonlar",
+    "p": "“Animasyonları azalt” seçeneği arka plan efektlerini devre dışı bırakır. Sistem tercihi olan azaltılmış hareket ayarı da dikkate alınır."
+   },
+   {
+    "h": "Klavye",
+    "p": "Konuşma düğmesi klavye ile çalışır: konuşmak için Boşluk veya Enter tuşunu basılı tutun, göndermek için bırakın."
+   },
+   {
+    "h": "Ekran okuyucular",
+    "p": "Yeni mesajlar canlı bir bölgede duyurulur ve her mesaj konuşmacıyı, orijinali ve çeviriyi belirtir."
+   }
+  ]
+ }
+}

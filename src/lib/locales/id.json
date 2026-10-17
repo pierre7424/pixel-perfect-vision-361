@@ -1,0 +1,214 @@
+{
+ "brand": "Deux voix",
+ "nav": {
+  "home": "Beranda",
+  "start": "Mulai",
+  "join": "Gabung",
+  "privacy": "Privasi",
+  "accessibility": "Aksesibilitas",
+  "interfaceLanguage": "Bahasa antarmuka",
+  "reduceMotion": "Kurangi animasi"
+ },
+ "home": {
+  "overline": "Satu percakapan. Dua bahasa. Satu tautan.",
+  "title": "Masing-masing bicara dalam bahasamu sendiri.",
+  "subtitle": "Buat sesi, bagikan kode QR sementara, dan bicaralah dengan terjemahan yang ditampilkan di layar. Tidak perlu akun untuk mencobanya.",
+  "ctaPrimary": "Mulai percakapan",
+  "ctaSecondary": "Gabung percakapan",
+  "reassurance": "Kamu pilih bahasanya dan izinkan mikrofon hanya saat kamu memutuskan untuk berbicara. Lokasi bersifat opsional.",
+  "privacyNote": "Data yang diproses, berapa lama disimpan, dan penyedia terjemahan ditampilkan sebelum kamu memulai.",
+  "stepsTitle": "Tiga langkah",
+  "step1": "Pilih bahasamu",
+  "step2": "Bagikan kode QR",
+  "step3": "Bergantian berbicara",
+  "step1Text": "Bahasa kamu dan bahasamu partner, dikonfirmasi sebelum sesi apa pun dibuat.",
+  "step2Text": "Tautan sementara untuk dipindai. Tanpa Bluetooth, tanpa instalasi, tanpa akun.",
+  "step3Text": "Tekan tombol untuk berbicara, lepas untuk mengirim. Asli dan terjemahan keduanya akan muncul.",
+  "howTitle": "Bagaimana cara kerjanya?",
+  "howText": "Setiap giliran ditranskripsi, lalu diterjemahkan. Yang asli tetap di sebelah terjemahan: ini adalah terjemahan berbantuan, bukan jaminan akurasi.",
+  "exampleOriginal": "Asli (Inggris)",
+  "exampleOriginalText": "Excuse me, where is the nearest station?",
+  "exampleTranslated": "Terjemahan (中文（繁體）)",
+  "exampleTranslatedText": "不好意思，請問最近的車站在哪裡？",
+  "trustTitle": "Apa yang kami komitmenkan",
+  "trust1Title": "Izin mikrofon eksplisit",
+  "trust1Text": "Mikrofon tidak pernah menyala secara otomatis, dan penolakan dari browser ditangani dengan jelas.",
+  "trust2Title": "Sesi sementara",
+  "trust2Text": "Tautan akan kedaluwarsa dan dapat dibuat ulang atau dibatalkan kapan saja oleh siapa pun yang membuat sesi.",
+  "trust3Title": "Akhir sesi yang jelas",
+  "trust3Text": "Mengakhiri percakapan akan menghentikan pertukaran dan membatalkan tautan yang dibagikan.",
+  "languagesNote": "Bahasa yang tersedia bergantung pada browser dan penyedia yang dipilih. Uji percakapan yang diterjemahkan sebelum mengandalkannya."
+ },
+ "create": {
+  "title": "Kamu sedang membuat sesi.",
+  "step": "Langkah",
+  "of": "dari",
+  "q1": "Bahasa apa yang akan kamu gunakan?",
+  "q2": "Bahasa apa yang akan digunakan orang lain?",
+  "searchPlaceholder": "Cari bahasa…",
+  "zhTwTitle": "Apakah Mandarin Tradisional (zh-TW) cocok untukmu?",
+  "zhTwText": "Ini adalah rekomendasi default. Taigi (Taiwan) ditawarkan secara terpisah: ini bukan padanan otomatis dari “Taiwan”.",
+  "zhTwAccept": "Ya, tetap gunakan Mandarin Tradisional",
+  "zhTwChange": "Pilih bahasa lain",
+  "limitedWarning": "Ketersediaan terbatas: pengenalan suara dan terjemahan untuk bahasa ini bergantung pada penyedia dan tidak dijamin.",
+  "next": "Lanjut",
+  "back": "Kembali",
+  "geoTitle": "Izinkan lokasi Anda? (Opsional)",
+  "geoText": "Ini dapat membantu menyarankan konteks atau bahasa yang relevan. Ini tidak akan menyalakan mikrofon dan kamu dapat melanjutkan tanpa mengizinkannya.",
+  "geoAllow": "Izinkan lokasi",
+  "geoSkip": "Lanjutkan tanpa lokasi",
+  "geoDenied": "Lokasi tidak diizinkan. Kamu bisa melanjutkan secara normal.",
+  "geoGranted": "Lokasi diizinkan (area perkiraan, tidak disimpan).",
+  "confirmTitle": "Konfirmasi",
+  "youSpeak": "Kamu akan berbicara",
+  "partnerSpeaks": "Partner kamu akan berbicara",
+  "geolocation": "Lokasi",
+  "allowed": "diizinkan",
+  "notAllowed": "tidak diizinkan",
+  "expiry": "Kedaluwarsa yang direncanakan",
+  "minutes": "menit",
+  "hours": "jam",
+  "dataNote": "Suara kamu ditranskripsi dan diterjemahkan oleh penyedia pihak ketiga. Teks asli dan terjemahan disimpan selama sesi berlangsung, kemudian tautan kedaluwarsa.",
+  "confirm": "Konfirmasi dan buat sesi",
+  "edit": "Edit",
+  "creating": "Membuat…"
+ },
+ "qr": {
+  "title": "Sesi kamu sudah siap",
+  "invite": "Pindai kode QR ini untuk bergabung dalam percakapan. Masing-masing dari kamu berbicara dalam bahasanya sendiri: tekan tombol untuk berbicara, lepas untuk mengirim, lalu teks asli dan terjemahan akan muncul di layar. Mikrofon kamu hanya akan digunakan setelah kamu menyetujuinya.",
+  "short": "Pindai untuk berbicara dalam bahasamu sendiri. Sesi sementara — tidak perlu akun.",
+  "copy": "Salin tautan",
+  "copied": "Tautan disalin",
+  "share": "Bagikan tautan",
+  "waiting": "Menunggu orang lain",
+  "joined": "Orang lain telah bergabung",
+  "cancel": "Batalkan sesi",
+  "regenerate": "Buat ulang tautan",
+  "regenerateNote": "Tautan lama menjadi tidak valid.",
+  "enter": "Masuk ke percakapan",
+  "expiresIn": "Kedaluwarsa dalam"
+ },
+ "join": {
+  "title": "Kamu telah diundang ke percakapan",
+  "languages": "Bahasa yang dikonfigurasi",
+  "session": "Sesi",
+  "expires": "Kedaluwarsa",
+  "chooseYourLang": "Konfirmasi bahasa yang akan kamu gunakan",
+  "chooseNote": "Bahasa kamu tidak pernah disimpulkan dari lokasi kamu.",
+  "micTitle": "Untuk berbicara, izinkan akses ke mikrofon.",
+  "micText": "Kamu mengontrol setiap giliran dengan tombol.",
+  "micAllow": "Izinkan mikrofon",
+  "micLater": "Nanti saja",
+  "joinCta": "Gabung percakapan",
+  "nameTitle": "Bagaimana kamu ingin tampil?",
+  "nameLabel": "Nama tampilanmu",
+  "namePlaceholder": "mis. Alex",
+  "nameNote": "Nama ini muncul di sebelah pesan kamu selama sesi.",
+  "nameContinue": "Lanjutkan",
+  "readOnly": "Tanpa mikrofon, kamu masih bisa membaca pesan masuk. Untuk berbicara, izinkan mikrofon di pengaturan browser kamu.",
+  "leave": "Tinggalkan sesi"
+ },
+ "session": {
+  "you": "Kamu",
+  "partner": "Orang lain",
+  "end": "Akhiri",
+  "ended": "Sesi berakhir",
+  "connected": "Terhubung",
+  "reconnecting": "Koneksi terputus",
+  "original": "Asli",
+  "translation": "Terjemahan",
+  "holdToTalk": "Tekan untuk berbicara",
+  "releaseToSend": "Lepas untuk mengirim",
+  "processing": "Memproses…",
+  "empty": "Belum ada pesan. Tekan tombol dan bicaralah.",
+  "micRequest": "Izinkan mikrofon",
+  "modeVoice": "Suara",
+  "collapse": "Ciutkan",
+  "expand": "Tampilkan lebih banyak",
+  "modeText": "Keyboard",
+  "typePlaceholder": "Ketik pesanmu…",
+  "send": "Kirim",
+  "retry": "Coba lagi",
+  "repeat": "Ulangi",
+  "assistedNote": "Terjemahan berbantuan — yang asli tetap terlihat.",
+  "waitingPartner": "Menunggu orang lain…",
+  "expiresIn": "Kedaluwarsa dalam",
+  "showQr": "Undang lebih banyak orang",
+  "showQrNote": "Setiap orang baru akan berbicara dalam bahasa tamu sesi.",
+  "present": "orang di sini",
+  "presentOne": "orang di sini",
+  "participants": "Peserta",
+  "notify": "Notifikasi",
+  "notifyOn": "Notifikasi aktif",
+  "notifyDenied": "Notifikasi diblokir oleh browser kamu.",
+  "notifyTab": "Buka situs di tab sendiri untuk mengaktifkan notifikasi.",
+  "notifyHelp": "Untuk mendapatkan peringatan, izinkan notifikasi untuk situs ini di pengaturan browser kamu (ikon di kiri bilah alamat).",
+  "newMessage": "Pesan baru"
+ },
+ "errors": {
+  "linkGone": "Tautan ini tidak lagi tersedia. Minta tuan rumah untuk membuat sesi baru.",
+  "sessionEnded": "Sesi ini telah berakhir.",
+  "sessionFull": "Sesi ini sudah memiliki dua peserta.",
+  "backHome": "Kembali ke beranda",
+  "micDenied": "Mikrofon tidak diizinkan. Buka pengaturan browser kamu untuk situs ini, izinkan mikrofon, lalu coba lagi.",
+  "micUnavailable": "Tidak ada mikrofon terdeteksi di perangkat ini.",
+  "transcriptionFailed": "Transkripsi tidak berhasil. Ulangi, bicara lebih dekat ke mikrofon, atau coba lagi sebentar lagi.",
+  "translationFailed": "Terjemahan tidak berhasil. Coba lagi atau ulangi kalimatnya.",
+  "tooShort": "Rekaman terlalu pendek. Tekan tombol sambil kamu berbicara.",
+  "network": "Koneksi terputus. Periksa jaringanmu, lalu coba lagi.",
+  "generic": "Terjadi kesalahan. Coba lagi.",
+  "unsupportedLanguage": "Bahasa ini tidak dapat diproses. Pilih bahasa lain: ketersediaan bergantung pada penyedia dan browser."
+ },
+ "privacy": {
+  "title": "Privasi",
+  "intro": "Halaman ini menjelaskan apa yang diproses oleh layanan untuk menjalankan percakapan yang diterjemahkan. Ini ditawarkan untuk tinjauan produk dan hukum, dan bukan nasihat hukum.",
+  "sections": [
+   {
+    "h": "Apa yang diproses",
+    "p": "Bahasa yang dipilih, token sesi acak, dan teks yang dihasilkan oleh pengenalan suara bersama dengan terjemahannya. Lokasi bersifat opsional dan tidak disimpan."
+   },
+   {
+    "h": "Audio",
+    "p": "Audio dikirim ke server hanya saat kamu melepaskan tombol, diteruskan ke penyedia pengenalan suara, lalu dibuang. Tidak ada rekaman audio yang disimpan."
+   },
+   {
+    "h": "Penyimpanan",
+    "p": "Teks asli dan terjemahan disimpan selama sesi berlangsung untuk menampilkan percakapan. Sesi berakhir secara otomatis dan tautan menjadi tidak valid."
+   },
+   {
+    "h": "Penyedia",
+    "p": "Pengenalan suara dan terjemahan dilakukan oleh model pihak ketiga yang dipanggil dari server. Kunci akses tetap berada di sisi server dan tidak pernah terekspos ke browser."
+   },
+   {
+    "h": "Keamanan",
+    "p": "HTTPS di mana-mana. Token sesi bersifat acak dan tidak dapat ditebak. Kode QR bukanlah otentikasi yang kuat: tuan rumah dapat mencabut tautan kapan saja."
+   }
+  ]
+ },
+ "accessibility": {
+  "title": "Aksesibilitas",
+  "intro": "Komitmen kami dalam versi ini, dan batasan yang diketahui. Beri tahu kami jika ada hambatan yang kamu temui.",
+  "sections": [
+   {
+    "h": "Kontras dan keterbacaan",
+    "p": "Teks bertujuan untuk kontras tinggi pada latar belakang gelap, dengan ukuran yang nyaman di perangkat seluler."
+   },
+   {
+    "h": "Status tanpa warna",
+    "p": "Status (memproses, kesalahan, koneksi) diumumkan dengan teks dan ikon, tidak pernah hanya dengan warna atau suara."
+   },
+   {
+    "h": "Animasi",
+    "p": "Opsi “Kurangi animasi” menonaktifkan efek latar belakang. Pengaturan sistem prefers-reduced-motion juga dihormati."
+   },
+   {
+    "h": "Keyboard",
+    "p": "Tombol bicara berfungsi dengan keyboard: tekan Spasi atau Enter untuk berbicara, lepas untuk mengirim."
+   },
+   {
+    "h": "Pembaca layar",
+    "p": "Pesan baru diumumkan di area langsung, dan setiap pesan menyatakan pembicara, teks asli, dan terjemahan."
+   }
+  ]
+ }
+}

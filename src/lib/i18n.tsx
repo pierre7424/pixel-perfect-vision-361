@@ -7,13 +7,47 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import nanJson from "./locales/nan.json";
+import esJson from "./locales/es.json";
+import deJson from "./locales/de.json";
+import itJson from "./locales/it.json";
+import ptJson from "./locales/pt.json";
+import nlJson from "./locales/nl.json";
+import jaJson from "./locales/ja.json";
+import koJson from "./locales/ko.json";
+import thJson from "./locales/th.json";
+import viJson from "./locales/vi.json";
+import idJson from "./locales/id.json";
+import arJson from "./locales/ar.json";
+import hiJson from "./locales/hi.json";
+import trJson from "./locales/tr.json";
+import plJson from "./locales/pl.json";
+import ruJson from "./locales/ru.json";
+import ukJson from "./locales/uk.json";
 
-export type UiLocale = "fr" | "en" | "zh";
+export type UiLocale = "fr" | "en" | "zh" | "nan" | "es" | "de" | "it" | "pt" | "nl" | "ja" | "ko" | "th" | "vi" | "id" | "ar" | "hi" | "tr" | "pl" | "ru" | "uk";
 
 export const UI_LOCALES: { code: UiLocale; label: string }[] = [
   { code: "fr", label: "Français" },
   { code: "en", label: "English" },
   { code: "zh", label: "繁體中文" },
+  { code: "nan", label: "台語" },
+  { code: "es", label: "Español" },
+  { code: "de", label: "Deutsch" },
+  { code: "it", label: "Italiano" },
+  { code: "pt", label: "Português" },
+  { code: "nl", label: "Nederlands" },
+  { code: "ja", label: "日本語" },
+  { code: "ko", label: "한국어" },
+  { code: "th", label: "ไทย" },
+  { code: "vi", label: "Tiếng Việt" },
+  { code: "id", label: "Bahasa Indonesia" },
+  { code: "ar", label: "العربية" },
+  { code: "hi", label: "हिन्दी" },
+  { code: "tr", label: "Türkçe" },
+  { code: "pl", label: "Polski" },
+  { code: "ru", label: "Русский" },
+  { code: "uk", label: "Українська" },
 ];
 
 const fr = {
@@ -676,7 +710,38 @@ const zh: Dict = {
   },
 };
 
-const DICTS: Record<UiLocale, Dict> = { fr, en, zh };
+function withFallback(o: unknown, base: any): any {
+  if (Array.isArray(base)) return Array.isArray(o) && o.length === base.length ? base.map((b, i) => withFallback(o[i], b)) : base;
+  if (base && typeof base === "object") {
+    const out: any = {};
+    for (const k of Object.keys(base)) out[k] = withFallback((o as any)?.[k], base[k]);
+    return out;
+  }
+  return typeof o === typeof base ? o : base;
+}
+
+const DICTS: Record<UiLocale, Dict> = {
+  fr,
+  en,
+  zh,
+  nan: withFallback(nanJson, en) as Dict,
+  es: withFallback(esJson, en) as Dict,
+  de: withFallback(deJson, en) as Dict,
+  it: withFallback(itJson, en) as Dict,
+  pt: withFallback(ptJson, en) as Dict,
+  nl: withFallback(nlJson, en) as Dict,
+  ja: withFallback(jaJson, en) as Dict,
+  ko: withFallback(koJson, en) as Dict,
+  th: withFallback(thJson, en) as Dict,
+  vi: withFallback(viJson, en) as Dict,
+  id: withFallback(idJson, en) as Dict,
+  ar: withFallback(arJson, en) as Dict,
+  hi: withFallback(hiJson, en) as Dict,
+  tr: withFallback(trJson, en) as Dict,
+  pl: withFallback(plJson, en) as Dict,
+  ru: withFallback(ruJson, en) as Dict,
+  uk: withFallback(ukJson, en) as Dict,
+};
 
 type I18nValue = {
   locale: UiLocale;
@@ -697,13 +762,15 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     if (stored && stored in DICTS) {
       setLocaleState(stored);
     } else {
-      const nav = window.navigator.language.toLowerCase();
-      if (nav.startsWith("zh")) setLocaleState("zh");
-      else if (nav.startsWith("fr")) setLocaleState("fr");
-      else setLocaleState("en");
+      setLocaleState(uiLocaleForSpoken(window.navigator.language));
     }
     setReduceMotionState(window.localStorage.getItem("reduce-motion") === "1");
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = locale === "zh" ? "zh-TW" : locale === "nan" ? "nan-TW" : locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+  }, [locale]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("reduce-motion", reduceMotion);
@@ -736,10 +803,10 @@ export function useI18n() {
 /** UI locale best matching a spoken language code (guest pages follow the session's guest language). */
 export function uiLocaleForSpoken(code: string): UiLocale {
   const c = code.toLowerCase();
-  if (c.startsWith("zh") || c.startsWith("nan")) return "zh";
-  if (c.startsWith("fr")) return "fr";
-  if (c.startsWith("en")) return "en";
-  return "en";
+  if (c.startsWith("nan")) return "nan";
+  if (c.startsWith("zh")) return "zh";
+  const base = c.split("-")[0] as UiLocale;
+  return base in DICTS ? base : "en";
 }
 
 export function languageLabel(
@@ -747,6 +814,6 @@ export function languageLabel(
   locale: UiLocale,
 ) {
   if (!lang) return "—";
-  const name = locale === "fr" ? lang.fr : locale === "en" ? lang.en : lang.zh;
+  const name = locale === "fr" ? lang.fr : locale === "zh" || locale === "nan" ? lang.zh : locale === "en" ? lang.en : lang.native;
   return name === lang.native ? name : `${lang.native} · ${name}`;
 }

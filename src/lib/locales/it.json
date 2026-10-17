@@ -1,0 +1,214 @@
+{
+ "brand": "Deux voix",
+ "nav": {
+  "home": "Home",
+  "start": "Inizia",
+  "join": "Partecipa",
+  "privacy": "Privacy",
+  "accessibility": "Accessibilità",
+  "interfaceLanguage": "Lingua dell'interfaccia",
+  "reduceMotion": "Riduci animazioni"
+ },
+ "home": {
+  "overline": "Una conversazione. Due lingue. Un link.",
+  "title": "Ciascuno parla la propria lingua.",
+  "subtitle": "Crea una sessione, condividi un codice QR temporaneo e parla ad alta voce con la traduzione mostrata sullo schermo. Non è richiesto un account per provare.",
+  "ctaPrimary": "Inizia una conversazione",
+  "ctaSecondary": "Partecipa a una conversazione",
+  "reassurance": "Sei tu a scegliere le lingue e a consentire il microfono solo quando decidi di parlare. La posizione è facoltativa.",
+  "privacyNote": "I dati elaborati, la durata della loro conservazione e il fornitore di traduzione sono mostrati prima di iniziare.",
+  "stepsTitle": "Tre passaggi",
+  "step1": "Scegli le tue lingue",
+  "step2": "Condividi il codice QR",
+  "step3": "Parla a turno",
+  "step1Text": "La tua e quella del tuo partner, confermate prima che venga creata qualsiasi sessione.",
+  "step2Text": "Un link temporaneo da scansionare. Nessun Bluetooth, nessuna installazione, nessun account.",
+  "step3Text": "Tieni premuto il pulsante per parlare, rilascia per inviare. Appaiono sia l'originale che la traduzione.",
+  "howTitle": "Come funziona?",
+  "howText": "Ogni turno viene trascritto, poi tradotto. L'originale rimane accanto alla traduzione: queste sono traduzioni assistite, non una garanzia di accuratezza.",
+  "exampleOriginal": "Originale (Inglese)",
+  "exampleOriginalText": "Excuse me, where is the nearest station?",
+  "exampleTranslated": "Traduzione (Cinese tradizionale (Taiwan))",
+  "exampleTranslatedText": "不好意思，請問最近的車站在哪裡？",
+  "trustTitle": "Il nostro impegno",
+  "trust1Title": "Consenso esplicito per il microfono",
+  "trust1Text": "Il microfono non viene mai attivato automaticamente, e un rifiuto del browser viene gestito chiaramente.",
+  "trust2Title": "Sessione temporanea",
+  "trust2Text": "Il link scade e può essere rigenerato o annullato in qualsiasi momento da chi ha creato la sessione.",
+  "trust3Title": "Fine sessione chiara",
+  "trust3Text": "La fine della conversazione interrompe lo scambio e invalida il link condiviso.",
+  "languagesNote": "Le lingue disponibili dipendono dal browser e dal provider selezionato. Testa una conversazione tradotta prima di affidarti ad essa."
+ },
+ "create": {
+  "title": "Stai creando la sessione.",
+  "step": "Passaggio",
+  "of": "di",
+  "q1": "Che lingua parlerai?",
+  "q2": "Che lingua parlerà l'altra persona?",
+  "searchPlaceholder": "Cerca una lingua…",
+  "zhTwTitle": "Il mandarino tradizionale (zh-TW) è quello giusto per te?",
+  "zhTwText": "È l'impostazione predefinita consigliata. Il Taigi (Taiwanese) è offerto separatamente: non è un equivalente automatico di “Taiwanese”.",
+  "zhTwAccept": "Sì, mantieni il mandarino tradizionale",
+  "zhTwChange": "Scegli un'altra lingua",
+  "limitedWarning": "Disponibilità limitata: il riconoscimento vocale e la traduzione per questa lingua dipendono dal provider e non sono garantiti.",
+  "next": "Continua",
+  "back": "Indietro",
+  "geoTitle": "Consenti la tua posizione? (Facoltativo)",
+  "geoText": "Può aiutare a suggerire contesto o lingue pertinenti. Non attiva il microfono e puoi continuare senza consentirlo.",
+  "geoAllow": "Consenti posizione",
+  "geoSkip": "Continua senza posizione",
+  "geoDenied": "Posizione non consentita. Puoi continuare normalmente.",
+  "geoGranted": "Posizione consentita (area approssimativa, non memorizzata).",
+  "confirmTitle": "Conferma",
+  "youSpeak": "Parlerai",
+  "partnerSpeaks": "Il tuo partner parlerà",
+  "geolocation": "Geolocalizzazione",
+  "allowed": "consentita",
+  "notAllowed": "non consentita",
+  "expiry": "Scadenza prevista",
+  "minutes": "minuti",
+  "hours": "ore",
+  "dataNote": "La tua voce viene trascritta e tradotta da un fornitore terzo. Il testo originale e quello tradotto vengono conservati per la durata della sessione, dopodiché il link scade.",
+  "confirm": "Conferma e crea la sessione",
+  "edit": "Modifica",
+  "creating": "Creazione in corso…"
+ },
+ "qr": {
+  "title": "La tua sessione è pronta",
+  "invite": "Scansiona questo codice QR per unirti alla conversazione. Ciascuno di voi parla la propria lingua: tieni premuto il pulsante per parlare, rilascia per inviare, quindi l'originale e la traduzione appaiono sullo schermo. Il tuo microfono sarà usato solo dopo il tuo consenso.",
+  "short": "Scansiona per parlare ciascuno la propria lingua. Sessione temporanea — nessun account richiesto.",
+  "copy": "Copia link",
+  "copied": "Link copiato",
+  "share": "Condividi link",
+  "waiting": "In attesa dell'altra persona",
+  "joined": "L'altra persona si è unita",
+  "cancel": "Annulla sessione",
+  "regenerate": "Rigenera link",
+  "regenerateNote": "Il vecchio link diventa non valido.",
+  "enter": "Entra nella conversazione",
+  "expiresIn": "Scade tra"
+ },
+ "join": {
+  "title": "Sei stato invitato a una conversazione",
+  "languages": "Lingue configurate",
+  "session": "Sessione",
+  "expires": "Scadenza",
+  "chooseYourLang": "Conferma la lingua che parlerai",
+  "chooseNote": "La tua lingua non viene mai inferita dalla tua posizione.",
+  "micTitle": "Per parlare, consenti l'accesso al microfono.",
+  "micText": "Controlli ogni turno con il pulsante.",
+  "micAllow": "Consenti microfono",
+  "micLater": "Non ora",
+  "joinCta": "Partecipa alla conversazione",
+  "nameTitle": "Come vuoi apparire?",
+  "nameLabel": "Il tuo nome visualizzato",
+  "namePlaceholder": "es. Alex",
+  "nameNote": "Questo nome appare accanto ai tuoi messaggi durante la sessione.",
+  "nameContinue": "Continua",
+  "readOnly": "Senza microfono puoi comunque leggere i messaggi in arrivo. Per parlare, consenti il microfono nelle impostazioni del tuo browser.",
+  "leave": "Lascia la sessione"
+ },
+ "session": {
+  "you": "Tu",
+  "partner": "Altra persona",
+  "end": "Fine",
+  "ended": "Sessione terminata",
+  "connected": "Connesso",
+  "reconnecting": "Connessione interrotta",
+  "original": "Originale",
+  "translation": "Traduzione",
+  "holdToTalk": "Tieni premuto per parlare",
+  "releaseToSend": "Rilascia per inviare",
+  "processing": "Elaborazione in corso…",
+  "empty": "Nessun messaggio ancora. Tieni premuto il pulsante e parla.",
+  "micRequest": "Consenti microfono",
+  "modeVoice": "Voce",
+  "collapse": "Comprimi",
+  "expand": "Mostra di più",
+  "modeText": "Tastiera",
+  "typePlaceholder": "Digita il tuo messaggio…",
+  "send": "Invia",
+  "retry": "Riprova",
+  "repeat": "Ripeti",
+  "assistedNote": "Traduzioni assistite — l'originale rimane visibile.",
+  "waitingPartner": "In attesa dell'altra persona…",
+  "expiresIn": "Scade tra",
+  "showQr": "Invita altre persone",
+  "showQrNote": "Ogni nuova persona parlerà la lingua ospite della sessione.",
+  "present": "persone presenti",
+  "presentOne": "persona presente",
+  "participants": "Partecipanti",
+  "notify": "Notifiche",
+  "notifyOn": "Notifiche attive",
+  "notifyDenied": "Le notifiche sono bloccate dal tuo browser.",
+  "notifyTab": "Apri il sito in una sua scheda per abilitare le notifiche.",
+  "notifyHelp": "Per ricevere avvisi, consenti le notifiche per questo sito nelle impostazioni del tuo browser (icona a sinistra della barra degli indirizzi).",
+  "newMessage": "Nuovo messaggio"
+ },
+ "errors": {
+  "linkGone": "Questo link non è più disponibile. Chiedi all'ospitante di creare una nuova sessione.",
+  "sessionEnded": "Questa sessione è terminata.",
+  "sessionFull": "Questa sessione ha già due partecipanti.",
+  "backHome": "Torna alla home",
+  "micDenied": "Il microfono non è consentito. Apri le impostazioni del browser per questo sito, consenti il microfono, quindi riprova.",
+  "micUnavailable": "Nessun microfono rilevato su questo dispositivo.",
+  "transcriptionFailed": "Trascrizione non riuscita. Ripeti, parla più vicino al microfono, o riprova tra un momento.",
+  "translationFailed": "Traduzione non riuscita. Riprova o ripeti la frase.",
+  "tooShort": "Registrazione troppo breve. Tieni premuto il pulsante mentre parli.",
+  "network": "Connessione interrotta. Controlla la tua rete, quindi riprova.",
+  "generic": "Qualcosa è andato storto. Riprova.",
+  "unsupportedLanguage": "Questa lingua non può essere elaborata. Scegline un'altra: la disponibilità dipende dai fornitori e dal browser."
+ },
+ "privacy": {
+  "title": "Privacy",
+  "intro": "Questa pagina descrive cosa il servizio elabora per gestire una conversazione tradotta. È offerta per la revisione del prodotto e legale, e non costituisce consulenza legale.",
+  "sections": [
+   {
+    "h": "Cosa viene elaborato",
+    "p": "Le lingue scelte, un token di sessione casuale e il testo prodotto dal riconoscimento vocale insieme alla sua traduzione. La posizione è facoltativa e non viene memorizzata."
+   },
+   {
+    "h": "Audio",
+    "p": "L'audio viene inviato al server solo quando rilasci il pulsante, inoltrato al fornitore di riconoscimento vocale, quindi scartato. Nessuna registrazione audio viene memorizzata."
+   },
+   {
+    "h": "Conservazione",
+    "p": "Il testo originale e quello tradotto vengono conservati per la durata della sessione per visualizzare la conversazione. La sessione scade automaticamente e il link diventa non valido."
+   },
+   {
+    "h": "Fornitori",
+    "p": "Il riconoscimento vocale e la traduzione sono eseguiti da modelli di terze parti richiamati dal server. Le chiavi di accesso rimangono lato server e non sono mai esposte al browser."
+   },
+   {
+    "h": "Sicurezza",
+    "p": "HTTPS ovunque. Il token di sessione è casuale e non indovinabile. Il codice QR non è un'autenticazione forte: l'ospitante può revocare il link in qualsiasi momento."
+   }
+  ]
+ },
+ "accessibility": {
+  "title": "Accessibilità",
+  "intro": "I nostri impegni in questa versione e i limiti noti. Segnalaci qualsiasi ostacolo che incontri.",
+  "sections": [
+   {
+    "h": "Contrasto e leggibilità",
+    "p": "Il testo mira ad avere un alto contrasto su uno sfondo scuro, con dimensioni comode sui dispositivi mobili."
+   },
+   {
+    "h": "Stati senza colore",
+    "p": "Gli stati (elaborazione, errore, connessione) sono annunciati con testo e icone, mai solo con colore o suono."
+   },
+   {
+    "h": "Animazioni",
+    "p": "L'opzione “Riduci animazioni” disabilita gli effetti di sfondo. Anche l'impostazione system prefers-reduced-motion viene rispettata."
+   },
+   {
+    "h": "Tastiera",
+    "p": "Il pulsante di conversazione funziona con una tastiera: tieni premuto Spazio o Invio per parlare, rilascia per inviare."
+   },
+   {
+    "h": "Screen reader",
+    "p": "I nuovi messaggi vengono annunciati in una regione live, e ogni messaggio indica l'interlocutore, l'originale e la traduzione."
+   }
+  ]
+ }
+}

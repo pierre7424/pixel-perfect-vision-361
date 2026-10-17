@@ -1,0 +1,214 @@
+{
+ "brand": "Deux voix",
+ "nav": {
+  "home": "Trang chủ",
+  "start": "Bắt đầu",
+  "join": "Tham gia",
+  "privacy": "Quyền riêng tư",
+  "accessibility": "Trợ năng",
+  "interfaceLanguage": "Ngôn ngữ giao diện",
+  "reduceMotion": "Giảm hiệu ứng động"
+ },
+ "home": {
+  "overline": "Một cuộc trò chuyện. Hai ngôn ngữ. Một đường dẫn.",
+  "title": "Mỗi người nói ngôn ngữ của riêng mình.",
+  "subtitle": "Tạo một phiên, chia sẻ mã QR tạm thời và nói chuyện tự do với bản dịch hiển thị trên màn hình. Không cần tài khoản để dùng thử.",
+  "ctaPrimary": "Bắt đầu cuộc trò chuyện",
+  "ctaSecondary": "Tham gia cuộc trò chuyện",
+  "reassurance": "Bạn chọn ngôn ngữ và chỉ cho phép micro khi bạn quyết định nói. Vị trí là tùy chọn.",
+  "privacyNote": "Dữ liệu được xử lý, thời gian lưu giữ và nhà cung cấp dịch thuật sẽ hiển thị trước khi bạn bắt đầu.",
+  "stepsTitle": "Ba bước đơn giản",
+  "step1": "Chọn ngôn ngữ của bạn",
+  "step2": "Chia sẻ mã QR",
+  "step3": "Thay phiên nhau nói",
+  "step1Text": "Ngôn ngữ của bạn và đối tác, được xác nhận trước khi tạo phiên.",
+  "step2Text": "Một đường dẫn tạm thời để quét. Không Bluetooth, không cài đặt, không tài khoản.",
+  "step3Text": "Giữ nút để nói, thả ra để gửi. Cả bản gốc và bản dịch đều xuất hiện.",
+  "howTitle": "Nó hoạt động như thế nào?",
+  "howText": "Mỗi lượt nói sẽ được chuyển thành văn bản, sau đó được dịch. Bản gốc luôn hiển thị bên cạnh bản dịch: đây là bản dịch có hỗ trợ, không đảm bảo độ chính xác tuyệt đối.",
+  "exampleOriginal": "Bản gốc (Tiếng Anh)",
+  "exampleOriginalText": "Excuse me, where is the nearest station?",
+  "exampleTranslated": "Bản dịch (Tiếng Trung Phồn thể)",
+  "exampleTranslatedText": "不好意思，請問最近的車站在哪裡？",
+  "trustTitle": "Chúng tôi cam kết những gì",
+  "trust1Title": "Đồng ý micro rõ ràng",
+  "trust1Text": "Micro không bao giờ tự động bật, và trình duyệt từ chối sẽ được xử lý rõ ràng.",
+  "trust2Title": "Phiên tạm thời",
+  "trust2Text": "Đường dẫn sẽ hết hạn và có thể được tạo lại hoặc hủy bất cứ lúc nào bởi người tạo phiên.",
+  "trust3Title": "Kết thúc phiên rõ ràng",
+  "trust3Text": "Kết thúc cuộc trò chuyện sẽ dừng trao đổi và làm mất hiệu lực đường dẫn đã chia sẻ.",
+  "languagesNote": "Các ngôn ngữ khả dụng phụ thuộc vào trình duyệt và nhà cung cấp đã chọn. Hãy thử một cuộc trò chuyện dịch thuật trước khi dựa vào nó."
+ },
+ "create": {
+  "title": "Bạn đang tạo phiên.",
+  "step": "Bước",
+  "of": "trên",
+  "q1": "Bạn sẽ nói ngôn ngữ nào?",
+  "q2": "Người kia sẽ nói ngôn ngữ nào?",
+  "searchPlaceholder": "Tìm kiếm ngôn ngữ…",
+  "zhTwTitle": "Tiếng Quan thoại Phồn thể (zh-TW) có phù hợp với bạn không?",
+  "zhTwText": "Đây là lựa chọn mặc định được khuyến nghị. Tiếng Đài Loan (Taigi) được cung cấp riêng: nó không phải là bản dịch tự động tương đương với “Tiếng Đài Loan”.",
+  "zhTwAccept": "Có, giữ nguyên tiếng Quan thoại Phồn thể",
+  "zhTwChange": "Chọn ngôn ngữ khác",
+  "limitedWarning": "Tính khả dụng có hạn: nhận dạng giọng nói và dịch thuật cho ngôn ngữ này phụ thuộc vào nhà cung cấp và không được đảm bảo.",
+  "next": "Tiếp tục",
+  "back": "Quay lại",
+  "geoTitle": "Cho phép vị trí của bạn? (Tùy chọn)",
+  "geoText": "Nó có thể giúp gợi ý ngữ cảnh hoặc các ngôn ngữ liên quan. Nó không bật micro và bạn có thể tiếp tục mà không cần cho phép.",
+  "geoAllow": "Cho phép vị trí",
+  "geoSkip": "Tiếp tục không có vị trí",
+  "geoDenied": "Vị trí không được phép. Bạn có thể tiếp tục bình thường.",
+  "geoGranted": "Vị trí được phép (khu vực gần đúng, không lưu trữ).",
+  "confirmTitle": "Xác nhận",
+  "youSpeak": "Bạn sẽ nói",
+  "partnerSpeaks": "Đối tác của bạn sẽ nói",
+  "geolocation": "Vị trí",
+  "allowed": "được phép",
+  "notAllowed": "không được phép",
+  "expiry": "Thời gian hết hạn dự kiến",
+  "minutes": "phút",
+  "hours": "giờ",
+  "dataNote": "Giọng nói của bạn được chuyển thành văn bản và dịch bởi một nhà cung cấp bên thứ ba. Văn bản gốc và bản dịch được lưu giữ trong suốt phiên, sau đó liên kết sẽ hết hạn.",
+  "confirm": "Xác nhận và tạo phiên",
+  "edit": "Chỉnh sửa",
+  "creating": "Đang tạo…"
+ },
+ "qr": {
+  "title": "Phiên của bạn đã sẵn sàng",
+  "invite": "Quét mã QR này để tham gia cuộc trò chuyện. Mỗi người trong số các bạn nói ngôn ngữ của riêng mình: giữ nút để nói, thả ra để gửi, sau đó bản gốc và bản dịch sẽ xuất hiện trên màn hình. Micro của bạn sẽ chỉ được sử dụng sau khi bạn đồng ý.",
+  "short": "Quét để mỗi người nói ngôn ngữ của riêng mình. Phiên tạm thời — không cần tài khoản.",
+  "copy": "Sao chép liên kết",
+  "copied": "Đã sao chép liên kết",
+  "share": "Chia sẻ liên kết",
+  "waiting": "Đang chờ người kia",
+  "joined": "Người kia đã tham gia",
+  "cancel": "Hủy phiên",
+  "regenerate": "Tạo lại liên kết",
+  "regenerateNote": "Liên kết cũ sẽ không còn hiệu lực.",
+  "enter": "Vào cuộc trò chuyện",
+  "expiresIn": "Hết hạn sau"
+ },
+ "join": {
+  "title": "Bạn đã được mời tham gia một cuộc trò chuyện",
+  "languages": "Các ngôn ngữ đã cấu hình",
+  "session": "Phiên",
+  "expires": "Hết hạn",
+  "chooseYourLang": "Xác nhận ngôn ngữ bạn sẽ nói",
+  "chooseNote": "Ngôn ngữ của bạn không bao giờ được suy ra từ vị trí của bạn.",
+  "micTitle": "Để nói, hãy cho phép truy cập micro.",
+  "micText": "Bạn kiểm soát mọi lượt nói bằng nút bấm.",
+  "micAllow": "Cho phép micro",
+  "micLater": "Để sau",
+  "joinCta": "Tham gia cuộc trò chuyện",
+  "nameTitle": "Bạn muốn hiển thị tên gì?",
+  "nameLabel": "Tên hiển thị của bạn",
+  "namePlaceholder": "ví dụ: Anh Thư",
+  "nameNote": "Tên này xuất hiện bên cạnh tin nhắn của bạn trong suốt phiên.",
+  "nameContinue": "Tiếp tục",
+  "readOnly": "Không có micro, bạn vẫn có thể đọc tin nhắn đến. Để nói, hãy cho phép micro trong cài đặt trình duyệt của bạn.",
+  "leave": "Rời phiên"
+ },
+ "session": {
+  "you": "Bạn",
+  "partner": "Người khác",
+  "end": "Kết thúc",
+  "ended": "Phiên đã kết thúc",
+  "connected": "Đã kết nối",
+  "reconnecting": "Kết nối bị gián đoạn",
+  "original": "Bản gốc",
+  "translation": "Bản dịch",
+  "holdToTalk": "Giữ để nói",
+  "releaseToSend": "Thả để gửi",
+  "processing": "Đang xử lý…",
+  "empty": "Chưa có tin nhắn nào. Giữ nút và nói.",
+  "micRequest": "Cho phép micro",
+  "modeVoice": "Giọng nói",
+  "collapse": "Thu gọn",
+  "expand": "Hiển thị thêm",
+  "modeText": "Bàn phím",
+  "typePlaceholder": "Nhập tin nhắn của bạn…",
+  "send": "Gửi",
+  "retry": "Thử lại",
+  "repeat": "Lặp lại",
+  "assistedNote": "Bản dịch có hỗ trợ — bản gốc vẫn hiển thị.",
+  "waitingPartner": "Đang chờ người kia…",
+  "expiresIn": "Hết hạn sau",
+  "showQr": "Mời thêm người",
+  "showQrNote": "Mỗi người mới sẽ nói ngôn ngữ khách của phiên.",
+  "present": "người ở đây",
+  "presentOne": "người ở đây",
+  "participants": "Người tham gia",
+  "notify": "Thông báo",
+  "notifyOn": "Thông báo bật",
+  "notifyDenied": "Thông báo bị trình duyệt của bạn chặn.",
+  "notifyTab": "Mở trang web trong một tab riêng để bật thông báo.",
+  "notifyHelp": "Để nhận thông báo, hãy cho phép thông báo cho trang web này trong cài đặt trình duyệt của bạn (biểu tượng bên trái thanh địa chỉ).",
+  "newMessage": "Tin nhắn mới"
+ },
+ "errors": {
+  "linkGone": "Liên kết này không còn khả dụng. Hãy yêu cầu người chủ trì tạo một phiên mới.",
+  "sessionEnded": "Phiên này đã kết thúc.",
+  "sessionFull": "Phiên này đã có đủ hai người tham gia.",
+  "backHome": "Về trang chủ",
+  "micDenied": "Micro không được phép. Mở cài đặt trình duyệt của bạn cho trang web này, cho phép micro, sau đó thử lại.",
+  "micUnavailable": "Không phát hiện micro trên thiết bị này.",
+  "transcriptionFailed": "Chuyển giọng nói thành văn bản không thành công. Hãy lặp lại, nói gần micro hơn hoặc thử lại sau một chút.",
+  "translationFailed": "Dịch không thành công. Hãy thử lại hoặc lặp lại câu.",
+  "tooShort": "Ghi âm quá ngắn. Giữ nút trong khi bạn nói.",
+  "network": "Kết nối bị gián đoạn. Kiểm tra mạng của bạn, sau đó thử lại.",
+  "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+  "unsupportedLanguage": "Không thể xử lý ngôn ngữ này. Hãy chọn ngôn ngữ khác: tính khả dụng phụ thuộc vào các nhà cung cấp và trình duyệt."
+ },
+ "privacy": {
+  "title": "Quyền riêng tư",
+  "intro": "Trang này mô tả những gì dịch vụ xử lý để thực hiện một cuộc trò chuyện đã dịch. Nó được cung cấp để xem xét sản phẩm và pháp lý, và không phải là lời khuyên pháp lý.",
+  "sections": [
+   {
+    "h": "Những gì được xử lý",
+    "p": "Các ngôn ngữ đã chọn, một mã thông báo phiên ngẫu nhiên và văn bản được tạo bởi nhận dạng giọng nói cùng với bản dịch của nó. Vị trí là tùy chọn và không được lưu trữ."
+   },
+   {
+    "h": "Âm thanh",
+    "p": "Âm thanh chỉ được gửi đến máy chủ khi bạn nhả nút, sau đó được chuyển tiếp đến nhà cung cấp nhận dạng giọng nói, rồi bị loại bỏ. Không có bản ghi âm nào được lưu trữ."
+   },
+   {
+    "h": "Lưu giữ",
+    "p": "Văn bản gốc và đã dịch được lưu giữ trong suốt phiên để hiển thị cuộc trò chuyện. Phiên tự động hết hạn và liên kết trở nên không hợp lệ."
+   },
+   {
+    "h": "Nhà cung cấp",
+    "p": "Nhận dạng giọng nói và dịch thuật được thực hiện bởi các mô hình của bên thứ ba được gọi từ máy chủ. Khóa truy cập nằm phía máy chủ và không bao giờ được tiết lộ cho trình duyệt."
+   },
+   {
+    "h": "Bảo mật",
+    "p": "HTTPS ở mọi nơi. Mã thông báo phiên là ngẫu nhiên và không thể đoán được. Mã QR không phải là xác thực mạnh: người chủ trì có thể thu hồi liên kết bất cứ lúc nào."
+   }
+  ]
+ },
+ "accessibility": {
+  "title": "Trợ năng",
+  "intro": "Các cam kết của chúng tôi trong phiên bản này và các giới hạn đã biết. Hãy cho chúng tôi biết về bất kỳ trở ngại nào bạn gặp phải.",
+  "sections": [
+   {
+    "h": "Độ tương phản và dễ đọc",
+    "p": "Văn bản hướng tới độ tương phản cao trên nền tối, với kích thước thoải mái trên thiết bị di động."
+   },
+   {
+    "h": "Trạng thái không màu sắc",
+    "p": "Các trạng thái (đang xử lý, lỗi, kết nối) được thông báo bằng văn bản và biểu tượng, không bao giờ chỉ bằng màu sắc hoặc âm thanh."
+   },
+   {
+    "h": "Hiệu ứng động",
+    "p": "Tùy chọn “Giảm hiệu ứng động” sẽ tắt các hiệu ứng nền. Cài đặt prefers-reduced-motion của hệ thống cũng được tôn trọng."
+   },
+   {
+    "h": "Bàn phím",
+    "p": "Nút nói chuyện hoạt động với bàn phím: giữ phím Cách hoặc Enter để nói, nhả ra để gửi."
+   },
+   {
+    "h": "Trình đọc màn hình",
+    "p": "Tin nhắn mới được thông báo trong một vùng trực tiếp, và mỗi tin nhắn hiển thị người nói, bản gốc và bản dịch."
+   }
+  ]
+ }
+}

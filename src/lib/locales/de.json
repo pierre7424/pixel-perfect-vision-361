@@ -1,0 +1,214 @@
+{
+ "brand": "Deux voix",
+ "nav": {
+  "home": "Startseite",
+  "start": "Starten",
+  "join": "Beitreten",
+  "privacy": "Datenschutz",
+  "accessibility": "Barrierefreiheit",
+  "interfaceLanguage": "Oberflächensprache",
+  "reduceMotion": "Animationen reduzieren"
+ },
+ "home": {
+  "overline": "Eine Unterhaltung. Zwei Sprachen. Ein Link.",
+  "title": "Jeder spricht seine eigene Sprache.",
+  "subtitle": "Erstellen Sie eine Sitzung, teilen Sie einen temporären QR-Code und sprechen Sie laut mit der Übersetzung auf dem Bildschirm. Kein Konto erforderlich, um es auszuprobieren.",
+  "ctaPrimary": "Eine Unterhaltung starten",
+  "ctaSecondary": "Einer Unterhaltung beitreten",
+  "reassurance": "Sie wählen die Sprachen und erlauben das Mikrofon nur, wenn Sie sprechen möchten. Standort ist optional.",
+  "privacyNote": "Die verarbeiteten Daten, wie lange sie gespeichert werden und der Übersetzungsanbieter werden angezeigt, bevor Sie beginnen.",
+  "stepsTitle": "Drei Schritte",
+  "step1": "Wählen Sie Ihre Sprachen",
+  "step2": "Teilen Sie den QR-Code",
+  "step3": "Sprechen Sie abwechselnd",
+  "step1Text": "Ihre und die Ihres Partners, bestätigt, bevor eine Sitzung erstellt wird.",
+  "step2Text": "Ein temporärer Link zum Scannen. Kein Bluetooth, keine Installation, kein Konto.",
+  "step3Text": "Halten Sie die Taste gedrückt, um zu sprechen, lassen Sie sie los, um zu senden. Original und Übersetzung werden beide angezeigt.",
+  "howTitle": "Wie funktioniert es?",
+  "howText": "Jede Sprechrunde wird transkribiert und dann übersetzt. Das Original bleibt neben der Übersetzung sichtbar: Dies sind assistierte Übersetzungen, keine Garantie für Richtigkeit.",
+  "exampleOriginal": "Original (Englisch)",
+  "exampleOriginalText": "Entschuldigen Sie, wo ist der nächste Bahnhof?",
+  "exampleTranslated": "Übersetzung (中文（繁體）)",
+  "exampleTranslatedText": "不好意思，請問最近的車站在哪裡？",
+  "trustTitle": "Wozu wir uns verpflichten",
+  "trust1Title": "Explizite Mikrofon-Zustimmung",
+  "trust1Text": "Das Mikrofon wird niemals automatisch eingeschaltet, und eine Browser-Ablehnung wird klar behandelt.",
+  "trust2Title": "Temporäre Sitzung",
+  "trust2Text": "Der Link läuft ab und kann jederzeit von dem, der die Sitzung erstellt hat, neu generiert oder abgebrochen werden.",
+  "trust3Title": "Klares Sitzungsende",
+  "trust3Text": "Das Beenden der Unterhaltung stoppt den Austausch und invalidiert den geteilten Link.",
+  "languagesNote": "Verfügbare Sprachen hängen vom Browser und dem ausgewählten Anbieter ab. Testen Sie eine übersetzte Unterhaltung, bevor Sie sich darauf verlassen."
+ },
+ "create": {
+  "title": "Sie erstellen die Sitzung.",
+  "step": "Schritt",
+  "of": "von",
+  "q1": "Welche Sprache werden Sie sprechen?",
+  "q2": "Welche Sprache wird die andere Person sprechen?",
+  "searchPlaceholder": "Sprache suchen…",
+  "zhTwTitle": "Ist Traditionelles Mandarin (zh-TW) das Richtige für Sie?",
+  "zhTwText": "Es ist die empfohlene Standardeinstellung. Taigi (Taiwanisch) wird separat angeboten: es ist kein automatisches Äquivalent von „Taiwanisch“.",
+  "zhTwAccept": "Ja, behalten Sie Traditionelles Mandarin bei",
+  "zhTwChange": "Eine andere Sprache wählen",
+  "limitedWarning": "Eingeschränkte Verfügbarkeit: Spracherkennung und Übersetzung für diese Sprache hängen vom Anbieter ab und sind nicht garantiert.",
+  "next": "Weiter",
+  "back": "Zurück",
+  "geoTitle": "Ihren Standort zulassen? (Optional)",
+  "geoText": "Es kann helfen, Kontext oder relevante Sprachen vorzuschlagen. Es startet nicht das Mikrofon und Sie können fortfahren, ohne es zuzulassen.",
+  "geoAllow": "Standort zulassen",
+  "geoSkip": "Ohne Standort fortfahren",
+  "geoDenied": "Standort nicht zugelassen. Sie können normal fortfahren.",
+  "geoGranted": "Standort zugelassen (ungefähre Region, nicht gespeichert).",
+  "confirmTitle": "Bestätigung",
+  "youSpeak": "Sie werden sprechen",
+  "partnerSpeaks": "Ihr Partner wird sprechen",
+  "geolocation": "Standort",
+  "allowed": "zugelassen",
+  "notAllowed": "nicht zugelassen",
+  "expiry": "Geplantes Ablaufdatum",
+  "minutes": "Minuten",
+  "hours": "Stunden",
+  "dataNote": "Ihre Stimme wird von einem Drittanbieter transkribiert und übersetzt. Der ursprüngliche und der übersetzte Text werden für die Dauer der Sitzung aufbewahrt, danach läuft der Link ab.",
+  "confirm": "Bestätigen und Sitzung erstellen",
+  "edit": "Bearbeiten",
+  "creating": "Wird erstellt…"
+ },
+ "qr": {
+  "title": "Ihre Sitzung ist bereit",
+  "invite": "Scannen Sie diesen QR-Code, um der Unterhaltung beizutreten. Jeder von Ihnen spricht seine eigene Sprache: Halten Sie die Taste gedrückt, um zu sprechen, lassen Sie sie los, um zu senden, dann erscheinen Original und Übersetzung auf dem Bildschirm. Ihr Mikrofon wird erst verwendet, nachdem Sie zugestimmt haben.",
+  "short": "Scannen, um jeder seine eigene Sprache zu sprechen. Temporäre Sitzung – kein Konto erforderlich.",
+  "copy": "Link kopieren",
+  "copied": "Link kopiert",
+  "share": "Link teilen",
+  "waiting": "Warten auf die andere Person",
+  "joined": "Die andere Person ist beigetreten",
+  "cancel": "Sitzung abbrechen",
+  "regenerate": "Link neu generieren",
+  "regenerateNote": "Der alte Link wird ungültig.",
+  "enter": "Der Unterhaltung beitreten",
+  "expiresIn": "Läuft ab in"
+ },
+ "join": {
+  "title": "Sie wurden zu einer Unterhaltung eingeladen",
+  "languages": "Konfigurierte Sprachen",
+  "session": "Sitzung",
+  "expires": "Ablauf",
+  "chooseYourLang": "Bestätigen Sie die Sprache, die Sie sprechen werden",
+  "chooseNote": "Ihre Sprache wird niemals anhand Ihres Standorts abgeleitet.",
+  "micTitle": "Um zu sprechen, erlauben Sie den Zugriff auf das Mikrofon.",
+  "micText": "Sie steuern jede Sprechrunde mit der Taste.",
+  "micAllow": "Mikrofon zulassen",
+  "micLater": "Nicht jetzt",
+  "joinCta": "Der Unterhaltung beitreten",
+  "nameTitle": "Wie sollen Sie angezeigt werden?",
+  "nameLabel": "Ihr Anzeigename",
+  "namePlaceholder": "z.B. Alex",
+  "nameNote": "Dieser Name erscheint neben Ihren Nachrichten während der Sitzung.",
+  "nameContinue": "Weiter",
+  "readOnly": "Ohne Mikrofon können Sie eingehende Nachrichten weiterhin lesen. Um zu sprechen, erlauben Sie das Mikrofon in Ihren Browsereinstellungen.",
+  "leave": "Sitzung verlassen"
+ },
+ "session": {
+  "you": "Sie",
+  "partner": "Andere Person",
+  "end": "Beenden",
+  "ended": "Sitzung beendet",
+  "connected": "Verbunden",
+  "reconnecting": "Verbindung unterbrochen",
+  "original": "Original",
+  "translation": "Übersetzung",
+  "holdToTalk": "Zum Sprechen gedrückt halten",
+  "releaseToSend": "Zum Senden loslassen",
+  "processing": "Verarbeite…",
+  "empty": "Noch keine Nachrichten. Halten Sie die Taste gedrückt und sprechen Sie.",
+  "micRequest": "Mikrofon zulassen",
+  "modeVoice": "Sprache",
+  "collapse": "Einklappen",
+  "expand": "Mehr anzeigen",
+  "modeText": "Tastatur",
+  "typePlaceholder": "Ihre Nachricht eingeben…",
+  "send": "Senden",
+  "retry": "Erneut versuchen",
+  "repeat": "Wiederholen",
+  "assistedNote": "Assistierte Übersetzungen – das Original bleibt sichtbar.",
+  "waitingPartner": "Warten auf den Partner…",
+  "expiresIn": "Läuft ab in",
+  "showQr": "Weitere Personen einladen",
+  "showQrNote": "Jede neue Person wird die Gast-Sprache der Sitzung sprechen.",
+  "present": "Personen hier",
+  "presentOne": "Person hier",
+  "participants": "Teilnehmer",
+  "notify": "Benachrichtigungen",
+  "notifyOn": "Benachrichtigungen an",
+  "notifyDenied": "Benachrichtigungen werden von Ihrem Browser blockiert.",
+  "notifyTab": "Öffnen Sie die Seite in einem eigenen Tab, um Benachrichtigungen zu aktivieren.",
+  "notifyHelp": "Um Benachrichtigungen zu erhalten, erlauben Sie Benachrichtigungen für diese Seite in Ihren Browsereinstellungen (Symbol links neben der Adressleiste).",
+  "newMessage": "Neue Nachricht"
+ },
+ "errors": {
+  "linkGone": "Dieser Link ist nicht mehr verfügbar. Bitten Sie den Host, eine neue Sitzung zu erstellen.",
+  "sessionEnded": "Diese Sitzung wurde beendet.",
+  "sessionFull": "Diese Sitzung hat bereits zwei Teilnehmer.",
+  "backHome": "Zurück zur Startseite",
+  "micDenied": "Das Mikrofon ist nicht zugelassen. Öffnen Sie Ihre Browsereinstellungen für diese Seite, erlauben Sie das Mikrofon und versuchen Sie es dann erneut.",
+  "micUnavailable": "Auf diesem Gerät wurde kein Mikrofon erkannt.",
+  "transcriptionFailed": "Die Transkription ist fehlgeschlagen. Wiederholen Sie, sprechen Sie näher zum Mikrofon oder versuchen Sie es gleich noch einmal.",
+  "translationFailed": "Die Übersetzung ist fehlgeschlagen. Versuchen Sie es erneut oder wiederholen Sie den Satz.",
+  "tooShort": "Aufnahme zu kurz. Halten Sie die Taste gedrückt, während Sie sprechen.",
+  "network": "Verbindung unterbrochen. Überprüfen Sie Ihre Netzwerkverbindung und versuchen Sie es dann erneut.",
+  "generic": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+  "unsupportedLanguage": "Diese Sprache konnte nicht verarbeitet werden. Wählen Sie eine andere: die Verfügbarkeit hängt von den Anbietern und dem Browser ab."
+ },
+ "privacy": {
+  "title": "Datenschutz",
+  "intro": "Diese Seite beschreibt, was der Dienst verarbeitet, um eine übersetzte Unterhaltung zu ermöglichen. Sie wird zur Produkt- und Rechtsprüfung angeboten und ist keine Rechtsberatung.",
+  "sections": [
+   {
+    "h": "Was verarbeitet wird",
+    "p": "Die gewählten Sprachen, ein zufälliger Sitzungstoken und der durch Spracherkennung erzeugte Text zusammen mit seiner Übersetzung. Der Standort ist optional und wird nicht gespeichert."
+   },
+   {
+    "h": "Audio",
+    "p": "Audio wird nur dann an den Server gesendet, wenn Sie die Taste loslassen, an den Spracherkennungsanbieter weitergeleitet und dann verworfen. Es werden keine Audioaufnahmen gespeichert."
+   },
+   {
+    "h": "Speicherung",
+    "p": "Original- und übersetzter Text werden für die Dauer der Sitzung zur Anzeige der Unterhaltung gespeichert. Die Sitzung läuft automatisch ab und der Link wird ungültig."
+   },
+   {
+    "h": "Anbieter",
+    "p": "Spracherkennung und Übersetzung werden von Drittanbieter-Modellen durchgeführt, die vom Server aufgerufen werden. Zugriffsschlüssel bleiben serverseitig und werden niemals dem Browser zugänglich gemacht."
+   },
+   {
+    "h": "Sicherheit",
+    "p": "HTTPS überall. Der Sitzungstoken ist zufällig und nicht erratbar. Der QR-Code ist keine starke Authentifizierung: Der Host kann den Link jederzeit widerrufen."
+   }
+  ]
+ },
+ "accessibility": {
+  "title": "Barrierefreiheit",
+  "intro": "Unsere Verpflichtungen in dieser Version und die bekannten Grenzen. Teilen Sie uns alle Hindernisse mit, auf die Sie stoßen.",
+  "sections": [
+   {
+    "h": "Kontrast und Lesbarkeit",
+    "p": "Text strebt hohen Kontrast auf dunklem Hintergrund an, mit bequemen Größen auf Mobilgeräten."
+   },
+   {
+    "h": "Zustände ohne Farbe",
+    "p": "Zustände (Verarbeitung, Fehler, Verbindung) werden mit Text und Symbolen angekündigt, niemals nur mit Farbe oder Ton."
+   },
+   {
+    "h": "Animationen",
+    "p": "Die Option „Animationen reduzieren“ deaktiviert Hintergrundeffekte. Die Systemeinstellung „bevorzugt reduzierte Bewegung“ wird ebenfalls berücksichtigt."
+   },
+   {
+    "h": "Tastatur",
+    "p": "Die Sprechtaste funktioniert mit der Tastatur: Halten Sie die Leertaste oder Enter gedrückt, um zu sprechen, lassen Sie sie los, um zu senden."
+   },
+   {
+    "h": "Bildschirmleser",
+    "p": "Neue Nachrichten werden in einem Live-Bereich angekündigt, und jede Nachricht gibt den Sprecher, das Original und die Übersetzung an."
+   }
+  ]
+ }
+}

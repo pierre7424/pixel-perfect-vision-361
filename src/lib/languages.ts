@@ -44,6 +44,21 @@ export function findLanguage(code: string): SpokenLanguage | undefined {
   return SPOKEN_LANGUAGES.find((l) => l.code === code);
 }
 
+/** Best supported spoken language from the browser preferences (client-only). */
+export function detectBrowserSpoken(): string | null {
+  if (typeof navigator === "undefined") return null;
+  const prefs = [...(navigator.languages ?? []), navigator.language].filter(Boolean);
+  for (const p of prefs) {
+    const c = p.toLowerCase();
+    if (c.startsWith("nan")) return "nan-TW";
+    if (c.startsWith("zh")) return "zh-TW";
+    const base = c.split("-")[0];
+    const hit = SPOKEN_LANGUAGES.find((l) => l.code === base);
+    if (hit) return hit.code;
+  }
+  return null;
+}
+
 /** BCP-47 hint sent to the transcription model; omit for entries with no reliable code. */
 export function transcriptionHint(code: string): string | undefined {
   if (code === "nan-TW") return undefined;

@@ -117,7 +117,6 @@ export function ConversationView({
     window.localStorage.setItem(`lang-${session.token}`, code);
     setMyLangState(code);
   };
-  const otherLang = role === "host" ? session.guestLang : session.hostLang;
 
   const refresh = useCallback(async () => {
     try {

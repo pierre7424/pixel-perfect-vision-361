@@ -23,7 +23,8 @@ import { PushToTalk } from "@/components/push-to-talk";
 import { QrModal } from "@/components/qr-modal";
 import { clientId } from "@/lib/identity";
 import { languageLabel, useI18n } from "@/lib/i18n";
-import { findLanguage } from "@/lib/languages";
+import { SPOKEN_LANGUAGES, findLanguage } from "@/lib/languages";
+import { Languages } from "lucide-react";
 import {
   enableNotificationsByDefault,
   isEmbedded,
@@ -105,7 +106,17 @@ export function ConversationView({
   const recorder = useRecorder();
 
   const countdown = useCountdown(session.expiresAt);
-  const myLang = myLangProp ?? (role === "host" ? session.hostLang : session.guestLang);
+  const [myLang, setMyLangState] = useState(
+    myLangProp ?? (role === "host" ? session.hostLang : session.guestLang),
+  );
+  useEffect(() => {
+    const saved = window.localStorage.getItem(`lang-${session.token}`);
+    if (saved && findLanguage(saved)) setMyLangState(saved);
+  }, [session.token]);
+  const setMyLang = (code: string) => {
+    window.localStorage.setItem(`lang-${session.token}`, code);
+    setMyLangState(code);
+  };
   const otherLang = role === "host" ? session.guestLang : session.hostLang;
 
   const refresh = useCallback(async () => {
@@ -276,7 +287,7 @@ export function ConversationView({
       <div className="surface-panel sticky top-16 z-20 mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-sm">
         <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
           <span className="truncate font-medium">
-            {languageLabel(findLanguage(myLang), locale)} → {languageLabel(findLanguage(otherLang), locale)}
+            {languageLabel(findLanguage(myLang), locale)}
           </span>
           <button
             type="button"
@@ -299,6 +310,22 @@ export function ConversationView({
         </span>
         {headerOpen ? (
         <>
+        <label className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium">
+          <Languages className="size-4" aria-hidden />
+          <span className="sr-only">{t.join.chooseYourLang}</span>
+          <select
+            value={myLang}
+            onChange={(e) => setMyLang(e.target.value)}
+            aria-label={t.join.chooseYourLang}
+            className="bg-transparent outline-none"
+          >
+            {SPOKEN_LANGUAGES.map((l) => (
+              <option key={l.code} value={l.code} className="bg-background text-foreground">
+                {languageLabel(l, locale)}
+              </option>
+            ))}
+          </select>
+        </label>
 
         <button
           type="button"

@@ -1,0 +1,214 @@
+{
+ "brand": "Deux voix",
+ "nav": {
+  "home": "首頁",
+  "start": "開始",
+  "join": "加入",
+  "privacy": "隱私",
+  "accessibility": "無障礙",
+  "interfaceLanguage": "介面語言",
+  "reduceMotion": "減輕動畫"
+ },
+ "home": {
+  "overline": "一場對談。兩款語言。一個連結。",
+  "title": "你家講你的話。",
+  "subtitle": "開一个對談，鬥陣分享一个臨時的 QR code，講話予伊出現佇畫面上。毋免帳號就可以試看覓。",
+  "ctaPrimary": "開始對談",
+  "ctaSecondary": "加入對談",
+  "reassurance": "你可以揀你愛講的語言，佇你欲講話的時，才予麥克風收音。所在是無一定愛開。",
+  "privacyNote": "佇你開始前，我們會顯示資料會按怎處理、會留偌久、還有翻譯服務商。",
+  "stepsTitle": "三个步驟",
+  "step1": "揀你的語言",
+  "step2": "分享 QR code",
+  "step3": "輪流講話",
+  "step1Text": "你佮你夥伴的語言，佇開對談前就會確認。",
+  "step2Text": "一个臨時的連結予人掃描。毋免藍芽，毋免安裝，嘛毋免帳號。",
+  "step3Text": "押著按鈕講話，放開就送出。原本的內容佮翻譯攏會出現。",
+  "howTitle": "伊是按怎行的？",
+  "howText": "每一輪講話攏會先轉成文字，才來翻譯。原本的會佇翻譯邊仔：這是輔助翻譯，毋是保證百分百準確。",
+  "exampleOriginal": "原本的（英文）",
+  "exampleOriginalText": "Excuse me, where is the nearest station?",
+  "exampleTranslated": "翻譯（中文（繁體））",
+  "exampleTranslatedText": "不好意思，請問最近的車站在哪裡？",
+  "trustTitle": "咱的承諾",
+  "trust1Title": "明確的麥克風同意",
+  "trust1Text": "麥克風袂家己開，瀏覽器拒絕嘛會清楚處理。",
+  "trust2Title": "臨時的對談",
+  "trust2Text": "這個連結是有限時的，會使閣重新產生，抑是開對談的人隨時攏會當取消。",
+  "trust3Title": "清楚的結束對談",
+  "trust3Text": "結束對談就會停止交流，嘛予分享的連結無效。",
+  "languagesNote": "會當用的語言愛看瀏覽器佮所選的服務商。佇你欲倚靠伊進前，請先試看覓翻譯對談。"
+ },
+ "create": {
+  "title": "你家欲開這場對談。",
+  "step": "步驟",
+  "of": "的",
+  "q1": "你欲講啥物語言？",
+  "q2": "另外彼个欲講啥物語言？",
+  "searchPlaceholder": "揣語言…",
+  "zhTwTitle": "你確定欲用華語（zh-TW）無？",
+  "zhTwText": "這是推薦的預設選項。臺語是另外提供的：伊毋是「臺灣話」的自動對應。",
+  "zhTwAccept": "著，繼續用華語",
+  "zhTwChange": "揀別的語言",
+  "limitedWarning": "有使用限制：這款語言的語音辨識佮翻譯愛看服務商，無保證會成功。",
+  "next": "繼續",
+  "back": "轉去",
+  "geoTitle": "愛予伊知影你的所在無？（無愛開嘛會使）",
+  "geoText": "這會使幫助提供情境，抑是推薦相關的語言。伊袂開啟麥克風，你嘛會當毋開所在繼續。",
+  "geoAllow": "予伊知影所在",
+  "geoSkip": "毋開所在繼續",
+  "geoDenied": "無予伊知影所在。你嘛會當照常繼續。",
+  "geoGranted": "有予伊知影所在（大約的所在，無儲存）。",
+  "confirmTitle": "確認",
+  "youSpeak": "你會講",
+  "partnerSpeaks": "你的夥伴會講",
+  "geolocation": "所在",
+  "allowed": "准允",
+  "notAllowed": "無准允",
+  "expiry": "預計結束時間",
+  "minutes": "分鐘",
+  "hours": "點鐘",
+  "dataNote": "你的聲會由第三方服務商轉寫佮翻譯。原本的內容佮翻譯的文字會留佇對談期間，了後連結就會失效。",
+  "confirm": "確認並建立對談",
+  "edit": "編輯",
+  "creating": "建立中…"
+ },
+ "qr": {
+  "title": "你的對談已經準備好矣",
+  "invite": "掃描這个 QR code，加入對談。逐家攏講你家愛講的語言：押著按鈕講話，放開就送出，了後原本的內容佮翻譯就會佇畫面上出現。你的麥克風愛你同意了後才會用。",
+  "short": "掃描來逐家攏講你家愛講的語言。臨時對談——毋免帳號。",
+  "copy": "複製連結",
+  "copied": "連結複製好矣",
+  "share": "分享連結",
+  "waiting": "等待另外彼个",
+  "joined": "另外彼个已經加入矣",
+  "cancel": "取消對談",
+  "regenerate": "重新產生連結",
+  "regenerateNote": "舊的連結會無效。",
+  "enter": "進入對談",
+  "expiresIn": "佇按呢濟時間後結束"
+ },
+ "join": {
+  "title": "你受著邀請，欲加入一場對談",
+  "languages": "設定好的語言",
+  "session": "對談",
+  "expires": "結束時間",
+  "chooseYourLang": "確認你欲講的語言",
+  "chooseNote": "你的語言袂對你的所在來判斷。",
+  "micTitle": "欲講話，請予麥克風通。",
+  "micText": "你會當用按鈕控制每一輪講話。",
+  "micAllow": "予麥克風通",
+  "micLater": "毋是這馬",
+  "joinCta": "加入對談",
+  "nameTitle": "你欲按怎顯示？",
+  "nameLabel": "你的顯示名稱",
+  "namePlaceholder": "例：阿華",
+  "nameNote": "這個名字佇對談期間會佇你的訊息邊仔出現。",
+  "nameContinue": "繼續",
+  "readOnly": "無麥克風嘛會當看著訊息。欲講話，請佇你的瀏覽器設定中予麥克風通。",
+  "leave": "離開對談"
+ },
+ "session": {
+  "you": "你",
+  "partner": "另外彼个",
+  "end": "結束",
+  "ended": "對談結束矣",
+  "connected": "連線中",
+  "reconnecting": "連線中斷",
+  "original": "原本的",
+  "translation": "翻譯",
+  "holdToTalk": "押著講話",
+  "releaseToSend": "放開送出",
+  "processing": "處理中…",
+  "empty": "猶無訊息。押著按鈕講話。",
+  "micRequest": "予麥克風通",
+  "modeVoice": "語音",
+  "collapse": "收起來",
+  "expand": "顯示閣較濟",
+  "modeText": "鍵盤",
+  "typePlaceholder": "拍你的訊息…",
+  "send": "送出",
+  "retry": "閣再試看覓",
+  "repeat": "閣講一擺",
+  "assistedNote": "輔助翻譯——原本的猶會佇。",
+  "waitingPartner": "等待另外彼个…",
+  "expiresIn": "佇按呢濟時間後結束",
+  "showQr": "邀請閣較濟人",
+  "showQrNote": "每一個新加入的人攏會講這場對談的客語。",
+  "present": "個人佇遮",
+  "presentOne": "一個人佇遮",
+  "participants": "參與者",
+  "notify": "通知",
+  "notifyOn": "通知開起來",
+  "notifyDenied": "你的瀏覽器擋著通知。",
+  "notifyTab": "佇家己的頁籤仔開這个網站，就會當開啟通知。",
+  "notifyHelp": "欲拄著通知，請佇你的瀏覽器設定（網址列的左爿圖示）中，予這个網站的通知通。",
+  "newMessage": "新的訊息"
+ },
+ "errors": {
+  "linkGone": "這个連結已經無去矣。請主持人重新建立一場對談。",
+  "sessionEnded": "這場對談已經結束矣。",
+  "sessionFull": "這場對談已經有兩个人加入矣。",
+  "backHome": "轉去首頁",
+  "micDenied": "麥克風無予通。請佇這个網站的瀏覽器設定中，予麥克風通，才閣再試看覓。",
+  "micUnavailable": "這个裝置無偵測著麥克風。",
+  "transcriptionFailed": "轉寫無成功。請閣講一擺，講予麥克風閣較近，抑是過一仔時間才閣試看覓。",
+  "translationFailed": "翻譯無成功。請閣再試看覓，抑是閣講一擺。",
+  "tooShort": "錄音時間傷短。請佇你講話的時，押著按鈕。",
+  "network": "連線中斷。請檢查你的網路，才閣再試看覓。",
+  "generic": "出著啥物問題。請閣再試看覓。",
+  "unsupportedLanguage": "這款語言無法度處理。請揀別款：會當用的語言愛看服務商佮瀏覽器。"
+ },
+ "privacy": {
+  "title": "隱私",
+  "intro": "這个頁面佇咧說明這个服務佇咧進行翻譯對談的時，處理啥物資料。這是提供予產品佮法律檢視，毋是法律建議。",
+  "sections": [
+   {
+    "h": "處理啥物資料",
+    "p": "所揀的語言、一個隨機的對談憑證，以及語音辨識產生的文字佮伊的翻譯。所在是無愛開，嘛無儲存。"
+   },
+   {
+    "h": "錄音",
+    "p": "錄音佇你放開按鈕的時，才會送去伺服器，轉送予語音辨識服務商，了後就丟掉。無儲存任何錄音。"
+   },
+   {
+    "h": "保留",
+    "p": "原本的內容佮翻譯的文字會佇對談期間保留，來顯示對談內容。對談會家己結束，連結嘛會失效。"
+   },
+   {
+    "h": "服務商",
+    "p": "語音辨識佮翻譯是由第三方模型處理，透過伺服器呼叫。存取金鑰會留佇伺服器端，袂暴露佇瀏覽器。"
+   },
+   {
+    "h": "安全性",
+    "p": "全面使用 HTTPS。對談憑證是隨機的，無會使予人猜著。QR code 毋是強加密認證：主持人隨時攏會當取消連結。"
+   }
+  ]
+ },
+ "accessibility": {
+  "title": "無障礙",
+  "intro": "這个版本咱的承諾，佮目前所知的限制。若拄著啥物困難，請通知咱。",
+  "sections": [
+   {
+    "h": "對比佮可讀性",
+    "p": "文字佇暗背景上盡量有懸對比，佇手機上嘛有舒適的字大細。"
+   },
+   {
+    "h": "無用顏色的狀態",
+    "p": "狀態（處理中、錯誤、連線）會用文字佮圖示來表示，袂單純用顏色抑是聲。"
+   },
+   {
+    "h": "動畫",
+    "p": "「減輕動畫」的選項會關掉背景效果。系統的 prefers-reduced-motion 設定嘛會予尊重。"
+   },
+   {
+    "h": "鍵盤",
+    "p": "講話按鈕會當用鍵盤操作：押著空白鍵抑是 Enter 鍵講話，放開就送出。"
+   },
+   {
+    "h": "螢幕閱讀器",
+    "p": "新的訊息會佇一個即時區域中廣播，每條訊息攏會說明發言者、原本的內容佮翻譯。"
+   }
+  ]
+ }
+}

@@ -1,0 +1,214 @@
+{
+ "brand": "Deux voix",
+ "nav": {
+  "home": "Strona główna",
+  "start": "Rozpocznij",
+  "join": "Dołącz",
+  "privacy": "Prywatność",
+  "accessibility": "Dostępność",
+  "interfaceLanguage": "Język interfejsu",
+  "reduceMotion": "Zmniejsz animacje"
+ },
+ "home": {
+  "overline": "Jedna rozmowa. Dwa języki. Jeden link.",
+  "title": "Każdy mówi w swoim języku.",
+  "subtitle": "Utwórz sesję, udostępnij tymczasowy kod QR i rozmawiaj na głos z tłumaczeniem wyświetlanym na ekranie. Nie potrzebujesz konta, żeby spróbować.",
+  "ctaPrimary": "Rozpocznij rozmowę",
+  "ctaSecondary": "Dołącz do rozmowy",
+  "reassurance": "Ty wybierasz języki i zezwalasz na mikrofon tylko wtedy, gdy chcesz mówić. Lokalizacja jest opcjonalna.",
+  "privacyNote": "Dane przetwarzane, czas ich przechowywania i dostawca tłumaczeń są pokazywane przed rozpoczęciem.",
+  "stepsTitle": "Trzy kroki",
+  "step1": "Wybierz swoje języki",
+  "step2": "Udostępnij kod QR",
+  "step3": "Mówcie na zmianę",
+  "step1Text": "Twój i Twojego rozmówcy, potwierdzone przed utworzeniem sesji.",
+  "step2Text": "Tymczasowy link do zeskanowania. Bez Bluetooth, bez instalacji, bez konta.",
+  "step3Text": "Przytrzymaj przycisk, aby mówić, zwolnij, aby wysłać. Pojawiają się zarówno oryginał, jak i tłumaczenie.",
+  "howTitle": "Jak to działa?",
+  "howText": "Każda tura jest transkrybowana, a następnie tłumaczona. Oryginał pozostaje obok tłumaczenia: są to tłumaczenia wspomagane, a nie gwarancja dokładności.",
+  "exampleOriginal": "Oryginał (angielski)",
+  "exampleOriginalText": "Excuse me, where is the nearest station?",
+  "exampleTranslated": "Tłumaczenie (中文（繁體）)",
+  "exampleTranslatedText": "不好意思，請問最近的車站在哪裡？",
+  "trustTitle": "Do czego się zobowiązujemy",
+  "trust1Title": "Wyraźna zgoda na mikrofon",
+  "trust1Text": "Mikrofon nigdy nie włącza się automatycznie, a odmowa w przeglądarce jest jasno obsługiwana.",
+  "trust2Title": "Tymczasowa sesja",
+  "trust2Text": "Link wygasa i może zostać ponownie wygenerowany lub anulowany w dowolnym momencie przez osobę, która utworzyła sesję.",
+  "trust3Title": "Wyraźne zakończenie sesji",
+  "trust3Text": "Zakończenie rozmowy przerywa wymianę i unieważnia udostępniony link.",
+  "languagesNote": "Dostępne języki zależą od przeglądarki i wybranego dostawcy. Przed poleganiem na tłumaczeniu przetestuj rozmowę w tym języku."
+ },
+ "create": {
+  "title": "Tworzysz sesję.",
+  "step": "Krok",
+  "of": "z",
+  "q1": "W jakim języku będziesz mówić?",
+  "q2": "W jakim języku będzie mówić druga osoba?",
+  "searchPlaceholder": "Wyszukaj język…",
+  "zhTwTitle": "Czy tradycyjny mandaryński (zh-TW) jest dla Ciebie odpowiedni?",
+  "zhTwText": "Jest to zalecane ustawienie domyślne. Taigi (tajwański) jest oferowany oddzielnie: nie jest to automatyczny odpowiednik „tajwańskiego”.",
+  "zhTwAccept": "Tak, pozostaw tradycyjny mandaryński",
+  "zhTwChange": "Wybierz inny język",
+  "limitedWarning": "Ograniczona dostępność: rozpoznawanie mowy i tłumaczenie dla tego języka zależą od dostawcy i nie są gwarantowane.",
+  "next": "Kontynuuj",
+  "back": "Wstecz",
+  "geoTitle": "Zezwolić na lokalizację? (Opcjonalnie)",
+  "geoText": "Może to pomóc zasugerować kontekst lub odpowiednie języki. Nie uruchamia mikrofonu i możesz kontynuować bez zezwolenia.",
+  "geoAllow": "Zezwól na lokalizację",
+  "geoSkip": "Kontynuuj bez lokalizacji",
+  "geoDenied": "Lokalizacja niedozwolona. Możesz kontynuować normalnie.",
+  "geoGranted": "Lokalizacja dozwolona (przybliżony obszar, nieprzechowywany).",
+  "confirmTitle": "Potwierdzenie",
+  "youSpeak": "Będziesz mówić",
+  "partnerSpeaks": "Twój rozmówca będzie mówić",
+  "geolocation": "Lokalizacja",
+  "allowed": "dozwolona",
+  "notAllowed": "niedozwolona",
+  "expiry": "Planowane wygaśnięcie",
+  "minutes": "minuty",
+  "hours": "godziny",
+  "dataNote": "Twój głos jest transkrybowany i tłumaczony przez zewnętrznego dostawcę. Oryginalny i przetłumaczony tekst jest przechowywany przez czas trwania sesji, po czym link wygasa.",
+  "confirm": "Potwierdź i utwórz sesję",
+  "edit": "Edytuj",
+  "creating": "Tworzenie…"
+ },
+ "qr": {
+  "title": "Twoja sesja jest gotowa",
+  "invite": "Zeskanuj ten kod QR, aby dołączyć do rozmowy. Każdy z Was mówi w swoim języku: przytrzymaj przycisk, aby mówić, zwolnij, aby wysłać, a następnie na ekranie pojawi się oryginał i tłumaczenie. Twój mikrofon zostanie użyty dopiero po wyrażeniu zgody.",
+  "short": "Zeskanuj, aby każdy mówił w swoim języku. Sesja tymczasowa — konto nie jest wymagane.",
+  "copy": "Kopiuj link",
+  "copied": "Link skopiowany",
+  "share": "Udostępnij link",
+  "waiting": "Oczekiwanie na drugą osobę",
+  "joined": "Druga osoba dołączyła",
+  "cancel": "Anuluj sesję",
+  "regenerate": "Wygeneruj link ponownie",
+  "regenerateNote": "Stary link staje się nieważny.",
+  "enter": "Wejdź do rozmowy",
+  "expiresIn": "Wygasa za"
+ },
+ "join": {
+  "title": "Zostałeś zaproszony do rozmowy",
+  "languages": "Skonfigurowane języki",
+  "session": "Sesja",
+  "expires": "Wygaśnięcie",
+  "chooseYourLang": "Potwierdź język, w którym będziesz mówić",
+  "chooseNote": "Twój język nigdy nie jest wnioskowany na podstawie lokalizacji.",
+  "micTitle": "Aby mówić, zezwól na dostęp do mikrofonu.",
+  "micText": "Kontrolujesz każdą turę za pomocą przycisku.",
+  "micAllow": "Zezwól na mikrofon",
+  "micLater": "Nie teraz",
+  "joinCta": "Dołącz do rozmowy",
+  "nameTitle": "Jak masz się wyświetlać?",
+  "nameLabel": "Twoja nazwa wyświetlana",
+  "namePlaceholder": "np. Alex",
+  "nameNote": "Ta nazwa pojawia się obok Twoich wiadomości podczas sesji.",
+  "nameContinue": "Kontynuuj",
+  "readOnly": "Bez mikrofonu nadal możesz czytać przychodzące wiadomości. Aby mówić, zezwól na mikrofon w ustawieniach przeglądarki.",
+  "leave": "Opuść sesję"
+ },
+ "session": {
+  "you": "Ty",
+  "partner": "Druga osoba",
+  "end": "Zakończ",
+  "ended": "Sesja zakończona",
+  "connected": "Połączono",
+  "reconnecting": "Połączenie przerwane",
+  "original": "Oryginał",
+  "translation": "Tłumaczenie",
+  "holdToTalk": "Przytrzymaj, aby mówić",
+  "releaseToSend": "Zwolnij, aby wysłać",
+  "processing": "Przetwarzanie…",
+  "empty": "Brak wiadomości. Przytrzymaj przycisk i mów.",
+  "micRequest": "Zezwól na mikrofon",
+  "modeVoice": "Głos",
+  "collapse": "Zwiń",
+  "expand": "Pokaż więcej",
+  "modeText": "Klawiatura",
+  "typePlaceholder": "Wpisz wiadomość…",
+  "send": "Wyślij",
+  "retry": "Spróbuj ponownie",
+  "repeat": "Powtórz",
+  "assistedNote": "Tłumaczenia wspomagane — oryginał pozostaje widoczny.",
+  "waitingPartner": "Oczekiwanie na drugą osobę…",
+  "expiresIn": "Wygasa za",
+  "showQr": "Zaproś więcej osób",
+  "showQrNote": "Każda nowa osoba będzie mówić w języku gościa sesji.",
+  "present": "osób tutaj",
+  "presentOne": "osoba tutaj",
+  "participants": "Uczestnicy",
+  "notify": "Powiadomienia",
+  "notifyOn": "Powiadomienia włączone",
+  "notifyDenied": "Powiadomienia są zablokowane przez Twoją przeglądarkę.",
+  "notifyTab": "Otwórz stronę w osobnej karcie, aby włączyć powiadomienia.",
+  "notifyHelp": "Aby otrzymywać alerty, zezwól na powiadomienia dla tej witryny w ustawieniach przeglądarki (ikona po lewej stronie paska adresu).",
+  "newMessage": "Nowa wiadomość"
+ },
+ "errors": {
+  "linkGone": "Ten link jest już niedostępny. Poproś hosta o utworzenie nowej sesji.",
+  "sessionEnded": "Ta sesja została zakończona.",
+  "sessionFull": "Ta sesja ma już dwóch uczestników.",
+  "backHome": "Wróć do strony głównej",
+  "micDenied": "Mikrofon jest niedozwolony. Otwórz ustawienia przeglądarki dla tej witryny, zezwól na mikrofon, a następnie spróbuj ponownie.",
+  "micUnavailable": "Nie wykryto mikrofonu na tym urządzeniu.",
+  "transcriptionFailed": "Transkrypcja nie powiodła się. Powtórz, mów bliżej mikrofonu lub spróbuj ponownie za chwilę.",
+  "translationFailed": "Tłumaczenie nie powiodło się. Spróbuj ponownie lub powtórz zdanie.",
+  "tooShort": "Nagranie zbyt krótkie. Przytrzymaj przycisk podczas mówienia.",
+  "network": "Połączenie przerwane. Sprawdź sieć, a następnie spróbuj ponownie.",
+  "generic": "Coś poszło nie tak. Spróbuj ponownie.",
+  "unsupportedLanguage": "Tego języka nie można przetworzyć. Wybierz inny: dostępność zależy od dostawców i przeglądarki."
+ },
+ "privacy": {
+  "title": "Prywatność",
+  "intro": "Ta strona opisuje, co usługa przetwarza, aby umożliwić tłumaczoną rozmowę. Jest oferowana do przeglądu produktu i prawnego, i nie stanowi porady prawnej.",
+  "sections": [
+   {
+    "h": "Co jest przetwarzane",
+    "p": "Wybrane języki, losowy token sesji oraz tekst wygenerowany przez rozpoznawanie mowy wraz z jego tłumaczeniem. Lokalizacja jest opcjonalna i nie jest przechowywana."
+   },
+   {
+    "h": "Audio",
+    "p": "Audio jest wysyłane na serwer tylko po zwolnieniu przycisku, przekazywane do dostawcy rozpoznawania mowy, a następnie odrzucane. Żadne nagranie audio nie jest przechowywane."
+   },
+   {
+    "h": "Przechowywanie",
+    "p": "Oryginalny i przetłumaczony tekst jest przechowywany przez czas trwania sesji w celu wyświetlenia rozmowy. Sesja wygasa automatycznie, a link staje się nieważny."
+   },
+   {
+    "h": "Dostawcy",
+    "p": "Rozpoznawanie mowy i tłumaczenie są wykonywane przez modele stron trzecich wywoływane z serwera. Klucze dostępu pozostają po stronie serwera i nigdy nie są ujawniane przeglądarce."
+   },
+   {
+    "h": "Bezpieczeństwo",
+    "p": "HTTPS wszędzie. Token sesji jest losowy i niemożliwy do odgadnięcia. Kod QR nie jest silnym uwierzytelnieniem: host może odwołać link w dowolnym momencie."
+   }
+  ]
+ },
+ "accessibility": {
+  "title": "Dostępność",
+  "intro": "Nasze zobowiązania w tej wersji i znane ograniczenia. Poinformuj nas o wszelkich napotkanych przeszkodach.",
+  "sections": [
+   {
+    "h": "Kontrast i czytelność",
+    "p": "Tekst ma wysoki kontrast na ciemnym tle, z wygodnymi rozmiarami na urządzeniach mobilnych."
+   },
+   {
+    "h": "Stany bez koloru",
+    "p": "Stany (przetwarzanie, błąd, połączenie) są ogłaszane tekstem i ikonami, nigdy samym kolorem ani dźwiękiem."
+   },
+   {
+    "h": "Animacje",
+    "p": "Opcja „Zmniejsz animacje” wyłącza efekty tła. Ustawienie systemowe dotyczące preferowania zredukowanego ruchu jest również respektowane."
+   },
+   {
+    "h": "Klawiatura",
+    "p": "Przycisk rozmowy działa z klawiaturą: przytrzymaj Spację lub Enter, aby mówić, zwolnij, aby wysłać."
+   },
+   {
+    "h": "Czytniki ekranu",
+    "p": "Nowe wiadomości są ogłaszane w obszarze na żywo, a każda wiadomość określa mówcę, oryginał i tłumaczenie."
+   }
+  ]
+ }
+}

@@ -1,0 +1,214 @@
+{
+ "brand": "Deux voix",
+ "nav": {
+  "home": "Home",
+  "start": "Starten",
+  "join": "Deelnemen",
+  "privacy": "Privacy",
+  "accessibility": "Toegankelijkheid",
+  "interfaceLanguage": "Interfacetaal",
+  "reduceMotion": "Animaties verminderen"
+ },
+ "home": {
+  "overline": "Eén gesprek. Twee talen. Eén link.",
+  "title": "Ieder spreekt zijn eigen taal.",
+  "subtitle": "Start een sessie, deel een tijdelijke QR-code en praat hardop met de vertaling op het scherm. Geen account nodig om het te proberen.",
+  "ctaPrimary": "Begin een gesprek",
+  "ctaSecondary": "Deelnemen aan een gesprek",
+  "reassurance": "Jij kiest de talen en geeft alleen microfoontoegang wanneer jij besluit te spreken. Locatie is optioneel.",
+  "privacyNote": "De verwerkte gegevens, hoe lang deze worden bewaard en de vertaaldienst worden getoond voordat je begint.",
+  "stepsTitle": "Drie stappen",
+  "step1": "Kies je talen",
+  "step2": "Deel de QR-code",
+  "step3": "Spreek om de beurt",
+  "step1Text": "Die van jou en die van je partner, bevestigd voordat een sessie wordt aangemaakt.",
+  "step2Text": "Een tijdelijke link om te scannen. Geen Bluetooth, geen installatie, geen account.",
+  "step3Text": "Houd de knop ingedrukt om te spreken, laat los om te verzenden. Origineel en vertaling verschijnen beide.",
+  "howTitle": "Hoe werkt het?",
+  "howText": "Elke beurt wordt getranscribeerd, daarna vertaald. Het origineel blijft naast de vertaling staan: dit zijn geassisteerde vertalingen, geen garantie voor nauwkeurigheid.",
+  "exampleOriginal": "Origineel (Engels)",
+  "exampleOriginalText": "Excuse me, where is the nearest station?",
+  "exampleTranslated": "Vertaling (中文（繁體）)",
+  "exampleTranslatedText": "不好意思, 請問最近的車站在哪裡？",
+  "trustTitle": "Waar we ons voor inzetten",
+  "trust1Title": "Expliciete microfoontoestemming",
+  "trust1Text": "De microfoon wordt nooit automatisch ingeschakeld, en een browserweigeringsbericht wordt duidelijk afgehandeld.",
+  "trust2Title": "Tijdelijke sessie",
+  "trust2Text": "De link verloopt en kan op elk moment opnieuw worden gegenereerd of geannuleerd door degene die de sessie heeft aangemaakt.",
+  "trust3Title": "Duidelijk einde van de sessie",
+  "trust3Text": "Het beëindigen van het gesprek stopt de uitwisseling en maakt de gedeelde link ongeldig.",
+  "languagesNote": "Beschikbare talen zijn afhankelijk van de browser en de geselecteerde provider. Test een vertaald gesprek voordat je erop vertrouwt."
+ },
+ "create": {
+  "title": "Je bent bezig met het aanmaken van de sessie.",
+  "step": "Stap",
+  "of": "van",
+  "q1": "Welke taal spreek jij?",
+  "q2": "Welke taal spreekt de ander?",
+  "searchPlaceholder": "Zoek een taal…",
+  "zhTwTitle": "Is Traditioneel Mandarijn (zh-TW) geschikt voor jou?",
+  "zhTwText": "Het is de aanbevolen standaard. Taigi (Taiwanees) wordt afzonderlijk aangeboden: het is geen automatisch equivalent van 'Taiwanees'.",
+  "zhTwAccept": "Ja, behoud Traditioneel Mandarijn",
+  "zhTwChange": "Kies een andere taal",
+  "limitedWarning": "Beperkte beschikbaarheid: spraakherkenning en vertaling voor deze taal zijn afhankelijk van de provider en zijn niet gegarandeerd.",
+  "next": "Doorgaan",
+  "back": "Terug",
+  "geoTitle": "Locatie toestaan? (Optioneel)",
+  "geoText": "Het kan helpen bij het voorstellen van context of relevante talen. Het start de microfoon niet en je kunt doorgaan zonder het toe te staan.",
+  "geoAllow": "Locatie toestaan",
+  "geoSkip": "Doorgaan zonder locatie",
+  "geoDenied": "Locatie niet toegestaan. Je kunt normaal doorgaan.",
+  "geoGranted": "Locatie toegestaan (geschatte omgeving, niet opgeslagen).",
+  "confirmTitle": "Bevestiging",
+  "youSpeak": "Jij spreekt",
+  "partnerSpeaks": "Je partner spreekt",
+  "geolocation": "Locatie",
+  "allowed": "toegestaan",
+  "notAllowed": "niet toegestaan",
+  "expiry": "Geplande verlooptijd",
+  "minutes": "minuten",
+  "hours": "uur",
+  "dataNote": "Je stem wordt getranscribeerd en vertaald door een externe provider. De originele en vertaalde tekst wordt bewaard gedurende de sessie, daarna verloopt de link.",
+  "confirm": "Bevestigen en sessie aanmaken",
+  "edit": "Bewerken",
+  "creating": "Aanmaken…"
+ },
+ "qr": {
+  "title": "Je sessie is klaar",
+  "invite": "Scan deze QR-code om deel te nemen aan het gesprek. Ieder spreekt zijn eigen taal: houd de knop ingedrukt om te spreken, laat los om te verzenden, waarna het origineel en de vertaling op het scherm verschijnen. Je microfoon wordt pas gebruikt nadat je toestemming geeft.",
+  "short": "Scan om elk je eigen taal te spreken. Tijdelijke sessie — geen account vereist.",
+  "copy": "Link kopiëren",
+  "copied": "Link gekopieerd",
+  "share": "Link delen",
+  "waiting": "Wachten op de ander",
+  "joined": "De ander is toegetreden",
+  "cancel": "Sessie annuleren",
+  "regenerate": "Link opnieuw genereren",
+  "regenerateNote": "De oude link wordt ongeldig.",
+  "enter": "Deelnemen aan het gesprek",
+  "expiresIn": "Verloopt over"
+ },
+ "join": {
+  "title": "Je bent uitgenodigd voor een gesprek",
+  "languages": "Geselecteerde talen",
+  "session": "Sessie",
+  "expires": "Verloopt",
+  "chooseYourLang": "Bevestig de taal die je spreekt",
+  "chooseNote": "Je taal wordt nooit afgeleid van je locatie.",
+  "micTitle": "Om te spreken, geef toegang tot de microfoon.",
+  "micText": "Je beheert elke beurt met de knop.",
+  "micAllow": "Microfoon toestaan",
+  "micLater": "Niet nu",
+  "joinCta": "Deelnemen aan het gesprek",
+  "nameTitle": "Hoe wil je verschijnen?",
+  "nameLabel": "Je weergavenaam",
+  "namePlaceholder": "bijv. Alex",
+  "nameNote": "Deze naam verschijnt naast je berichten tijdens de sessie.",
+  "nameContinue": "Doorgaan",
+  "readOnly": "Zonder microfoon kun je nog steeds inkomende berichten lezen. Om te spreken, sta de microfoon toe in je browserinstellingen.",
+  "leave": "Sessie verlaten"
+ },
+ "session": {
+  "you": "Jij",
+  "partner": "Ander",
+  "end": "Eindigen",
+  "ended": "Sessie beëindigd",
+  "connected": "Verbonden",
+  "reconnecting": "Verbinding onderbroken",
+  "original": "Origineel",
+  "translation": "Vertaling",
+  "holdToTalk": "Houd ingedrukt om te spreken",
+  "releaseToSend": "Laat los om te verzenden",
+  "processing": "Verwerken…",
+  "empty": "Nog geen berichten. Houd de knop ingedrukt en spreek.",
+  "micRequest": "Microfoon toestaan",
+  "modeVoice": "Stem",
+  "collapse": "Inklappen",
+  "expand": "Meer tonen",
+  "modeText": "Toetsenbord",
+  "typePlaceholder": "Typ je bericht…",
+  "send": "Verzenden",
+  "retry": "Opnieuw proberen",
+  "repeat": "Herhalen",
+  "assistedNote": "Geassisteerde vertalingen — het origineel blijft zichtbaar.",
+  "waitingPartner": "Wachten op de ander…",
+  "expiresIn": "Verloopt over",
+  "showQr": "Meer mensen uitnodigen",
+  "showQrNote": "Elke nieuwe persoon spreekt de gasttaal van de sessie.",
+  "present": "mensen aanwezig",
+  "presentOne": "persoon aanwezig",
+  "participants": "Deelnemers",
+  "notify": "Meldingen",
+  "notifyOn": "Meldingen aan",
+  "notifyDenied": "Meldingen worden geblokkeerd door je browser.",
+  "notifyTab": "Open de site in een eigen tabblad om meldingen in te schakelen.",
+  "notifyHelp": "Om meldingen te ontvangen, sta meldingen toe voor deze site in je browserinstellingen (icoon links van de adresbalk).",
+  "newMessage": "Nieuw bericht"
+ },
+ "errors": {
+  "linkGone": "Deze link is niet meer beschikbaar. Vraag de host om een nieuwe sessie aan te maken.",
+  "sessionEnded": "Deze sessie is beëindigd.",
+  "sessionFull": "Deze sessie heeft al twee deelnemers.",
+  "backHome": "Terug naar home",
+  "micDenied": "Microfoon is niet toegestaan. Open je browserinstellingen voor deze site, sta de microfoon toe en probeer het opnieuw.",
+  "micUnavailable": "Geen microfoon gedetecteerd op dit apparaat.",
+  "transcriptionFailed": "Transcriben is mislukt. Herhaal, spreek dichter bij de microfoon, of probeer het over een moment opnieuw.",
+  "translationFailed": "Vertalen is mislukt. Probeer het opnieuw of herhaal de zin.",
+  "tooShort": "Opname te kort. Houd de knop ingedrukt terwijl je spreekt.",
+  "network": "Verbinding onderbroken. Controleer je netwerk en probeer het opnieuw.",
+  "generic": "Er ging iets mis. Probeer het opnieuw.",
+  "unsupportedLanguage": "Deze taal kon niet worden verwerkt. Kies een andere: beschikbaarheid hangt af van de providers en de browser."
+ },
+ "privacy": {
+  "title": "Privacy",
+  "intro": "Deze pagina beschrijft wat de dienst verwerkt om een vertaald gesprek te voeren. Het wordt aangeboden voor product- en juridische beoordeling, en is geen juridisch advies.",
+  "sections": [
+   {
+    "h": "Wat wordt verwerkt",
+    "p": "De gekozen talen, een willekeurige sessietoken, en de tekst geproduceerd door spraakherkenning samen met de vertaling. Locatie is optioneel en wordt niet opgeslagen."
+   },
+   {
+    "h": "Audio",
+    "p": "Audio wordt alleen naar de server gestuurd wanneer je de knop loslaat, doorgestuurd naar de spraakherkenningsprovider, en vervolgens verwijderd. Er wordt geen audio-opname opgeslagen."
+   },
+   {
+    "h": "Bewaring",
+    "p": "Originele en vertaalde tekst wordt bewaard voor de duur van de sessie om het gesprek weer te geven. De sessie verloopt automatisch en de link wordt ongeldig."
+   },
+   {
+    "h": "Providers",
+    "p": "Spraakherkenning en vertaling worden uitgevoerd door externe modellen die via de server worden aangeroepen. Toegangssleutels blijven server-side en worden nooit blootgesteld aan de browser."
+   },
+   {
+    "h": "Beveiliging",
+    "p": "HTTPS overal. De sessietoken is willekeurig en niet te raden. De QR-code is geen sterke authenticatie: de host kan de link op elk moment intrekken."
+   }
+  ]
+ },
+ "accessibility": {
+  "title": "Toegankelijkheid",
+  "intro": "Onze toezeggingen in deze versie, en de bekende beperkingen. Vertel ons over eventuele obstakels die je tegenkomt.",
+  "sections": [
+   {
+    "h": "Contrast en leesbaarheid",
+    "p": "Tekst streeft naar een hoog contrast op een donkere achtergrond, met comfortabele groottes op mobiel."
+   },
+   {
+    "h": "Toestanden zonder kleur",
+    "p": "Toestanden (verwerken, fout, verbinding) worden aangekondigd met tekst en iconen, nooit met alleen kleur of geluid."
+   },
+   {
+    "h": "Animaties",
+    "p": "De optie “Animaties verminderen” schakelt achtergrondeffecten uit. De systeeminstelling prefers-reduced-motion wordt ook gerespecteerd."
+   },
+   {
+    "h": "Toetsenbord",
+    "p": "De spreekknop werkt met een toetsenbord: houd Spatie of Enter ingedrukt om te spreken, laat los om te verzenden."
+   },
+   {
+    "h": "Schermlezers",
+    "p": "Nieuwe berichten worden aangekondigd in een live-regio, en elk bericht vermeldt de spreker, het origineel en de vertaling."
+   }
+  ]
+ }
+}

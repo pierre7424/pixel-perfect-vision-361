@@ -768,6 +768,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    document.documentElement.lang = locale === "zh" ? "zh-TW" : locale === "nan" ? "nan-TW" : locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+  }, [locale]);
+
+  useEffect(() => {
     document.documentElement.classList.toggle("reduce-motion", reduceMotion);
   }, [reduceMotion]);
 

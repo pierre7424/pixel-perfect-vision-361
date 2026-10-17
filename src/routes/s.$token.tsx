@@ -9,7 +9,7 @@ import { LanguagePicker } from "@/components/language-picker";
 import { NamePrompt } from "@/components/name-prompt";
 import { clientId, storeName, storedName } from "@/lib/identity";
 import { languageLabel, uiLocaleForSpoken, useI18n } from "@/lib/i18n";
-import { findLanguage, qrInvitation } from "@/lib/languages";
+import { detectBrowserSpoken, findLanguage, qrInvitation } from "@/lib/languages";
 import { shareLink } from "@/lib/share-origin";
 import { useRecorder } from "@/lib/use-recorder";
 
@@ -78,13 +78,14 @@ function SessionPage() {
     void load();
   }, [load]);
 
-  // The guest's whole page follows the session's guest language, so the
-  // person who scans the QR code reads it in their own language.
+  // The guest's page follows their own browser language, not the host's.
+  const hasSession = !!session;
   useEffect(() => {
-    if (role === "guest" && session) {
-      setLocale(uiLocaleForSpoken(session.guestLang));
+    if (role === "guest" && hasSession) {
+      const own = detectBrowserSpoken();
+      if (own) setLocale(uiLocaleForSpoken(own));
     }
-  }, [role, session, setLocale]);
+  }, [role, hasSession, setLocale]);
 
   if (failure) {
     const message =
@@ -342,6 +343,10 @@ function GuestWelcome({
   const recorder = useRecorder();
 
   const [lang, setLang] = useState(session.guestLang);
+  useEffect(() => {
+    const own = detectBrowserSpoken();
+    if (own) setLang(own);
+  }, []);
   const [editingLang, setEditingLang] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [working, setWorking] = useState(false);

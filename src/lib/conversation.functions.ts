@@ -640,3 +640,34 @@ export const sendTextMessage = createServerFn({ method: "POST" })
       },
     };
   });
+
+/** Unread message counts for sessions remembered on this device. */
+export const getUnreadCounts = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        items: z
+          .array(z.object({ token: tokenSchema, since: z.string().max(40), name: z.string().max(40).optional() }))
+          .max(50),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data }): Promise<Record<string, number>> => {
+    const db = await admin();
+    const out: Record<string, number> = {};
+    await Promise.all(
+      data.items.map(async (it) => {
+        const { data: s } = await db.from("conversation_sessions").select("id").eq("token", it.token).maybeSingle();
+        if (!s) return;
+        let q = db
+          .from("conversation_messages")
+          .select("id", { count: "exact", head: true })
+          .eq("session_id", s.id)
+          .gt("created_at", it.since);
+        if (it.name) q = q.neq("display_name", it.name);
+        const { count } = await q;
+        out[it.token] = count ?? 0;
+      }),
+    );
+    return out;
+  });

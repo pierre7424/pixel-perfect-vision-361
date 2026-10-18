@@ -22,6 +22,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { PushToTalk } from "@/components/push-to-talk";
 import { QrModal } from "@/components/qr-modal";
 import { clientId } from "@/lib/identity";
+import { markSessionRead } from "@/lib/recent-sessions";
 import { languageLabel, useI18n } from "@/lib/i18n";
 import { SPOKEN_LANGUAGES, findLanguage } from "@/lib/languages";
 import { Languages } from "lucide-react";
@@ -138,6 +139,7 @@ export function ConversationView({
       }
       setSession(res.session);
       setMessages(res.messages);
+      markSessionRead(session.token);
       setParticipants(res.participants);
 
       // Notify about messages from other people while the page is in the background.

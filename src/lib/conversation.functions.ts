@@ -652,9 +652,12 @@ export const getUnreadCounts = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data }): Promise<Record<string, number>> => {
+  .handler(
+    async ({
+      data,
+    }): Promise<Record<string, { unread: number; participants: number; hostName: string | null }>> => {
     const db = await admin();
-    const out: Record<string, number> = {};
+    const out: Record<string, { unread: number; participants: number; hostName: string | null }> = {};
     await Promise.all(
       data.items.map(async (it) => {
         const { data: s } = await db.from("conversation_sessions").select("id").eq("token", it.token).maybeSingle();
@@ -665,8 +668,21 @@ export const getUnreadCounts = createServerFn({ method: "POST" })
           .eq("session_id", s.id)
           .gt("created_at", it.since);
         if (it.name) q = q.neq("display_name", it.name);
-        const { count } = await q;
-        out[it.token] = count ?? 0;
+        const [{ count }, { data: parts }] = await Promise.all([
+          q,
+          db
+            .from("conversation_participants")
+            .select("display_name, role, joined_at")
+            .eq("session_id", s.id)
+            .order("joined_at", { ascending: true })
+            .limit(500),
+        ]);
+        const host = (parts ?? []).find((p) => p.role === "host");
+        out[it.token] = {
+          unread: count ?? 0,
+          participants: (parts ?? []).length,
+          hostName: (host?.display_name as string | undefined) ?? null,
+        };
       }),
     );
     return out;

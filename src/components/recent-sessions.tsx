@@ -78,7 +78,7 @@ export function RecentSessions() {
               </span>
               {unread[s.token]?.unread ? (
                 <span className="grid min-w-6 place-items-center rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-primary-foreground">
-                  {unread[s.token]!.unread > 99 ? "99+" : unread[s.token]}
+                  {unread[s.token]!.unread > 99 ? "99+" : unread[s.token]!.unread}
                 </span>
               ) : null}
             </Link>

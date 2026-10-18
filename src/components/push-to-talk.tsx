@@ -8,12 +8,14 @@ export function PushToTalk({
   recording,
   busy,
   disabled,
+  compact,
   onStart,
   onStop,
 }: {
   recording: boolean;
   busy: boolean;
   disabled?: boolean;
+  compact?: boolean;
   onStart: () => void;
   onStop: () => void;
 }) {
@@ -23,7 +25,7 @@ export function PushToTalk({
   const label = busy ? t.session.processing : recording ? t.session.releaseToSend : t.session.holdToTalk;
 
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className={cn("flex flex-col items-center gap-1", compact && "shrink-0 [&>p]:sr-only [&>button]:size-10")}>
       <button
         type="button"
         disabled={disabled || busy}

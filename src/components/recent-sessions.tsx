@@ -19,8 +19,8 @@ function remaining(iso: string, d: string) {
 }
 
 export function RecentSessions() {
-  const { locale } = useI18n() as unknown as { locale: string };
-  const L = LABELS[locale] ?? LABELS.en;
+  const { locale } = useI18n();
+  const L = LABELS[locale] ?? LABELS["en"]!;
   const [list, setList] = useState<RecentSession[]>([]);
   useEffect(() => setList(listRecentSessions()), []);
   if (list.length === 0) return null;

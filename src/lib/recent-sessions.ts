@@ -37,3 +37,15 @@ export function forgetSession(token: string) {
   if (typeof window === "undefined") return;
   save(listRecentSessions().filter((x) => x.token !== token));
 }
+
+const readKey = (token: string) => `read-${token}`;
+
+export function lastRead(token: string): string {
+  if (typeof window === "undefined") return new Date().toISOString();
+  return window.localStorage.getItem(readKey(token)) ?? new Date(0).toISOString();
+}
+
+export function markSessionRead(token: string) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(readKey(token), new Date().toISOString());
+}

@@ -390,23 +390,19 @@ function GuestWelcome({
       <h1 className="text-2xl font-bold">{t.join.title}</h1>
 
       <div className="glass-card mt-6 p-6">
-        <p className="text-sm leading-relaxed">{t.qr.invite}</p>
-
-        <div className="mt-5 flex items-center justify-between gap-3 text-sm">
-          <span className="text-muted-foreground">{t.join.chooseYourLang}</span>
-          {editingLang ? null : (
-            <span className="flex items-center gap-2">
-              <span className="font-medium">{languageLabel(findLanguage(lang), locale)}</span>
-              <button
-                type="button"
-                onClick={() => setEditingLang(true)}
-                className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium"
-              >
-                {t.create.edit}
-              </button>
-            </span>
-          )}
-        </div>
+        <p className="text-sm text-muted-foreground">{t.join.chooseYourLang}</p>
+        {editingLang ? null : (
+          <div className="mt-2 flex items-center justify-between gap-3">
+            <span className="text-2xl font-bold">{languageLabel(findLanguage(lang), locale)}</span>
+            <button
+              type="button"
+              onClick={() => setEditingLang(true)}
+              className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium"
+            >
+              {t.create.edit}
+            </button>
+          </div>
+        )}
         {editingLang ? (
           <div className="mt-3">
             <LanguagePicker value={lang} onChange={setLang} />

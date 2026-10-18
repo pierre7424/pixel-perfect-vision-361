@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/confidentialite")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Confidentialité — Deux voix" },

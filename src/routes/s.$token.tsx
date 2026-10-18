@@ -24,6 +24,7 @@ import {
 } from "@/lib/conversation.functions";
 
 export const Route = createFileRoute("/s/$token")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Conversation traduite — Deux voix" },

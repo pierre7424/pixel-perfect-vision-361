@@ -5,6 +5,7 @@ import { useI18n } from "@/lib/i18n";
 import { RecentSessions } from "@/components/recent-sessions";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Deux voix — parlez chacun votre langue" },

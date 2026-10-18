@@ -9,6 +9,7 @@ import { detectBrowserSpoken } from "@/lib/languages";
 import { SESSION_HOURS, createSession as createSessionFn } from "@/lib/conversation.functions";
 
 export const Route = createFileRoute("/nouvelle")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Créer une session — Deux voix" },

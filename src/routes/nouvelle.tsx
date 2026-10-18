@@ -72,7 +72,7 @@ function NewSessionPage() {
           <LanguagePicker value={hostLang} onChange={setHostLang} labelledBy="host-lang" />
         </div>
         <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
-          {t.create.expiry} : {SESSION_HOURS} {t.create.hours}. {t.create.dataNote}{" "}
+          {t.create.expiry} : {SESSION_HOURS / 24} × 24 {t.create.hours}. {t.create.dataNote}{" "}
           <a href="/confidentialite" className="underline underline-offset-4">
             {t.nav.privacy}
           </a>

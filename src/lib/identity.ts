@@ -25,7 +25,19 @@ export function storedName(token: string): string {
   return window.localStorage.getItem(`name-${token}`) ?? "";
 }
 
-export function storeName(token: string, name: string) {
+function storeNameOnly(token: string, name: string) {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(`name-${token}`, name.slice(0, 40));
+}
+
+export function storeName(token: string, name: string) {
+  if (typeof window === "undefined") return;
+  storeNameOnly(token, name);
+  try {
+    const raw = JSON.parse(window.localStorage.getItem("recent-sessions") ?? "[]");
+    for (const s of raw) if (s.token === token) s.name = name.slice(0, 40);
+    window.localStorage.setItem("recent-sessions", JSON.stringify(raw));
+  } catch {
+    /* ignore */
+  }
 }

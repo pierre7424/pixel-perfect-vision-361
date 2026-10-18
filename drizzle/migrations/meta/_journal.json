@@ -8,6 +8,13 @@
       "when": 1792132448898,
       "tag": "0000_message_translations",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792293102038,
+      "tag": "0001_session_one_week",
+      "breakpoints": true
     }
   ]
 }

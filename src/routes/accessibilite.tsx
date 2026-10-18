@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/accessibilite")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Accessibilité — Deux voix" },

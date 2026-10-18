@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/rejoindre")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Rejoindre une conversation — Deux voix" },

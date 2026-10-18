@@ -14,6 +14,7 @@ import { Route as AccessibiliteRouteImport } from './routes/accessibilite'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
 import { Route as NouvelleRouteImport } from './routes/nouvelle'
 import { Route as RejoindreRouteImport } from './routes/rejoindre'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as STokenRouteImport } from './routes/s.$token'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,11 @@ const RejoindreRoute = RejoindreRouteImport.update({
   path: '/rejoindre',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const STokenRoute = STokenRouteImport.update({
   id: '/s/$token',
   path: '/s/$token',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/confidentialite': typeof ConfidentialiteRoute
   '/nouvelle': typeof NouvelleRoute
   '/rejoindre': typeof RejoindreRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/s/$token': typeof STokenRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/confidentialite': typeof ConfidentialiteRoute
   '/nouvelle': typeof NouvelleRoute
   '/rejoindre': typeof RejoindreRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/s/$token': typeof STokenRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/confidentialite': typeof ConfidentialiteRoute
   '/nouvelle': typeof NouvelleRoute
   '/rejoindre': typeof RejoindreRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/s/$token': typeof STokenRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/confidentialite'
     | '/nouvelle'
     | '/rejoindre'
+    | '/sitemap.xml'
     | '/s/$token'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/confidentialite'
     | '/nouvelle'
     | '/rejoindre'
+    | '/sitemap.xml'
     | '/s/$token'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/confidentialite'
     | '/nouvelle'
     | '/rejoindre'
+    | '/sitemap.xml'
     | '/s/$token'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +117,7 @@ export interface RootRouteChildren {
   ConfidentialiteRoute: typeof ConfidentialiteRoute
   NouvelleRoute: typeof NouvelleRoute
   RejoindreRoute: typeof RejoindreRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   STokenRoute: typeof STokenRoute
 }
 
@@ -145,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RejoindreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/s/$token': {
       id: '/s/$token'
       path: '/s/$token'
@@ -161,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConfidentialiteRoute: ConfidentialiteRoute,
   NouvelleRoute: NouvelleRoute,
   RejoindreRoute: RejoindreRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   STokenRoute: STokenRoute,
 }
 export const routeTree = rootRouteImport

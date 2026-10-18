@@ -1,3 +1,4 @@
+import { rememberSession } from "@/lib/recent-sessions";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Check, Copy, Loader2, Mic, RefreshCw, Share2, Trash2 } from "lucide-react";
@@ -69,6 +70,12 @@ function SessionPage() {
       }
       setFailure(null);
       setSession(res.session);
+      rememberSession({
+        token,
+        role: window.localStorage.getItem(`role-${token}`) === "host" ? "host" : "guest",
+        expiresAt: res.session.expiresAt,
+        name: storedName(token),
+      });
     } catch {
       setFailure("unavailable");
     }

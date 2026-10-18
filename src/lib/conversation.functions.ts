@@ -3,8 +3,8 @@ import { z } from "zod";
 
 import { LANGUAGE_CODES, findLanguage, transcriptionHint } from "./languages";
 
-/** Sessions stay open for 4 hours. */
-export const SESSION_MINUTES = 240;
+/** Sessions stay open for 1 week. */
+export const SESSION_MINUTES = 7 * 24 * 60;
 export const SESSION_HOURS = SESSION_MINUTES / 60;
 
 export type Role = "host" | "guest";

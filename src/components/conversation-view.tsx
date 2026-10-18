@@ -7,7 +7,6 @@ import {
   ChevronDown,
   ChevronUp,
   Clock,
-  Keyboard,
   Loader2,
   LogOut,
   Mic,
@@ -212,7 +211,6 @@ export function ConversationView({
     }
   }, [recorder, role, sendUtterance, session.token, displayName]);
 
-  const [inputMode, setInputMode] = useState<"voice" | "text">("voice");
   const [draft, setDraft] = useState("");
 
   const handleSendText = useCallback(async () => {

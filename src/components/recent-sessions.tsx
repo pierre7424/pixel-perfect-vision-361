@@ -1,14 +1,16 @@
 import { Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { MessagesSquare, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { getUnreadCounts as getUnreadCountsFn } from "@/lib/conversation.functions";
 import { useI18n } from "@/lib/i18n";
-import { forgetSession, listRecentSessions, type RecentSession } from "@/lib/recent-sessions";
+import { forgetSession, lastRead, listRecentSessions, type RecentSession } from "@/lib/recent-sessions";
 
-const LABELS: Record<string, { title: string; host: string; guest: string; left: string; remove: string; open: string; days: string }> = {
-  fr: { title: "Vos conversations", host: "Créateur", guest: "Invité", left: "Expire dans", remove: "Retirer de la liste", open: "Ouvrir", days: "j" },
-  en: { title: "Your conversations", host: "Host", guest: "Guest", left: "Expires in", remove: "Remove from list", open: "Open", days: "d" },
-  zh: { title: "您的對話", host: "建立者", guest: "訪客", left: "剩餘", remove: "從清單移除", open: "開啟", days: "天" },
+const LABELS: Record<string, { title: string; host: string; guest: string; left: string; remove: string; open: string; days: string; unread: string }> = {
+  fr: { title: "Vos conversations", host: "Créateur", guest: "Invité", left: "Expire dans", remove: "Retirer de la liste", open: "Ouvrir", days: "j", unread: "message(s) en attente" },
+  en: { title: "Your conversations", host: "Host", guest: "Guest", left: "Expires in", remove: "Remove from list", open: "Open", days: "d", unread: "unread message(s)" },
+  zh: { title: "您的對話", host: "建立者", guest: "訪客", left: "剩餘", remove: "從清單移除", open: "開啟", days: "天", unread: "則未讀訊息" },
 };
 
 function remaining(iso: string, d: string) {
@@ -22,7 +24,23 @@ export function RecentSessions() {
   const { locale } = useI18n();
   const L = LABELS[locale] ?? LABELS["en"]!;
   const [list, setList] = useState<RecentSession[]>([]);
+  const [unread, setUnread] = useState<Record<string, number>>({});
+  const getUnread = useServerFn(getUnreadCountsFn);
   useEffect(() => setList(listRecentSessions()), []);
+  useEffect(() => {
+    if (list.length === 0) return;
+    const load = () =>
+      getUnread({
+        data: {
+          items: list.map((s) => ({ token: s.token, since: lastRead(s.token), name: s.name || undefined })),
+        },
+      })
+        .then(setUnread)
+        .catch(() => {});
+    void load();
+    const id = setInterval(load, 10_000);
+    return () => clearInterval(id);
+  }, [list, getUnread]);
   if (list.length === 0) return null;
 
   return (
@@ -45,7 +63,17 @@ export function RecentSessions() {
                 <span className="block text-xs text-muted-foreground">
                   {s.role === "host" ? L.host : L.guest} · {L.left} {remaining(s.expiresAt, L.days)}
                 </span>
+                {unread[s.token] ? (
+                  <span className="block text-xs font-medium text-accent">
+                    {unread[s.token]} {L.unread}
+                  </span>
+                ) : null}
               </span>
+              {unread[s.token] ? (
+                <span className="grid min-w-6 place-items-center rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-primary-foreground">
+                  {unread[s.token]! > 99 ? "99+" : unread[s.token]}
+                </span>
+              ) : null}
             </Link>
             <button
               type="button"

@@ -7,7 +7,6 @@ import {
   ChevronDown,
   ChevronUp,
   Clock,
-  Keyboard,
   Loader2,
   LogOut,
   Mic,
@@ -212,7 +211,6 @@ export function ConversationView({
     }
   }, [recorder, role, sendUtterance, session.token, displayName]);
 
-  const [inputMode, setInputMode] = useState<"voice" | "text">("voice");
   const [draft, setDraft] = useState("");
 
   const handleSendText = useCallback(async () => {
@@ -510,87 +508,62 @@ export function ConversationView({
         </div>
       ) : null}
 
-      <div className="sticky bottom-0 mt-3 flex flex-col items-center gap-2 bg-background/80 py-2 backdrop-blur-xl">
-        <div role="tablist" className="inline-flex rounded-full border border-border bg-surface p-0.5 text-xs">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={inputMode === "voice"}
-            onClick={() => setInputMode("voice")}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-medium",
-              inputMode === "voice" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
-            )}
-          >
-            <Mic className="size-4" aria-hidden />
-            {t.session.modeVoice}
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={inputMode === "text"}
-            onClick={() => setInputMode("text")}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-medium",
-              inputMode === "text" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
-            )}
-          >
-            <Keyboard className="size-4" aria-hidden />
-            {t.session.modeText}
-          </button>
-        </div>
-
-        {inputMode === "text" ? (
-          <form
-            className="flex w-full max-w-xl items-end gap-2"
-            onSubmit={(e) => {
-              e.preventDefault();
-              void handleSendText();
+      <div className="sticky bottom-0 mt-3 bg-background/80 py-2 backdrop-blur-xl">
+        {recorder.recording ? (
+          <p aria-live="polite" className="mb-1 text-center text-xs font-medium text-primary">
+            {t.session.releaseToSend}
+          </p>
+        ) : null}
+        <form
+          className="mx-auto flex w-full max-w-xl items-end gap-2 rounded-3xl border border-border bg-surface p-1.5 pl-3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void handleSendText();
+          }}
+        >
+          <textarea
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                void handleSendText();
+              }
             }}
-          >
-            <textarea
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  void handleSendText();
-                }
-              }}
-              rows={1}
-              maxLength={2000}
-              aria-label={t.session.typePlaceholder}
-              placeholder={t.session.typePlaceholder}
-              className="min-h-10 flex-1 resize-none rounded-xl border border-border bg-surface px-3 py-2 text-base outline-none focus:border-primary"
-            />
+            rows={1}
+            maxLength={2000}
+            aria-label={t.session.typePlaceholder}
+            placeholder={t.session.typePlaceholder}
+            className="min-h-10 flex-1 resize-none bg-transparent py-2 text-base outline-none"
+          />
+          {draft.trim() ? (
             <button
               type="submit"
-              disabled={busy || !draft.trim()}
+              disabled={busy}
               aria-label={t.session.send}
-              className="grid size-10 shrink-0 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground disabled:opacity-50"
+              className="grid size-10 shrink-0 place-items-center rounded-full bg-[image:var(--gradient-primary)] text-primary-foreground disabled:opacity-50"
             >
               {busy ? <Loader2 className="size-5 animate-spin" aria-hidden /> : <Send className="size-5" aria-hidden />}
             </button>
-          </form>
-        ) : micReady || recorder.micState === "granted" ? (
-          <PushToTalk
-            recording={recorder.recording}
-            busy={busy}
-            onStart={handleStart}
-            onStop={handleStop}
-          />
-        ) : (
-          <div className="w-full max-w-sm space-y-2 text-center">
-            <p className="text-sm text-muted-foreground">{t.join.readOnly}</p>
+          ) : micReady || recorder.micState === "granted" ? (
+            <PushToTalk
+              compact
+              recording={recorder.recording}
+              busy={busy}
+              onStart={handleStart}
+              onStop={handleStop}
+            />
+          ) : (
             <button
               type="button"
               onClick={() => void recorder.requestMic()}
-              className="w-full rounded-xl bg-[image:var(--gradient-primary)] px-5 py-3 font-semibold text-primary-foreground"
+              aria-label={t.session.micRequest}
+              className="grid size-10 shrink-0 place-items-center rounded-full bg-[image:var(--gradient-primary)] text-primary-foreground"
             >
-              {t.session.micRequest}
+              <Mic className="size-5" aria-hidden />
             </button>
-          </div>
-        )}
+          )}
+        </form>
       </div>
 
 

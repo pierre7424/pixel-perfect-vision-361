@@ -410,6 +410,28 @@ export const listMessages = createServerFn({ method: "POST" })
 
 
 /** Translate `text` into every language spoken by present participants. */
+/**
+ * Corrects the declared language when the text's writing system clearly
+ * belongs to another language (e.g. Chinese characters from a participant
+ * registered as French). Latin text keeps the declared language.
+ */
+export function detectScriptLang(text: string, declared: string): string {
+  const base = declared.split("-")[0];
+  const count = (re: RegExp) => (text.match(re) ?? []).length;
+  const letters = count(/\p{L}/gu);
+  if (letters === 0) return declared;
+  const share = (re: RegExp) => count(re) / letters > 0.3;
+  if (share(/[\u3040-\u30ff]/gu)) return base === "ja" ? declared : "ja";
+  if (share(/\p{Script=Hangul}/gu)) return base === "ko" ? declared : "ko";
+  if (share(/\p{Script=Han}/gu))
+    return ["zh", "nan", "ja"].includes(base!) ? declared : "zh-TW";
+  if (share(/\p{Script=Thai}/gu)) return base === "th" ? declared : "th";
+  if (share(/\p{Script=Arabic}/gu)) return base === "ar" ? declared : "ar";
+  if (share(/\p{Script=Devanagari}/gu)) return base === "hi" ? declared : "hi";
+  if (share(/\p{Script=Cyrillic}/gu)) return ["ru", "uk"].includes(base!) ? declared : "ru";
+  return declared;
+}
+
 async function translateForEveryone(
   sessionId: string,
   fallbackTarget: string,
@@ -486,7 +508,7 @@ export const sendUtterance = createServerFn({ method: "POST" })
       if (me?.lang) ownLang = me.lang as string;
     }
 
-    const sourceLang = ownLang;
+    let sourceLang = ownLang;
     const targetLang = data.role === "host" ? row.guest_lang : row.host_lang;
     const speakerName = data.displayName ?? null;
 
@@ -518,6 +540,7 @@ export const sendUtterance = createServerFn({ method: "POST" })
       return fail(code);
     }
 
+    sourceLang = detectScriptLang(original, sourceLang);
     const tr = await translateForEveryone(row.id, targetLang, sourceLang, original);
     const translated = tr.primary;
     const errorCode = tr.errorCode;
@@ -594,7 +617,7 @@ export const sendTextMessage = createServerFn({ method: "POST" })
         .maybeSingle();
       if (me?.lang) ownLang = me.lang as string;
     }
-    const sourceLang = ownLang;
+    const sourceLang = detectScriptLang(data.text, ownLang);
     const targetLang = data.role === "host" ? row.guest_lang : row.host_lang;
     const speakerName = data.displayName ?? null;
 

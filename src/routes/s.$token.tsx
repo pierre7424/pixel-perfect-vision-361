@@ -358,7 +358,7 @@ function GuestWelcome({
     const own = detectBrowserSpoken();
     if (own) setLang(own);
   }, []);
-  const [editingLang, setEditingLang] = useState(false);
+  const [editingLang, setEditingLang] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [working, setWorking] = useState(false);
 

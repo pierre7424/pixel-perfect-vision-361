@@ -287,9 +287,21 @@ export function ConversationView({
     <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-3xl flex-col px-4 pb-6">
       <div className="surface-panel sticky top-16 z-20 mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-sm">
         <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-          <span className="truncate font-medium">
-            {languageLabel(findLanguage(myLang), locale)}
-          </span>
+          <label className="inline-flex min-w-0 items-center gap-1.5 justify-self-start rounded-lg border border-border bg-surface px-3 py-1.5 font-medium">
+            <Languages className="size-4 shrink-0" aria-hidden />
+            <select
+              value={myLang}
+              onChange={(e) => setMyLang(e.target.value)}
+              aria-label={t.join.chooseYourLang}
+              className="min-w-0 truncate bg-transparent outline-none"
+            >
+              {SPOKEN_LANGUAGES.map((l) => (
+                <option key={l.code} value={l.code} className="bg-background text-foreground">
+                  {languageLabel(l, locale)}
+                </option>
+              ))}
+            </select>
+          </label>
           <button
             type="button"
             onClick={() => setHeaderOpen((v) => !v)}
@@ -311,22 +323,7 @@ export function ConversationView({
         </span>
         {headerOpen ? (
         <>
-        <label className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 font-medium">
-          <Languages className="size-4" aria-hidden />
-          <span className="sr-only">{t.join.chooseYourLang}</span>
-          <select
-            value={myLang}
-            onChange={(e) => setMyLang(e.target.value)}
-            aria-label={t.join.chooseYourLang}
-            className="bg-transparent outline-none"
-          >
-            {SPOKEN_LANGUAGES.map((l) => (
-              <option key={l.code} value={l.code} className="bg-background text-foreground">
-                {languageLabel(l, locale)}
-              </option>
-            ))}
-          </select>
-        </label>
+
 
         <button
           type="button"

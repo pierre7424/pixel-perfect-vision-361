@@ -687,3 +687,61 @@ export const getUnreadCounts = createServerFn({ method: "POST" })
     );
     return out;
   });
+
+/** 5-digit join codes stay valid for 1 hour. */
+export const JOIN_CODE_MINUTES = 60;
+
+/** Return the session's current 5-digit join code, creating a fresh one if missing/expired or when `renew` is set. */
+export const getJoinCode = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => z.object({ token: tokenSchema, renew: z.boolean().optional() }).parse(d))
+  .handler(async ({ data }): Promise<{ ok: true; code: string; expiresAt: string } | Failure> => {
+    const res = await loadSession(data.token);
+    if (!res.ok) return res;
+    const db = await admin();
+    const row = res.row as SessionRow & { join_code: string | null; join_code_expires_at: string | null };
+    if (
+      !data.renew &&
+      row.join_code &&
+      row.join_code_expires_at &&
+      new Date(row.join_code_expires_at).getTime() > Date.now()
+    ) {
+      return { ok: true, code: row.join_code, expiresAt: row.join_code_expires_at };
+    }
+    const nowIso = new Date().toISOString();
+    for (let i = 0; i < 10; i++) {
+      const n = new Uint32Array(1);
+      crypto.getRandomValues(n);
+      const code = String(10000 + (n[0]! % 90000));
+      const { data: clash } = await db
+        .from("conversation_sessions")
+        .select("id")
+        .eq("join_code", code)
+        .gt("join_code_expires_at", nowIso)
+        .maybeSingle();
+      if (clash) continue;
+      const expiresAt = new Date(Date.now() + JOIN_CODE_MINUTES * 60_000).toISOString();
+      const { error } = await db
+        .from("conversation_sessions")
+        .update({ join_code: code, join_code_expires_at: expiresAt })
+        .eq("id", row.id);
+      if (error) return fail("unavailable");
+      return { ok: true, code, expiresAt };
+    }
+    return fail("unavailable");
+  });
+
+/** Resolve a 5-digit code into a session token. */
+export const resolveJoinCode = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => z.object({ code: z.string().regex(/^\d{5}$/) }).parse(d))
+  .handler(async ({ data }): Promise<{ ok: true; token: string } | Failure> => {
+    const db = await admin();
+    const { data: row } = await db
+      .from("conversation_sessions")
+      .select("token, revoked, status, expires_at")
+      .eq("join_code", data.code)
+      .gt("join_code_expires_at", new Date().toISOString())
+      .maybeSingle();
+    if (!row || row.revoked || row.status === "ended" || new Date(row.expires_at).getTime() < Date.now())
+      return fail("expired");
+    return { ok: true, token: row.token };
+  });

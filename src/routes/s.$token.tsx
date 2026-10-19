@@ -6,6 +6,7 @@ import QRCode from "qrcode";
 import { useCallback, useEffect, useState } from "react";
 
 import { ConversationView } from "@/components/conversation-view";
+import { JoinCode } from "@/components/join-code";
 import { LanguagePicker } from "@/components/language-picker";
 import { NamePrompt } from "@/components/name-prompt";
 import { clientId, storeName, storedName } from "@/lib/identity";
@@ -248,6 +249,8 @@ function HostInvite({
         >
           {guestInvitation}
         </p>
+
+        <JoinCode token={session.token} />
 
         <div className="mt-5 flex flex-col gap-2 sm:flex-row">
           <button

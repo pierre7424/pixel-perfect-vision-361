@@ -6,6 +6,7 @@ import QRCode from "qrcode";
 import { useCallback, useEffect, useState } from "react";
 
 import { ConversationView } from "@/components/conversation-view";
+import { JoinCode } from "@/components/join-code";
 import { LanguagePicker } from "@/components/language-picker";
 import { NamePrompt } from "@/components/name-prompt";
 import { clientId, storeName, storedName } from "@/lib/identity";

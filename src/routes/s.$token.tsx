@@ -249,6 +249,8 @@ function HostInvite({
           {guestInvitation}
         </p>
 
+        <JoinCode token={session.token} />
+
         <div className="mt-5 flex flex-col gap-2 sm:flex-row">
           <button
             type="button"

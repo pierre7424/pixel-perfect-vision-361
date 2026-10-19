@@ -1,6 +1,9 @@
 import QRCode from "qrcode";
-import { Check, Copy, Loader2, X } from "lucide-react";
+import { Check, Copy, Loader2, Share2, X } from "lucide-react";
 import { useEffect, useState } from "react";
+
+import { JoinCode } from "@/components/join-code";
+
 
 import { useI18n } from "@/lib/i18n";
 import { qrInvitation } from "@/lib/languages";
@@ -80,7 +83,29 @@ export function QrModal({
           {invitation}
         </p>
 
-        <p className="mt-3 text-xs text-muted-foreground">{t.session.showQrNote}</p>
+        <JoinCode token={token} />
+
+        <button
+          type="button"
+          onClick={async () => {
+            if (navigator.share) {
+              try {
+                await navigator.share({ title: t.qr.title, text: invitation, url });
+              } catch {
+                /* dismissed */
+              }
+            } else {
+              await navigator.clipboard.writeText(url);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            }
+          }}
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[image:var(--gradient-primary)] px-4 py-3 font-semibold text-primary-foreground"
+        >
+          <Share2 className="size-4" aria-hidden />
+          {t.qr.share}
+        </button>
+
 
         <button
           type="button"

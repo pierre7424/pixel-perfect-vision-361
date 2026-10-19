@@ -118,6 +118,8 @@ export type Database = {
           guest_lang: string
           host_lang: string
           id: string
+          join_code: string | null
+          join_code_expires_at: string | null
           revoked: boolean
           status: string
           token: string
@@ -131,6 +133,8 @@ export type Database = {
           guest_lang: string
           host_lang: string
           id?: string
+          join_code?: string | null
+          join_code_expires_at?: string | null
           revoked?: boolean
           status?: string
           token: string
@@ -144,6 +148,8 @@ export type Database = {
           guest_lang?: string
           host_lang?: string
           id?: string
+          join_code?: string | null
+          join_code_expires_at?: string | null
           revoked?: boolean
           status?: string
           token?: string

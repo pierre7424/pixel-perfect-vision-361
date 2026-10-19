@@ -1,0 +1,2 @@
+ALTER TABLE public.conversation_sessions ADD COLUMN join_code text, ADD COLUMN join_code_expires_at timestamptz;
+CREATE INDEX conversation_sessions_join_code_idx ON public.conversation_sessions(join_code);

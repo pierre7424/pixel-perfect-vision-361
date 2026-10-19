@@ -1,6 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
+import { resolveJoinCode as resolveJoinCodeFn } from "@/lib/conversation.functions";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/rejoindre")({
@@ -11,66 +14,104 @@ export const Route = createFileRoute("/rejoindre")({
       {
         name: "description",
         content:
-          "Scannez le QR partagé ou collez le lien de session pour rejoindre une conversation traduite.",
+          "Scannez le QR, ouvrez le lien reçu ou saisissez le code à 5 chiffres pour rejoindre une conversation traduite.",
       },
       { property: "og:title", content: "Rejoindre une conversation — Deux voix" },
       {
         property: "og:description",
-        content: "Collez le lien reçu : aucun compte requis, le micro reste sous votre contrôle.",
+        content: "Un code à 5 chiffres suffit : aucun compte requis, le micro reste sous votre contrôle.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: JoinPage,
 });
 
+const L: Record<string, { label: string; help: string; bad: string; cta: string }> = {
+  fr: {
+    label: "Code de session à 5 chiffres",
+    help: "Vous pouvez aussi scanner le QR code avec l'appareil photo ou toucher le lien reçu sur WhatsApp, LINE, Telegram…",
+    bad: "Code invalide ou expiré. Demandez un nouveau code au créateur de la session.",
+    cta: "Rejoindre",
+  },
+  en: {
+    label: "5-digit session code",
+    help: "You can also scan the QR code with your camera or tap the link received on WhatsApp, LINE, Telegram…",
+    bad: "Invalid or expired code. Ask the session creator for a new one.",
+    cta: "Join",
+  },
+  zh: {
+    label: "5 位數對話代碼",
+    help: "您也可以用相機掃描 QR 碼，或點擊在 WhatsApp、LINE、Telegram 收到的連結。",
+    bad: "代碼無效或已過期，請向建立者索取新代碼。",
+    cta: "加入",
+  },
+};
+
 function JoinPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const T = L[locale] ?? L["en"]!;
   const navigate = useNavigate();
+  const resolve = useServerFn(resolveJoinCodeFn);
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
-  function go() {
-    const match = value.trim().match(/([0-9a-f]{20,64})/i);
-    const found = match?.[1];
-    if (!found) {
-      setError(t.errors.linkGone);
-      return;
+  async function go(code: string) {
+    if (!/^\d{5}$/.test(code)) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await resolve({ data: { code } });
+      if (res.ok) {
+        void navigate({ to: "/s/$token", params: { token: res.token } });
+      } else setError(T.bad);
+    } catch {
+      setError(T.bad);
+    } finally {
+      setBusy(false);
     }
-    void navigate({ to: "/s/$token", params: { token: found } });
   }
-
 
   return (
     <div className="mx-auto max-w-md px-4 py-12">
       <h1 className="text-2xl font-bold">{t.home.ctaSecondary}</h1>
-      <p className="mt-3 text-sm text-muted-foreground">{t.qr.short}</p>
 
       <div className="glass-card mt-6 p-6">
-        <label htmlFor="join-link" className="text-sm font-medium">
-          {t.join.session}
+        <label htmlFor="join-code" className="text-sm font-medium">
+          {T.label}
         </label>
         <input
-          id="join-link"
+          id="join-code"
+          inputMode="numeric"
+          autoComplete="one-time-code"
+          maxLength={5}
           value={value}
           onChange={(e) => {
-            setValue(e.target.value);
+            const v = e.target.value.replace(/\D/g, "").slice(0, 5);
+            setValue(v);
             setError(null);
+            if (v.length === 5) void go(v);
           }}
-          placeholder="https://…/s/…"
-          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base"
+          placeholder="•••••"
+          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-center font-mono text-3xl tracking-[0.4em]"
         />
         <button
           type="button"
-          onClick={go}
-          className="mt-4 w-full rounded-xl bg-[image:var(--gradient-primary)] px-5 py-3 font-semibold text-primary-foreground"
+          disabled={busy || value.length !== 5}
+          onClick={() => void go(value)}
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[image:var(--gradient-primary)] px-5 py-3 font-semibold text-primary-foreground disabled:opacity-50"
         >
-          {t.join.joinCta}
+          {busy ? <Loader2 className="size-4 animate-spin" aria-hidden /> : null}
+          {T.cta}
         </button>
         {error ? (
           <p role="alert" className="mt-4 text-sm text-destructive">
             {error}
           </p>
         ) : null}
+        <p className="mt-4 text-xs text-muted-foreground">{T.help}</p>
       </div>
     </div>
   );

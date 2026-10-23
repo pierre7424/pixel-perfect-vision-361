@@ -142,7 +142,14 @@ export function ConversationView({
         return;
       }
       setSession(res.session);
-      setMessages(res.messages);
+      // Keep the first media link per message so playing videos are not reset on each poll.
+      setMessages((prev) => {
+        const known = new Map(prev.map((p) => [p.id, p.mediaUrl]));
+        return res.messages.map((m) => {
+          const old = known.get(m.id);
+          return old && m.mediaUrl ? { ...m, mediaUrl: old } : m;
+        });
+      });
       markSessionRead(session.token);
       setParticipants(res.participants);
 
@@ -513,7 +520,12 @@ export function ConversationView({
               {m.mediaType ? (
                 m.mediaUrl ? (
                   m.mediaType === "video" ? (
-                    <video src={m.mediaUrl} controls playsInline preload="metadata" className="mt-2 max-h-96 w-full rounded-xl" />
+                    <div className="mt-2">
+                      <video src={m.mediaUrl} controls playsInline preload="metadata" className="max-h-96 w-full rounded-xl bg-background" />
+                      <a href={m.mediaUrl} target="_blank" rel="noreferrer" className="mt-1 inline-block text-xs text-muted-foreground underline">
+                        ▶ Ouvrir la vidéo / Open video
+                      </a>
+                    </div>
                   ) : (
                     <a href={m.mediaUrl} target="_blank" rel="noreferrer">
                       <img src={m.mediaUrl} alt="" loading="lazy" className="mt-2 max-h-96 w-full rounded-xl object-cover" />

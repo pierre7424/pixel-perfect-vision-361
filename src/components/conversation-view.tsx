@@ -9,6 +9,8 @@ import {
   Clock,
   Loader2,
   LogOut,
+  ImagePlus,
+  Infinity as InfinityIcon,
   Mic,
   QrCode,
   Send,
@@ -34,10 +36,13 @@ import {
 } from "@/lib/notify";
 
 import { useRecorder } from "@/lib/use-recorder";
+import { supabase } from "@/integrations/supabase/client";
 import {
   endSession as endSessionFn,
   listMessages as listMessagesFn,
   sendTextMessage as sendTextMessageFn,
+  createMediaUpload as createMediaUploadFn,
+  sendMediaMessage as sendMediaMessageFn,
   sendUtterance as sendUtteranceFn,
   type FailureCode,
   type MessagePublic,
@@ -212,6 +217,46 @@ export function ConversationView({
   }, [recorder, role, sendUtterance, session.token, displayName]);
 
   const [draft, setDraft] = useState("");
+  const createUpload = useServerFn(createMediaUploadFn);
+  const sendMedia = useServerFn(sendMediaMessageFn);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const handleFile = useCallback(
+    async (file: File) => {
+      const mediaType = file.type.startsWith("video/") ? "video" : file.type.startsWith("image/") ? "image" : null;
+      if (!mediaType) return;
+      if (file.size > 50 * 1024 * 1024) {
+        setError("media_too_big");
+        return;
+      }
+      setError(null);
+      setUploading(true);
+      try {
+        const ext = (file.name.split(".").pop() || (mediaType === "video" ? "mp4" : "jpg"))
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "")
+          .slice(0, 5) || "bin";
+        const up = await createUpload({ data: { token: session.token, ext } });
+        if (!up.ok) throw new Error(up.code);
+        const { error: e } = await supabase.storage
+          .from("chat-media")
+          .uploadToSignedUrl(up.path, up.uploadToken, file, { contentType: file.type });
+        if (e) throw e;
+        const res = await sendMedia({
+          data: { token: session.token, role, path: up.path, mediaType, clientId: clientId(), displayName },
+        });
+        if (!res.ok) throw new Error(res.code);
+        await refresh();
+      } catch {
+        setError("unavailable");
+      } finally {
+        setUploading(false);
+        if (fileRef.current) fileRef.current.value = "";
+      }
+    },
+    [createUpload, sendMedia, session.token, role, displayName, refresh],
+  );
 
   const handleSendText = useCallback(async () => {
     const text = draft.trim();
@@ -285,6 +330,7 @@ export function ConversationView({
   return (
 
     <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-3xl flex-col px-4 pb-6">
+      {session.name ? <h1 className="mt-4 truncate text-xl font-bold">{session.name}</h1> : null}
       <div className="surface-panel sticky top-16 z-20 mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-sm">
         <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
           <label className="inline-flex min-w-0 items-center gap-1.5 justify-self-start rounded-lg border border-border bg-surface px-3 py-1.5 font-medium">
@@ -318,8 +364,17 @@ export function ConversationView({
           {online ? t.session.connected : t.session.reconnecting}
         </span>
         <span className="flex items-center gap-1.5 text-muted-foreground">
-          <Clock className="size-4" aria-hidden />
-          {t.session.expiresIn} {countdown}
+          {session.unlimited ? (
+            <>
+              <InfinityIcon className="size-4" aria-hidden />
+              {MEDIA_L[locale]?.permanent ?? MEDIA_L.en.permanent}
+            </>
+          ) : (
+            <>
+              <Clock className="size-4" aria-hidden />
+              {t.session.expiresIn} {countdown}
+            </>
+          )}
         </span>
         {headerOpen ? (
         <>
@@ -453,7 +508,17 @@ export function ConversationView({
               </p>
 
 
-              {m.state === "error" && !m.originalText ? (
+              {m.mediaType ? (
+                m.mediaUrl ? (
+                  m.mediaType === "video" ? (
+                    <video src={m.mediaUrl} controls playsInline preload="metadata" className="mt-2 max-h-96 w-full rounded-xl" />
+                  ) : (
+                    <a href={m.mediaUrl} target="_blank" rel="noreferrer">
+                      <img src={m.mediaUrl} alt="" loading="lazy" className="mt-2 max-h-96 w-full rounded-xl object-cover" />
+                    </a>
+                  )
+                ) : null
+              ) : m.state === "error" && !m.originalText ? (
                 <p className="mt-2 flex gap-2 text-sm text-destructive">
                   <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden />
                   {t.errors.transcriptionFailed}
@@ -518,6 +583,26 @@ export function ConversationView({
             void handleSendText();
           }}
         >
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*,video/*"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) void handleFile(f);
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => fileRef.current?.click()}
+            disabled={uploading}
+            aria-label={MEDIA_L[locale]?.add ?? MEDIA_L.en.add}
+            title={MEDIA_L[locale]?.add ?? MEDIA_L.en.add}
+            className="-ml-1.5 grid size-10 shrink-0 place-items-center self-end rounded-full text-muted-foreground disabled:opacity-60"
+          >
+            {uploading ? <Loader2 className="size-5 animate-spin" aria-hidden /> : <ImagePlus className="size-5" aria-hidden />}
+          </button>
           <textarea
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
@@ -574,3 +659,9 @@ export function ConversationView({
     </div>
   );
 }
+
+const MEDIA_L: Record<string, { add: string; permanent: string; tooBig: string }> = {
+  fr: { add: "Ajouter une photo ou vidéo", permanent: "Sans limite de temps", tooBig: "Fichier trop lourd (50 Mo max)." },
+  en: { add: "Add a photo or video", permanent: "No time limit", tooBig: "File too large (50 MB max)." },
+  zh: { add: "新增照片或影片", permanent: "無時間限制", tooBig: "檔案太大（最多 50 MB）。" },
+};

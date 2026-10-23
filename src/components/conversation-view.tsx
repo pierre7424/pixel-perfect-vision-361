@@ -89,7 +89,7 @@ export function ConversationView({
   const [online, setOnline] = useState(true);
   const [showQr, setShowQr] = useState(false);
   const [showPeople, setShowPeople] = useState(false);
-  const [error, setError] = useState<FailureCode | "mic_denied" | "mic_unavailable" | "too_short" | null>(
+  const [error, setError] = useState<FailureCode | "mic_denied" | "mic_unavailable" | "too_short" | "media_too_big" | null>(
     null,
   );
   const bottomRef = useRef<HTMLDivElement>(null);

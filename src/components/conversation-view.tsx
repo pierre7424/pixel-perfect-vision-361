@@ -288,6 +288,8 @@ export function ConversationView({
     switch (error) {
       case null:
         return null;
+      case "media_too_big":
+        return MEDIA_L[locale]?.tooBig ?? MEDIA_L.en.tooBig;
       case "mic_denied":
         return t.errors.micDenied;
       case "mic_unavailable":

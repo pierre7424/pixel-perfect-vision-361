@@ -520,7 +520,12 @@ export function ConversationView({
               {m.mediaType ? (
                 m.mediaUrl ? (
                   m.mediaType === "video" ? (
-                    <video src={m.mediaUrl} controls playsInline preload="metadata" className="mt-2 max-h-96 w-full rounded-xl" />
+                    <div className="mt-2">
+                      <video src={m.mediaUrl} controls playsInline preload="metadata" className="max-h-96 w-full rounded-xl bg-background" />
+                      <a href={m.mediaUrl} target="_blank" rel="noreferrer" className="mt-1 inline-block text-xs text-muted-foreground underline">
+                        ▶ Ouvrir la vidéo / Open video
+                      </a>
+                    </div>
                   ) : (
                     <a href={m.mediaUrl} target="_blank" rel="noreferrer">
                       <img src={m.mediaUrl} alt="" loading="lazy" className="mt-2 max-h-96 w-full rounded-xl object-cover" />

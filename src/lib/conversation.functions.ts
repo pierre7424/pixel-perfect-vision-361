@@ -18,7 +18,25 @@ export type SessionPublic = {
   guestJoined: boolean;
   expiresAt: string;
   createdAt: string;
+  name: string | null;
+  unlimited: boolean;
 };
+
+export const SESSION_DURATIONS = ["4h", "24h", "1w", "unlimited"] as const;
+export type SessionDuration = (typeof SESSION_DURATIONS)[number];
+const DURATION_MINUTES: Record<SessionDuration, number> = {
+  "4h": 240,
+  "24h": 1440,
+  "1w": SESSION_MINUTES,
+  unlimited: 0,
+};
+/** Unlimited sessions get a far-future expiry. */
+const UNLIMITED_EXPIRY = "2999-12-31T00:00:00.000Z";
+function expiryFor(d: SessionDuration): string {
+  return d === "unlimited"
+    ? UNLIMITED_EXPIRY
+    : new Date(Date.now() + DURATION_MINUTES[d] * 60_000).toISOString();
+}
 
 export type MessagePublic = {
   id: string;
@@ -33,6 +51,8 @@ export type MessagePublic = {
   state: "processed" | "error";
   errorCode: string | null;
   createdAt: string;
+  mediaUrl?: string | null;
+  mediaType?: "image" | "video" | null;
 };
 
 export type ParticipantPublic = {
@@ -88,6 +108,8 @@ type SessionRow = {
   guest_joined_at: string | null;
   expires_at: string;
   created_at: string;
+  name?: string | null;
+  unlimited?: boolean;
 };
 
 function toPublic(row: SessionRow): SessionPublic {
@@ -100,6 +122,8 @@ function toPublic(row: SessionRow): SessionPublic {
     guestJoined: row.guest_joined_at != null,
     expiresAt: row.expires_at,
     createdAt: row.created_at,
+    name: row.name ?? null,
+    unlimited: !!row.unlimited,
   };
 }
 
@@ -187,6 +211,8 @@ export const createSession = createServerFn({ method: "POST" })
         hostLang: langSchema,
         guestLang: langSchema,
         geolocationAllowed: z.boolean(),
+        name: z.string().trim().max(60).optional(),
+        duration: z.enum(SESSION_DURATIONS).catch("1w").optional(),
       })
       .parse(d),
   )
@@ -199,7 +225,9 @@ export const createSession = createServerFn({ method: "POST" })
         host_lang: data.hostLang,
         guest_lang: data.guestLang,
         geolocation_allowed: data.geolocationAllowed,
-        expires_at: new Date(Date.now() + SESSION_MINUTES * 60_000).toISOString(),
+        name: data.name || null,
+        unlimited: data.duration === "unlimited",
+        expires_at: expiryFor(data.duration ?? "1w"),
       })
       .select("*")
       .single();
@@ -387,11 +415,20 @@ export const listMessages = createServerFn({ method: "POST" })
           : undefined,
       );
 
+      const paths = (rows ?? []).map((m) => m.media_path).filter((x): x is string => !!x);
+      const urls: Record<string, string> = {};
+      if (paths.length) {
+        const { data: signed } = await db.storage.from("chat-media").createSignedUrls(paths, 7 * 24 * 3600);
+        for (const s of signed ?? []) if (s.path && s.signedUrl) urls[s.path] = s.signedUrl;
+      }
+
       return {
         ok: true,
         session: toPublic(res.row),
         participants,
         messages: (rows ?? []).map((m) => ({
+          mediaUrl: m.media_path ? (urls[m.media_path] ?? null) : null,
+          mediaType: (m.media_type as "image" | "video" | null) ?? null,
           id: m.id as string,
           speaker: m.speaker as Role,
           displayName: (m.display_name as string | null) ?? null,
@@ -678,12 +715,12 @@ export const getUnreadCounts = createServerFn({ method: "POST" })
   .handler(
     async ({
       data,
-    }): Promise<Record<string, { unread: number; participants: number; hostName: string | null }>> => {
+    }): Promise<Record<string, { unread: number; participants: number; hostName: string | null; sessionName: string | null }>> => {
     const db = await admin();
-    const out: Record<string, { unread: number; participants: number; hostName: string | null }> = {};
+    const out: Record<string, { unread: number; participants: number; hostName: string | null; sessionName: string | null }> = {};
     await Promise.all(
       data.items.map(async (it) => {
-        const { data: s } = await db.from("conversation_sessions").select("id").eq("token", it.token).maybeSingle();
+        const { data: s } = await db.from("conversation_sessions").select("id, name").eq("token", it.token).maybeSingle();
         if (!s) return;
         let q = db
           .from("conversation_messages")
@@ -705,6 +742,7 @@ export const getUnreadCounts = createServerFn({ method: "POST" })
           unread: count ?? 0,
           participants: (parts ?? []).length,
           hostName: (host?.display_name as string | undefined) ?? null,
+          sessionName: (s.name as string | null) ?? null,
         };
       }),
     );
@@ -767,4 +805,62 @@ export const resolveJoinCode = createServerFn({ method: "POST" })
     if (!row || row.revoked || row.status === "ended" || new Date(row.expires_at).getTime() < Date.now())
       return fail("expired");
     return { ok: true, token: row.token };
+  });
+
+
+/** Signed upload slot for a photo/video in a session. */
+export const createMediaUpload = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    z.object({ token: tokenSchema, ext: z.string().regex(/^[a-z0-9]{1,5}$/) }).parse(d),
+  )
+  .handler(async ({ data }): Promise<{ ok: true; path: string; uploadToken: string } | Failure> => {
+    const res = await loadSession(data.token);
+    if (!res.ok) return res;
+    const db = await admin();
+    const path = `${res.row.id}/${makeToken()}.${data.ext}`;
+    const { data: up, error } = await db.storage.from("chat-media").createSignedUploadUrl(path);
+    if (error || !up) {
+      console.error("[media] upload url failed", error);
+      return fail("unavailable");
+    }
+    return { ok: true, path, uploadToken: up.token };
+  });
+
+/** Store a message pointing at an uploaded photo/video. */
+export const sendMediaMessage = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        token: tokenSchema,
+        role: z.enum(["host", "guest"]),
+        path: z.string().max(200),
+        mediaType: z.enum(["image", "video"]),
+        clientId: z.string().min(4).max(64).optional(),
+        displayName: nameSchema.optional(),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data }): Promise<{ ok: true } | Failure> => {
+    const res = await loadSession(data.token);
+    if (!res.ok) return res;
+    if (!data.path.startsWith(`${res.row.id}/`)) return fail("unavailable");
+    const db = await admin();
+    const lang = data.role === "host" ? res.row.host_lang : res.row.guest_lang;
+    const { error } = await db.from("conversation_messages").insert({
+      session_id: res.row.id,
+      speaker: data.role,
+      display_name: data.displayName ?? null,
+      source_lang: lang,
+      target_lang: lang,
+      original_text: null,
+      translated_text: null,
+      state: "processed",
+      media_path: data.path,
+      media_type: data.mediaType,
+    });
+    if (error) {
+      console.error("[media] insert failed", error);
+      return fail("unavailable");
+    }
+    return { ok: true };
   });

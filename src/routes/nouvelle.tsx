@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { LanguagePicker } from "@/components/language-picker";
 import { useI18n } from "@/lib/i18n";
 import { detectBrowserSpoken } from "@/lib/languages";
-import { SESSION_HOURS, createSession as createSessionFn } from "@/lib/conversation.functions";
+import { createSession as createSessionFn, type SessionDuration } from "@/lib/conversation.functions";
 
 export const Route = createFileRoute("/nouvelle")({
   staticData: { sitemap: true },
@@ -36,6 +36,10 @@ function NewSessionPage() {
   const [hostLang, setHostLang] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [duration, setDuration] = useState<SessionDuration>("1w");
+  const { locale } = useI18n();
+  const L = CL[locale] ?? CL.en!;
 
   useEffect(() => {
     setHostLang((v) => v ?? detectBrowserSpoken() ?? "fr");
@@ -47,7 +51,7 @@ function NewSessionPage() {
     setError(null);
     try {
       const res = await createSession({
-        data: { hostLang, guestLang: hostLang, geolocationAllowed: false },
+        data: { hostLang, guestLang: hostLang, geolocationAllowed: false, name: name.trim() || undefined, duration },
       });
       if (!res.ok) {
         setError(t.errors.generic);
@@ -72,8 +76,34 @@ function NewSessionPage() {
         <div className="mt-4">
           <LanguagePicker value={hostLang} onChange={setHostLang} labelledBy="host-lang" />
         </div>
+        <label className="mt-6 block text-sm font-semibold" htmlFor="session-name">
+          {L.name}
+        </label>
+        <input
+          id="session-name"
+          value={name}
+          maxLength={60}
+          onChange={(e) => setName(e.target.value)}
+          placeholder={L.namePh}
+          className="mt-2 w-full rounded-xl border border-border bg-surface px-4 py-3 outline-none focus:border-primary"
+        />
+        <p className="mt-6 text-sm font-semibold">{L.duration}</p>
+        <div role="radiogroup" className="mt-2 grid grid-cols-2 gap-2">
+          {(["4h", "24h", "1w", "unlimited"] as const).map((d) => (
+            <button
+              key={d}
+              type="button"
+              role="radio"
+              aria-checked={duration === d}
+              onClick={() => setDuration(d)}
+              className={`rounded-xl border px-3 py-2.5 text-sm font-medium ${duration === d ? "border-primary bg-primary/15" : "border-border bg-surface"}`}
+            >
+              {L.d[d]}
+            </button>
+          ))}
+        </div>
         <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
-          {t.create.expiry} : {SESSION_HOURS / 24} × 24 {t.create.hours}. {t.create.dataNote}{" "}
+          {t.create.dataNote}{" "}
           <a href="/confidentialite" className="underline underline-offset-4">
             {t.nav.privacy}
           </a>
@@ -96,3 +126,9 @@ function NewSessionPage() {
     </div>
   );
 }
+
+const CL: Record<string, { name: string; namePh: string; duration: string; d: Record<SessionDuration, string> }> = {
+  fr: { name: "Nom de la session (facultatif)", namePh: "Ex. : Voyage à Taipei", duration: "Durée de la session", d: { "4h": "4 heures", "24h": "24 heures", "1w": "1 semaine", unlimited: "Illimitée" } },
+  en: { name: "Session name (optional)", namePh: "e.g. Trip to Taipei", duration: "Session length", d: { "4h": "4 hours", "24h": "24 hours", "1w": "1 week", unlimited: "Unlimited" } },
+  zh: { name: "對話名稱（選填）", namePh: "例如：台北之旅", duration: "對話時長", d: { "4h": "4 小時", "24h": "24 小時", "1w": "1 週", unlimited: "無限制" } },
+};

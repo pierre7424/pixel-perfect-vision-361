@@ -289,7 +289,7 @@ export function ConversationView({
       case null:
         return null;
       case "media_too_big":
-        return MEDIA_L[locale]?.tooBig ?? MEDIA_L.en.tooBig;
+        return MEDIA_L[locale]?.tooBig ?? MEDIA_EN.tooBig;
       case "mic_denied":
         return t.errors.micDenied;
       case "mic_unavailable":
@@ -369,7 +369,7 @@ export function ConversationView({
           {session.unlimited ? (
             <>
               <InfinityIcon className="size-4" aria-hidden />
-              {MEDIA_L[locale]?.permanent ?? MEDIA_L.en.permanent}
+              {MEDIA_L[locale]?.permanent ?? MEDIA_EN.permanent}
             </>
           ) : (
             <>
@@ -599,8 +599,8 @@ export function ConversationView({
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
-            aria-label={MEDIA_L[locale]?.add ?? MEDIA_L.en.add}
-            title={MEDIA_L[locale]?.add ?? MEDIA_L.en.add}
+            aria-label={MEDIA_L[locale]?.add ?? MEDIA_EN.add}
+            title={MEDIA_L[locale]?.add ?? MEDIA_EN.add}
             className="-ml-1.5 grid size-10 shrink-0 place-items-center self-end rounded-full text-muted-foreground disabled:opacity-60"
           >
             {uploading ? <Loader2 className="size-5 animate-spin" aria-hidden /> : <ImagePlus className="size-5" aria-hidden />}
@@ -662,7 +662,9 @@ export function ConversationView({
   );
 }
 
-const MEDIA_L: Record<string, { add: string; permanent: string; tooBig: string }> = {
+type MediaL = { add: string; permanent: string; tooBig: string };
+const MEDIA_EN: MediaL = { add: "Add a photo or video", permanent: "No time limit", tooBig: "File too large (50 MB max)." };
+const MEDIA_L: Record<string, MediaL> = {
   fr: { add: "Ajouter une photo ou vidéo", permanent: "Sans limite de temps", tooBig: "Fichier trop lourd (50 Mo max)." },
   en: { add: "Add a photo or video", permanent: "No time limit", tooBig: "File too large (50 MB max)." },
   zh: { add: "新增照片或影片", permanent: "無時間限制", tooBig: "檔案太大（最多 50 MB）。" },

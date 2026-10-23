@@ -29,7 +29,7 @@ export const Route = createFileRoute("/nouvelle")({
 });
 
 function NewSessionPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const navigate = useNavigate();
   const createSession = useServerFn(createSessionFn);
 
@@ -38,8 +38,7 @@ function NewSessionPage() {
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [duration, setDuration] = useState<SessionDuration>("1w");
-  const { locale } = useI18n();
-  const L = CL[locale] ?? CL.en!;
+  const L = CL[locale] ?? CL["en"]!;
 
   useEffect(() => {
     setHostLang((v) => v ?? detectBrowserSpoken() ?? "fr");

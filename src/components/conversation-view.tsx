@@ -142,7 +142,14 @@ export function ConversationView({
         return;
       }
       setSession(res.session);
-      setMessages(res.messages);
+      // Keep the first media link per message so playing videos are not reset on each poll.
+      setMessages((prev) => {
+        const known = new Map(prev.map((p) => [p.id, p.mediaUrl]));
+        return res.messages.map((m) => {
+          const old = known.get(m.id);
+          return old && m.mediaUrl ? { ...m, mediaUrl: old } : m;
+        });
+      });
       markSessionRead(session.token);
       setParticipants(res.participants);
 

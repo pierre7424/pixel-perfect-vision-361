@@ -13,6 +13,7 @@ import { clientId, storeName, storedName } from "@/lib/identity";
 import { languageLabel, uiLocaleForSpoken, useI18n } from "@/lib/i18n";
 import { detectBrowserSpoken, findLanguage, qrInvitation } from "@/lib/languages";
 import { shareLink } from "@/lib/share-origin";
+import { ShareApps } from "@/components/share-apps";
 import { useRecorder } from "@/lib/use-recorder";
 
 import {
@@ -128,7 +129,8 @@ function SessionPage() {
   if (role === "host" && !name) {
     return (
       <div className="mx-auto max-w-xl px-4 py-10">
-        <h1 className="text-2xl font-bold">{t.qr.title}</h1>
+        {session.name ? <p className="text-sm font-semibold text-primary">{session.name}</p> : null}
+      <h1 className="text-2xl font-bold">{t.qr.title}</h1>
         <NamePrompt
           onSubmit={(value) => {
             storeName(session.token, value);
@@ -285,6 +287,7 @@ function HostInvite({
             {t.qr.share}
           </button>
         </div>
+        {url ? <ShareApps url={url} text={guestInvitation} /> : null}
 
         <p
           role="status"

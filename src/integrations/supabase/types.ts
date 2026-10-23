@@ -20,6 +20,8 @@ export type Database = {
           display_name: string | null
           error_code: string | null
           id: string
+          media_path: string | null
+          media_type: string | null
           original_text: string | null
           session_id: string
           source_lang: string
@@ -34,6 +36,8 @@ export type Database = {
           display_name?: string | null
           error_code?: string | null
           id?: string
+          media_path?: string | null
+          media_type?: string | null
           original_text?: string | null
           session_id: string
           source_lang: string
@@ -48,6 +52,8 @@ export type Database = {
           display_name?: string | null
           error_code?: string | null
           id?: string
+          media_path?: string | null
+          media_type?: string | null
           original_text?: string | null
           session_id?: string
           source_lang?: string
@@ -120,9 +126,11 @@ export type Database = {
           id: string
           join_code: string | null
           join_code_expires_at: string | null
+          name: string | null
           revoked: boolean
           status: string
           token: string
+          unlimited: boolean
         }
         Insert: {
           created_at?: string
@@ -135,9 +143,11 @@ export type Database = {
           id?: string
           join_code?: string | null
           join_code_expires_at?: string | null
+          name?: string | null
           revoked?: boolean
           status?: string
           token: string
+          unlimited?: boolean
         }
         Update: {
           created_at?: string
@@ -150,9 +160,11 @@ export type Database = {
           id?: string
           join_code?: string | null
           join_code_expires_at?: string | null
+          name?: string | null
           revoked?: boolean
           status?: string
           token?: string
+          unlimited?: boolean
         }
         Relationships: []
       }

@@ -8,6 +8,7 @@ import { JoinCode } from "@/components/join-code";
 import { useI18n } from "@/lib/i18n";
 import { qrInvitation } from "@/lib/languages";
 import { shareLink } from "@/lib/share-origin";
+import { ShareApps } from "@/components/share-apps";
 
 /** Modal showing the session QR so extra guests can join mid-conversation. */
 export function QrModal({
@@ -105,6 +106,7 @@ export function QrModal({
           <Share2 className="size-4" aria-hidden />
           {t.qr.share}
         </button>
+        <ShareApps url={url} text={invitation} />
 
 
         <button

@@ -31,6 +31,7 @@ const HINTS: Record<string, { empty: string; logo: string }> = {
 };
 
 function remaining(iso: string, d: string) {
+  if (new Date(iso).getFullYear() > 2900) return "∞";
   const ms = Math.max(0, new Date(iso).getTime() - Date.now());
   const days = Math.floor(ms / 86_400_000);
   const hours = Math.floor((ms % 86_400_000) / 3_600_000);
@@ -41,7 +42,7 @@ export function RecentSessions() {
   const { locale } = useI18n();
   const L = LABELS[locale] ?? LABELS["en"]!;
   const [list, setList] = useState<RecentSession[]>([]);
-  const [unread, setUnread] = useState<Record<string, { unread: number; participants: number; hostName: string | null }>>({});
+  const [unread, setUnread] = useState<Record<string, { unread: number; participants: number; hostName: string | null; sessionName?: string | null }>>({});
   const getUnread = useServerFn(getUnreadCountsFn);
   useEffect(() => setList(listRecentSessions()), []);
   useEffect(() => {
@@ -83,6 +84,9 @@ export function RecentSessions() {
             >
               <MessagesSquare className="size-5 shrink-0 text-accent" aria-hidden />
               <span className="min-w-0 flex-1">
+                {unread[s.token]?.sessionName ? (
+                  <span className="block truncate font-semibold">{unread[s.token]!.sessionName}</span>
+                ) : null}
                 <span className="block truncate font-medium">
                   {s.role === "host"
                     ? `${L.by} ${s.name || "?"} (${L.you})`

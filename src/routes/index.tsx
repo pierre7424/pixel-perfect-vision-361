@@ -3,6 +3,7 @@ import { MessagesSquare, QrCode, ShieldCheck, Timer, Mic, Languages } from "luci
 
 import { useI18n } from "@/lib/i18n";
 import { RecentSessions } from "@/components/recent-sessions";
+import { QuickTranslator } from "@/components/quick-translator";
 
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
@@ -62,6 +63,8 @@ function Index() {
         </div>
 
         <RecentSessions />
+
+        <QuickTranslator />
 
         <div className="mx-auto mt-10 flex max-w-md items-center justify-center gap-4" aria-hidden>
           <span className="glass-card animate-drift grid size-16 place-items-center text-2xl">
